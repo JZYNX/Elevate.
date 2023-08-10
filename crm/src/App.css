@@ -1,6 +1,7 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
+  background: linear-gradient(to bottom, #000000, #202020);
 }
 
 .login-container {
@@ -9,7 +10,6 @@ body {
   align-items: center;
   justify-content: center;
   height: 100vh;
-  background-color: #1a1a1a;
 }
 
 .app-title {
@@ -21,11 +21,16 @@ body {
 }
 
 .login-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 30%;
   background-color: #2a2a2a;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.1);
   text-align: center;
+  margin: 0 auto;
 }
 
 .login-header {
@@ -48,6 +53,11 @@ input::placeholder {
   color: #808080;
 }
 
+/* Add margin to create space between password input and login button */
+input[type="password"] {
+  margin-bottom: 20px;
+}
+
 button {
   width: 100%;
   padding: 10px;
@@ -67,5 +77,3 @@ button:disabled {
   background-color: #808080;
   cursor: not-allowed;
 }
-
-
