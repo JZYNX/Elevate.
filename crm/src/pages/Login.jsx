@@ -24,7 +24,7 @@ function Login() {
 
   return (
     <div className="login-container">
-      <h1 className="app-title">CRM Application</h1>
+      <h1 className="app-title">Welcome</h1>
       <div className="login-form">
         <h2 className="login-header">User Login</h2>
         <input
