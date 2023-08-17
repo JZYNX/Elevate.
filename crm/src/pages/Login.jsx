@@ -1,14 +1,24 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; 
+import "./Login.css"
 
-function App() {
+function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
+  const navigate = useNavigate();
+
   const handleLogin = () => {
     if (username === 'user' && password === 'password') {
-      alert('Login successful!');
+      navigate('/dashboard');
     } else {
       alert('Login failed. Please check your credentials.');
+    }
+  };
+
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      handleLogin(); 
     }
   };
 
@@ -28,6 +38,7 @@ function App() {
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          onKeyPress={handleKeyPress} 
         />
         <button onClick={handleLogin}>Login</button>
       </div>
@@ -35,4 +46,4 @@ function App() {
   );
 }
 
-export default App;
+export default Login;
