@@ -22,25 +22,43 @@ function Login() {
     }
   };
 
+  const handleForgotPassword = () => {
+    // Replace with your forgot password logic or route
+    alert('Forgot your password?');
+  };
+
+  const handleRegister = () => {
+    // Replace with your registration logic or route
+    alert('Register');
+  };
+
   return (
     <div className="login-container">
-      <h1 className="app-title">Welcome</h1>
+      <div className="graphic-section">
+        <h1 className="app-title">Welcome</h1>
+        {/* Additional content, such as a graphic */}
+      </div>
       <div className="login-form">
         <h2 className="login-header">User Login</h2>
-        <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          onKeyPress={handleKeyPress} 
-        />
-        <button onClick={handleLogin}>Login</button>
+          <input
+            type="text"
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            onKeyPress={handleKeyPress} 
+          />
+          <button className="login-button" onClick={handleLogin}>Login</button>
+          <div className="login-links">
+            <a href="#" onClick={handleForgotPassword}>Forgot your password?</a>
+            <span> | </span>
+            <a href="#" onClick={handleRegister}>Register</a>
+          </div>
       </div>
     </div>
   );
