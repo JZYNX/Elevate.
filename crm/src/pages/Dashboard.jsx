@@ -1,5 +1,4 @@
 import React from 'react';
-import './Dashboard.css'; // Import the CSS file
 
 function Dashboard() {
   // Example data for tasks and notifications
