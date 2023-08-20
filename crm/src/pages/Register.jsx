@@ -1,15 +1,26 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-
+import bgImg from '../assets/bgimg.jpg';
 
 const RegisterContainer = styled.div`
   display: flex;
   height: 100vh;
   justify-content: center;
   align-items: center;
-  background-color: #BB4BD5;
   color: white;
+`;
+
+const BackgroundImage = styled.img`
+  /* Add styles for the background image */
+  position: absolute;
+  top: 0;
+  left: 0%;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; 
+  object-position: right;
+  z-index: -1; /* Put the image behind other content */
 `;
 
 const GraphicSection = styled.div`
@@ -23,7 +34,7 @@ const LoginContainer = styled.div`
   
   button.login-button {  
     cursor: pointer;
-    color: #BB4BD5;
+    color: #0a1172;
     background-color: white;
     border: none;
     font-size: 16px;
@@ -67,7 +78,7 @@ const RegisterForm = styled.div`
     width: 50%;
     padding: 10px;
     margin: 10px 0;
-    background-color: #BB4BD5; 
+    background-color: #0a1172; 
     color: white; 
     border: none;
     border-radius: 4px;
@@ -77,7 +88,7 @@ const RegisterForm = styled.div`
   }
 
   button.register-button:hover {
-    background-color: #A231BB; 
+    background-color: #151e3d; 
   }
 
 `
@@ -128,6 +139,7 @@ function Login() {
 
   return (
     <RegisterContainer>
+      <BackgroundImage src={bgImg} alt="bgImg" />
       <GraphicSection>
         <h1 className="app-title">Welcome</h1>
       </GraphicSection>

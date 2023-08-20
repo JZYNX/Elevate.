@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import bgImg from '../assets/bgimg.jpg';
+import googleIcon from '../assets/google.png';
+import fbIcon from '../assets/facebook.png';
+import twitterIcon from '../assets/twitter.png';
 
 const LoginContainer = styled.div`
   display: flex;
@@ -16,10 +19,11 @@ const BackgroundImage = styled.img`
   /* Add styles for the background image */
   position: absolute;
   top: 0;
-  left: 0;
+  left: 0%;
   width: 100%;
   height: 100%;
   object-fit: cover; 
+  object-position: right;
   z-index: -1; /* Put the image behind other content */
 `;
 
@@ -34,11 +38,12 @@ const RegisterContainer = styled.div`
 
   button.register-button {
     cursor: pointer;
-    color: #bb4bd5;
+    color: #0a1172;
     background-color: white;
     border: none;
     font-size: 16px;
     transition: color 0.3s;
+    padding-bottom: 10px;
 
     &:hover {
       color: #0056b3;
@@ -60,8 +65,8 @@ const LoginForm = styled.div`
   margin-right: 10vh;
 
   h2.login-header {
-    font-size: 24px;
-    margin-bottom: 20px;
+    font-size: 28px;
+    margin-bottom: 30px;
   }
 
   input {
@@ -75,10 +80,10 @@ const LoginForm = styled.div`
   }
 
   button.login-button {
-    width: 50%;
+    width: 68%;
     padding: 10px;
     margin: 10px 0;
-    background-color: #bb4bd5;
+    background-color: #0a1172;
     color: white;
     border: none;
     border-radius: 4px;
@@ -87,12 +92,12 @@ const LoginForm = styled.div`
     transition: background-color 0.3s;
 
     &:hover {
-      background-color: #a231bb;
+      background-color: #151e3d;
     }
   }
 
   button.forget-button {
-    color: #bb4bd5;
+    color: #0a1172;
     background-color: white;
     border: none;
     cursor: pointer;
@@ -104,37 +109,23 @@ const LoginForm = styled.div`
   }
 `;
 
-const LineBreak = styled.div`
-  width: 100%;
-  text-align: center;
-  margin-bottom: 20px;
+const IconOnlyButton = styled.button`
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+`;
 
-  span {
-    font-size: 18px;
-    background-color: #f3f5f6;
-    padding: 0 10px;
-  }
+const Icon = styled.img`
+  width: 32px; /* Adjust the width and height as needed */
+  height: 32px;
 `;
 
 const OtherLoginOptions = styled.div`
   display: flex;
-  flex-direction: column;
   align-items: center;
-
-  button {
-    margin: 5px;
-    padding: 10px;
-    background-color: #bb4bd5;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-
-    &:hover {
-      background-color: #a231bb;
-    }
+  ${IconOnlyButton} {
+    margin:10px;
   }
 `;
 
@@ -169,7 +160,7 @@ function Login() {
         <h1 className="app-title">Welcome</h1>
       </WelcomeMessage>
       <LoginForm>
-        <h2 className="login-header">Log In </h2>
+        <h2 className="login-header">LOG IN TO VALORANT</h2>
         <RegisterContainer>
           Don't have an account yet? 
           <button className="register-button" onClick={() => handleNavigation('/register')}>
@@ -198,13 +189,15 @@ function Login() {
           Login
         </button>
         <OtherLoginOptions>
-          <LineBreak>
-            <span>or login with</span>
-          </LineBreak>
-          <div>
-            <button>Login with Google</button>
-            <button>Login with Apple ID</button>
-          </div>
+          <IconOnlyButton>
+            <Icon src={googleIcon} alt="Google" />
+          </IconOnlyButton>
+          <IconOnlyButton>
+            <Icon src={fbIcon} alt="Facebook" />
+          </IconOnlyButton>
+          <IconOnlyButton>
+            <Icon src={twitterIcon} alt="Twitter" />
+          </IconOnlyButton>
         </OtherLoginOptions>
       </LoginForm>
     </LoginContainer>
