@@ -159,7 +159,7 @@ function Login() {
         <h1 className="app-title">Welcome</h1>
       </GraphicSection>
       <LoginForm>
-        <h2 className="login-header">User Login</h2>
+        <h2 className="login-header">Log In </h2>
         <RegisterContainer>
           Don't have an account yet? 
           <button className="register-button" onClick={() => handleNavigation('/dashboard')}>
@@ -173,16 +173,17 @@ function Login() {
           value={credentials.username}
           onChange={(e) => setCredentials({ ...credentials, username: e.target.value })}
         />
-        <button className="forget-button" onClick={() => handleNavigation('/dashboard')}>
-          Forgot your password?
-        </button>
         <input
-          className="password-input"
+          className='password-input'
+          type='password'
           placeholder="Password"
           value={credentials.password}
           onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
           onKeyPress={handleKeyPress}
         />
+         <button className="forget-button" onClick={handleNavigation('/dashboard')}>
+          Forgot your password?
+        </button>
         <button className="login-button" onClick={handleLogin}>
           Login
         </button>
