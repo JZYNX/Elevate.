@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import TextHover from '../utils/TextHover';
 import styled from 'styled-components';
 import bgImg from '../assets/bgimg.jpg';
 import googleIcon from '../assets/google.png';
@@ -41,16 +42,10 @@ const WelcomeMessage = styled.div`
   border-top-left-radius: 15px;
   border-bottom-left-radius: 15px;
 
-  h1.app-title {
+  div.app-title {
     font-size: 36px;
     font-weight: Normal;
     letter-spacing: 0.05em;
-  }
-
-  h2.app-title {
-    font-size: 28px;
-    font-weight: Normal;
-    letter-spacing: 0.02em;
   }
 `;
 
@@ -179,6 +174,7 @@ const OtherLoginOptions = styled.div`
 function Login() {
   const [credentials, setCredentials] = useState({ username: '', password: '' });
   const navigate = useNavigate();
+  const welcomeMessage = "Welcome to the ELEVATE project.";
 
   const handleLogin = () => {
     const { username, password } = credentials;
@@ -203,11 +199,15 @@ function Login() {
     <LoginContainer>
       <BackgroundImage src={bgImg} alt="bgImg" />
       <WelcomeMessage>
-        <h1 className="app-title">Welcome to the <strong>ELEVATE</strong> project.</h1>
-        <h2 className='app-title'><strong>ELEVATE</strong> your life </h2>
-        <h2 className='app-title'><strong>ELEVATE</strong> your skill </h2>
-        <h2 className='app-title'><strong>ELEVATE</strong> your skins </h2>
-        <h2 className='app-title'><strong>ELEVATE</strong> and reach Radiant </h2>
+        <div className="app-title">
+          {welcomeMessage.split('').map((letter, index) => {
+            return (
+              <TextHover key={index}>
+                {letter}
+              </TextHover>
+            );
+          })}
+        </div>
       </WelcomeMessage>
       <LoginForm>
         <h2 className="login-header"> Welcome to <strong>ELEVATE</strong></h2>
