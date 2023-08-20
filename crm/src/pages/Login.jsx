@@ -211,7 +211,7 @@ function Login() {
         </div>
       </WelcomeMessage>
       <LoginForm>
-        <h2 className="login-header"> Welcome to <strong>ELEVATE</strong></h2>
+        <h2 className="login-header"> <strong>User Login</strong></h2>
         <RegisterContainer>
           Don't have an account yet? 
           <button className="register-button" onClick={() => handleNavigation('/register')}>
@@ -237,7 +237,7 @@ function Login() {
           Forgot your password?
         </button>
         <button className="login-button" onClick={handleLogin}>
-          Login
+          Log in
         </button>
         <div className="separator-container">
           <hr className="separator-line" />
