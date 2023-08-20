@@ -151,7 +151,7 @@ const RegisterContainer = styled.div`
     padding-bottom: 10px;
 
     &:hover {
-      color: #0056b3;
+      color: #151e3d;
     }
   }
 `;
