@@ -30,7 +30,7 @@ const BackgroundImage = styled.img`
 const WelcomeMessage = styled.div`
   flex: 1.4;
   height: 90vh;
-  background-color: rgba(20, 25, 50, 0.75);
+  background-color: rgba(20, 25, 50, 0.8);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -207,7 +207,7 @@ function Login() {
         <h2 className='app-title'><strong>ELEVATE</strong> your life </h2>
         <h2 className='app-title'><strong>ELEVATE</strong> your skill </h2>
         <h2 className='app-title'><strong>ELEVATE</strong> your skins </h2>
-        <h2 className='app-title'><strong>ELEVATE</strong> and reach Radiant </h2>
+        <h2 className='app-title'><strong>ELEVATE</strong> and reach RADIANT </h2>
       </WelcomeMessage>
       <LoginForm>
         <h2 className="login-header"> Welcome to <strong>ELEVATE</strong></h2>
