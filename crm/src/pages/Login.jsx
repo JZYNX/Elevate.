@@ -30,7 +30,7 @@ const BackgroundImage = styled.img`
 const WelcomeMessage = styled.div`
   flex: 1.4;
   height: 90vh;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(20, 25, 50, 0.75);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -38,8 +38,8 @@ const WelcomeMessage = styled.div`
   margin-left: 15vh;
   padding-left: 15vh;
   padding-right: 15vh;
-  border-top-left-radius: 10px;
-  border-bottom-left-radius: 10px;
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 15px;
 
   h1.app-title {
     font-size: 36px;
@@ -65,8 +65,8 @@ const LoginForm = styled.div`
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
   color: #333;
   margin-right: 15vh;
-  border-top-right-radius: 20px;
-  border-bottom-right-radius: 20px;
+  border-top-right-radius: 25px;
+  border-bottom-right-radius: 25px;
 
   h2.login-header {
     font-size: 26px;
@@ -112,7 +112,7 @@ const LoginForm = styled.div`
     padding: 10px;
 
     &:hover {
-      color: #0056b3;
+      color: #151e3d;
     }
   }
 
