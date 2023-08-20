@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 
-const LoginContainer = styled.div`
+const RegisterContainer = styled.div`
   display: flex;
   height: 100vh;
   justify-content: center;
@@ -17,11 +17,11 @@ const GraphicSection = styled.div`
   padding: 20px;
 `;
 
-const RegisterContainer = styled.div`
+const LoginContainer = styled.div`
   font-size: 16px;
   color: #888;
   
-  button.register-button {  
+  button.login-button {  
     cursor: pointer;
     color: #BB4BD5;
     background-color: white;
@@ -29,13 +29,13 @@ const RegisterContainer = styled.div`
     font-size: 16px;
   }
 
-  button.register-button:hover {
+  button.login-button:hover {
     color: #0056b3; 
     cursor: pointer;
   }
 `;
 
-const LoginForm = styled.div`
+const RegisterForm = styled.div`
   flex: 1;
   height: 90vh;
   display: flex;
@@ -48,7 +48,7 @@ const LoginForm = styled.div`
   color: #333; 
   margin-right: 10vh;
 
-  h2.login-header {
+  h2.register-header {
     font-size: 24px;
     margin-bottom: 20px;
   }
@@ -63,7 +63,7 @@ const LoginForm = styled.div`
     outline: none;
   }
 
-  button.login-button {
+  button.register-button {
     width: 50%;
     padding: 10px;
     margin: 10px 0;
@@ -76,20 +76,10 @@ const LoginForm = styled.div`
     transition: background-color 0.3s; 
   }
 
-  button.login-button:hover {
+  button.register-button:hover {
     background-color: #A231BB; 
   }
 
-  button.forget-button{
-    color: #BB4BD5;
-    background-color: white;
-    border: none;
-  }
-
-  button.forget-button:hover {
-    color: #0056b3; 
-    cursor: pointer;
-  }
 `
 
 const LineBreak = styled.div`
@@ -105,7 +95,7 @@ const LineBreak = styled.div`
   } 
 `;
 
-const OtherLoginOptions = styled.div`
+const OtherOptions = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -117,7 +107,7 @@ function Login() {
 
   const navigate = useNavigate();
 
-  const handleLogin = () => {
+  const handleRegister = () => {
     if (username === 'user' && password === 'password') {
       navigate('/dashboard');
     } else {
@@ -131,28 +121,24 @@ function Login() {
     }
   };
 
-  const handleForgotPassword = () => {
-    navigate('/dashboard')
-  };
-
-  const handleRegister = () => {
-    navigate('/register')
+  const handleLogin = () => {
+    navigate('/')
   };
 
 
   return (
-    <LoginContainer>
+    <RegisterContainer>
       <GraphicSection>
         <h1 className="app-title">Welcome</h1>
       </GraphicSection>
-      <LoginForm>
-        <h2 className="login-header">Log In </h2>
-        <RegisterContainer>
-          Don't have an account yet? 
-          <button className="register-button" onClick={handleRegister}>
-              Register
+      <RegisterForm>
+        <h2 className="register-header">Create Account</h2>
+        <LoginContainer>
+          Already have an account?
+          <button className="login-button" onClick={handleLogin}>
+              Login
           </button>
-        </RegisterContainer>
+        </LoginContainer>
         <input
           className="user-input"
           type="text"
@@ -168,24 +154,21 @@ function Login() {
           onChange={(e) => setPassword(e.target.value)}
           onKeyPress={handleKeyPress}
         />
-         <button className="forget-button" onClick={handleForgotPassword}>
-          Forgot your password?
-        </button>
-        <button className="login-button" onClick={handleLogin}>
-          Login
+        <button className="register-button" onClick={handleRegister}>
+          Sign Up
         </button>
 
-      <OtherLoginOptions>
+      <OtherOptions>
         <LineBreak>
-          <span>or login with</span>
+          <span>or register with</span>
         </LineBreak>
         <div>
           <button>Login with Google</button>
           <button>Login with Apple ID</button>
         </div>
-      </OtherLoginOptions>
-      </LoginForm>
-    </LoginContainer>
+      </OtherOptions>
+      </RegisterForm>
+    </RegisterContainer>
   );
 }
 
