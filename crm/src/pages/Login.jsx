@@ -43,7 +43,7 @@ const WelcomeMessage = styled.div`
   border-bottom-left-radius: 15px;
 
   div.app-title {
-    font-size: 36px;
+    font-size: 48px;
     font-weight: Normal;
     letter-spacing: 0.05em;
   }
@@ -174,7 +174,7 @@ const OtherLoginOptions = styled.div`
 function Login() {
   const [credentials, setCredentials] = useState({ username: '', password: '' });
   const navigate = useNavigate();
-  const welcomeMessage = "Welcome to the ELEVATE project.";
+  const titleMessage = " ELEVATE.";
 
   const handleLogin = () => {
     const { username, password } = credentials;
@@ -200,10 +200,11 @@ function Login() {
       <BackgroundImage src={bgImg} alt="bgImg" />
       <WelcomeMessage>
         <div className="app-title">
-          {welcomeMessage.split('').map((letter, index) => {
+          Welcome to 
+          {titleMessage.split('').map((letter, index) => {
             return (
               <TextHover key={index}>
-                {letter}
+               {letter === " " ? '\u00A0' : letter}
               </TextHover>
             );
           })}
