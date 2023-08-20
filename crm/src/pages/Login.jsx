@@ -31,7 +31,7 @@ const BackgroundImage = styled.img`
 const WelcomeMessage = styled.div`
   flex: 1.4;
   height: 90vh;
-  background-color: rgba(20, 25, 50, 0.75);
+  background-color: rgba(20, 25, 50, 0.8);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -146,7 +146,7 @@ const RegisterContainer = styled.div`
     padding-bottom: 10px;
 
     &:hover {
-      color: #0056b3;
+      color: #151e3d;
     }
   }
 `;
