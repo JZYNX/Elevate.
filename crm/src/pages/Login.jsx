@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import bgImg from '../assets/bgimg.jpg';
 
 const LoginContainer = styled.div`
   display: flex;
@@ -8,12 +9,21 @@ const LoginContainer = styled.div`
   width: 100vw;
   justify-content: center;
   align-items: center;
-  // background-color: #bb4bd5;
-  background-image: url("../blue.jpg");
   color: white;
 `;
 
-const GraphicSection = styled.div`
+const BackgroundImage = styled.img`
+  /* Add styles for the background image */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; 
+  z-index: -1; /* Put the image behind other content */
+`;
+
+const WelcomeMessage = styled.div`
   flex: 1.5;
   padding: 20px;
 `;
@@ -131,7 +141,6 @@ const OtherLoginOptions = styled.div`
 
 function Login() {
   const [credentials, setCredentials] = useState({ username: '', password: '' });
-
   const navigate = useNavigate();
 
   const handleLogin = () => {
@@ -155,14 +164,15 @@ function Login() {
 
   return (
     <LoginContainer>
-      <GraphicSection>
+      <BackgroundImage src={bgImg} alt="bgImg" />
+      <WelcomeMessage>
         <h1 className="app-title">Welcome</h1>
-      </GraphicSection>
+      </WelcomeMessage>
       <LoginForm>
         <h2 className="login-header">Log In </h2>
         <RegisterContainer>
           Don't have an account yet? 
-          <button className="register-button" onClick={() => handleNavigation('/dashboard')}>
+          <button className="register-button" onClick={() => handleNavigation('/register')}>
             Register
           </button>
         </RegisterContainer>
@@ -181,7 +191,7 @@ function Login() {
           onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
           onKeyPress={handleKeyPress}
         />
-         <button className="forget-button" onClick={handleNavigation('/dashboard')}>
+         <button className="forget-button" >
           Forgot your password?
         </button>
         <button className="login-button" onClick={handleLogin}>
