@@ -1,4 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import bgImg from '../assets/bgimg.jpg';
+
+const dashboardContainer = styled.div`
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  justify-content: center;
+  align-items: center;
+  color: white;
+`;
 
 function Dashboard() {
   // Example data for tasks and notifications
