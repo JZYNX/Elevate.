@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import bgImg from '../assets/bgimg.jpg';
 
 const dashboardContainer = styled.div`
   display: flex;
