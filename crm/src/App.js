@@ -6,6 +6,7 @@ import Message from "./pages/Message"
 import Register from "./pages/Register"
 import Calendar from "./pages/Calendar"
 import Connections from "./pages/Connections"
+import Profile from "./pages/Profile"
 
 export default function App() {
   return <BrowserRouter>
@@ -16,6 +17,7 @@ export default function App() {
       <Route path = "/register" element = {<Register />} />
       <Route path = "/calendar" element = {<Calendar />} />
       <Route path = "/register" element = {<Connections />} />
+      <Route path = "/profile" element = {<Profile />} />
     </Routes>
   </BrowserRouter>
 }
