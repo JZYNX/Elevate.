@@ -36,7 +36,8 @@ const TextHover = ({ children }) => {
         }}
         style={{
             color: currColor, 
-            fontWeight: 'bold'
+            fontWeight: 'bold',
+            cursor: 'default'
         }}>
             {children}
       </motion.span>

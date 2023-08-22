@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import Sidebar from './Sidebar';
+import Sidebar from '../components/Sidebar';
 import bgImg from '../assets/bgimg.jpg';
 
 const BackgroundImage = styled.img`
