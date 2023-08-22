@@ -179,7 +179,7 @@ function Login() {
   const handleLogin = () => {
     const { username, password } = credentials;
     if (username === 'user' && password === 'password') {
-      navigate('/dashboard');
+      navigate('/profile');
     } else {
       alert('Login failed. Please check your credentials.');
     }

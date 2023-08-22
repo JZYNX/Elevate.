@@ -2,7 +2,7 @@ import {React, useState}from 'react';
 import styled from 'styled-components';
 import Sidebar from '../components/Sidebar';
 import bgImg from '../assets/bgimg.jpg';
-import FullCalendar, { formatDate } from "@fullcalendar/react";
+import FullCalendar from "@fullcalendar/react";
 import interactionPlugin from "@fullcalendar/interaction";
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -61,6 +61,9 @@ function Calendar() {
             }}
             events={currentEvents} 
             dateClick={handleDateClick} 
+            selectable={true}
+            editable={true}
+            selectMirror={true}
         />
       </FullCalendarContainer>
     </CalendarContainer>
