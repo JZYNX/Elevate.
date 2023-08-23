@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import TextHover from '../utils/TextHover';
 import styled from 'styled-components';
-import bgImg from '../assets/bgimg.jpg';
+import bgImg from '../assets/nikuubg.jpg';
 import googleIcon from '../assets/google.png';
 import fbIcon from '../assets/facebook.png';
 import twitterIcon from '../assets/twitter.png';
