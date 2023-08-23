@@ -22,12 +22,15 @@ const CalendarContainer = styled.div`
     display: flex;
     height: 100vh;
     width: 100vw;
+    background-color: rgb(0,0,0,0.8);
 `;
 
 const FullCalendarContainer = styled.div`
     position: relative;
     left: 5rem;
     width: 70%;
+    color: rgb(255,255,255,1);
+    padding-top: 30px;
 `;
 
 function Calendar() {
