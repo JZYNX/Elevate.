@@ -22,7 +22,7 @@ const CalendarContainer = styled.div`
     display: flex;
     height: 100vh;
     width: 100vw;
-    background-color: rgb(255, 255, 255, 0.2);
+    // background-color: rgb(255, 255, 255, 0.2);
 `;
 
 const FullCalendarContainer = styled.div`
@@ -50,7 +50,7 @@ function Calendar() {
 
   return (
     <CalendarContainer>
-      {/* <BackgroundImage src={bgImg} alt="bgImg" /> */}
+      <BackgroundImage src={bgImg} alt="bgImg" />
       <Sidebar />
       <FullCalendarContainer>
         <FullCalendar

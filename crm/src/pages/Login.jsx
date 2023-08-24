@@ -32,7 +32,7 @@ const BackgroundImage = styled.img`
 const WelcomeMessage = styled.div`
   flex: 1.4;
   height: 90vh;
-  background-color: rgba(112, 38, 112, 0.6);
+  background-color: rgba(112, 38, 112, 0.5);
   display: flex;
   flex-direction: column;
   justify-content: center;
