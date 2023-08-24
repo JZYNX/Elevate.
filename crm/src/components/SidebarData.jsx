@@ -4,37 +4,31 @@ import PeopleIcon from '@mui/icons-material/People';
 import EventIcon from '@mui/icons-material/Event';
 import MessageIcon from '@mui/icons-material/Message';
 import NotesIcon from '@mui/icons-material/Notes';
-import PersonIcon from '@mui/icons-material/Person';
 
 export const SidebarData = [
     {
-        title: "DASHBOARD",
+        title: "Dashboard",
         icon: <DashboardIcon />,
         link: "/"
     },
     {
-        title: "CALENDAR",
+        title: "Calendar",
         icon: <EventIcon />,
         link: "/calendar"
     },
     {
-        title: "CONNECTIONS",
+        title: "Connections",
         icon: <PeopleIcon />,
         link: "/connections"
     },
     {
-        title: "MESSAGES",
+        title: "Messages",
         icon: <MessageIcon />,
         link: "/message"
     },
     {
-        title: "NOTES",
+        title: "Notes",
         icon: <NotesIcon />,
         link: "/notes"
-    },
-    {
-        title: "PROFILE",
-        icon: <PersonIcon />,
-        link: "/profile"
     }
 ]

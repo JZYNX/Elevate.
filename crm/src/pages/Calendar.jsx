@@ -22,15 +22,15 @@ const CalendarContainer = styled.div`
     display: flex;
     height: 100vh;
     width: 100vw;
-    background-color: rgb(0,0,0,0.6);
+    background-color: rgb(255, 255, 255, 0.2);
 `;
 
 const FullCalendarContainer = styled.div`
     position: relative;
     left: 5rem;
     width: 70%;
-    color: rgb(255,255,255,1);
-    padding-top: 30px;
+    color: black;
+    padding-top: 40px;
 `;
 
 function Calendar() {
@@ -50,7 +50,7 @@ function Calendar() {
 
   return (
     <CalendarContainer>
-      <BackgroundImage src={bgImg} alt="bgImg" />
+      {/* <BackgroundImage src={bgImg} alt="bgImg" /> */}
       <Sidebar />
       <FullCalendarContainer>
         <FullCalendar
@@ -67,6 +67,7 @@ function Calendar() {
             selectable={true}
             editable={true}
             selectMirror={true}
+            eventBorderColor='4px solid black'
         />
       </FullCalendarContainer>
     </CalendarContainer>
