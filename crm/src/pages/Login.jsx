@@ -31,7 +31,7 @@ const BackgroundImage = styled.img`
 const WelcomeMessage = styled.div`
   flex: 1.4;
   height: 90vh;
-  background-color: rgba(20, 25, 50, 0.8);
+  background-color: rgba(145, 70, 255, 0.8);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -67,7 +67,7 @@ const LoginForm = styled.div`
     font-size: 26px;
     margin-bottom: 30px;
     font-weight: Normal;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.02em;
   }
 
   // INPUT BOX
@@ -86,7 +86,7 @@ const LoginForm = styled.div`
     width: 68%;
     padding: 10px;
     margin: 10px 0;
-    background-color: #0a1172;
+    background-color: rgba(145, 70, 255, 1);
     color: white;
     border: none;
     border-radius: 4px;
