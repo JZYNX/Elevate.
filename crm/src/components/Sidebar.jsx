@@ -4,10 +4,10 @@ import {SidebarData} from './SidebarData';
 
 const SidebarContainer = styled.div`
     height: 100%;
-    width: 20%;
-    background-color: #0a1172;
+    width: 17%;
+    background-color: rgba(112, 38, 112, 0.5);
     border-right: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 1);
+    box-shadow: 0px 0px 19px rgba(0, 0, 0, 0.5);
 `;
 
 const SidebarTitle = styled.div`
@@ -17,7 +17,6 @@ const SidebarTitle = styled.div`
     justify-content: center;
     align-items: center;
     padding-top: 5vh;
-
     h2.sidebar-title {
         font-size: 36px;
         font-weight: Normal;
@@ -28,14 +27,14 @@ const SidebarTitle = styled.div`
 
 const SidebarList = styled.div`
     height: auto;
-    padding-top: 30px;
+    padding-top: 15px;
     width: 100%;
 `;
 
 const ListrowItem = styled.div`
     width: 100%;
-    height: 12vh;
-    background-color: #0a1172;
+    height: 11vh;
+    rgba(112, 38, 112, 0.8);
     list-style-type: none;
     margin: 0;
     display: flex;
@@ -51,13 +50,13 @@ const ListrowItem = styled.div`
 `;
 
 const IconContainer = styled.div`
-    flex: 30%;
+    flex: 35%;
     display: grid;
     place-items: center;
 `;
 
 const TitleContainer = styled.div`
-    flex: 70%;
+    flex: 65%;
     h3.sidebar-text {
         font-size: 16px;
         letter-spacing: 0.06em;

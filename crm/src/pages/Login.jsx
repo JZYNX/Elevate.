@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import TextHover from '../utils/TextHover';
 import styled from 'styled-components';
 import bgImg from '../assets/nikuubg.jpg';
+import bgImg2 from '../assets/computer.jpg';
 import googleIcon from '../assets/google.png';
 import fbIcon from '../assets/facebook.png';
 import twitterIcon from '../assets/twitter.png';
@@ -31,7 +32,7 @@ const BackgroundImage = styled.img`
 const WelcomeMessage = styled.div`
   flex: 1.4;
   height: 90vh;
-  background-color: rgba(145, 70, 255, 0.8);
+  background-color: rgba(112, 38, 112, 0.6);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -86,7 +87,7 @@ const LoginForm = styled.div`
     width: 68%;
     padding: 10px;
     margin: 10px 0;
-    background-color: rgba(145, 70, 255, 1);
+    background-color: rgba(112, 38, 112, 1);
     color: white;
     border: none;
     border-radius: 4px;

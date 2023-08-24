@@ -1,7 +1,7 @@
 import {React, useState}from 'react';
 import styled from 'styled-components';
 import Sidebar from '../components/Sidebar';
-import bgImg from '../assets/bgimg.jpg';
+import bgImg from '../assets/nikuubg.jpg';
 import FullCalendar from "@fullcalendar/react";
 import interactionPlugin from "@fullcalendar/interaction";
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -22,7 +22,7 @@ const CalendarContainer = styled.div`
     display: flex;
     height: 100vh;
     width: 100vw;
-    background-color: rgb(0,0,0,0.8);
+    background-color: rgb(0,0,0,0.6);
 `;
 
 const FullCalendarContainer = styled.div`
