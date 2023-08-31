@@ -1,14 +1,18 @@
 import React from 'react';
 import styled from 'styled-components';
 import {SidebarData} from './SidebarData';
+import bgImg from '../assets/nikuubg.jpg';
 
 const SidebarContainer = styled.div`
     height: 100%;
     width: 15%;
     // background-color: rgba(112, 38, 112, 0.5);
-    background: linear-gradient(to bottom, #87CEEB, #D34DD2);
-    border-right: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0px 0px 19px rgba(0, 0, 0, 0.5);
+    // background: linear-gradient(to bottom, #87CEEB, #D34DD2);
+    background-image: url(${bgImg});
+    background-size: cover;
+    background-position: 350px 0px;
+    // border-right: 1px solid rgba(255, 255, 255, 0.1);
+    // box-shadow: 0px 0px 19px rgba(0, 0, 0, 0.5);
 `;
 
 const SidebarTitle = styled.div`

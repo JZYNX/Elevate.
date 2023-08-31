@@ -1,28 +1,19 @@
 import {React, useState}from 'react';
 import styled from 'styled-components';
 import Sidebar from '../components/Sidebar';
-import bgImg from '../assets/nikuubg.jpg';
+import bgImg from '../assets/bgimg.jpg';
 import FullCalendar from "@fullcalendar/react";
 import interactionPlugin from "@fullcalendar/interaction";
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
-
-const BackgroundImage = styled.img`
-  /* Add styles for the background image */
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  object-fit: cover; 
-  object-position: right;
-  z-index: -1; /* Put the image behind other content */
-`;
+import "../styles/calendar.css";
 
 const CalendarContainer = styled.div`
     display: flex;
     height: 100vh;
     width: 100vw;
-    // background-color: rgb(255, 255, 255, 0.2);
+    background-color:rgba(255, 255, 255, 0.3);
 `;
 
 const FullCalendarContainer = styled.div`
@@ -35,7 +26,6 @@ const FullCalendarContainer = styled.div`
 
 function Calendar() {
   const [currentEvents, setCurrentEvents] = useState([]);
-
   const handleDateClick = (info) => {
     const title = prompt('Please enter a title for the event:');
     if (title) {
@@ -50,8 +40,8 @@ function Calendar() {
 
   return (
     <CalendarContainer>
-      <BackgroundImage src={bgImg} alt="bgImg" />
       <Sidebar />
+      {/* <BackgroundImage src={bgImg} alt="bgImg" /> */}
       <FullCalendarContainer>
         <FullCalendar
             height="90vh"
@@ -67,7 +57,6 @@ function Calendar() {
             selectable={true}
             editable={true}
             selectMirror={true}
-            eventBorderColor='4px solid black'
         />
       </FullCalendarContainer>
     </CalendarContainer>

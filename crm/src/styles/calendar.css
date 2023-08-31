@@ -1,0 +1,35 @@
+.fc .fc-button-primary:not(:disabled).fc-button-active, .fc .fc-button-primary:not(:disabled):active {
+    background-color: #2835A2;
+    border-color: var(--fc-button-active-border-color);
+    color: var(--fc-button-text-color);
+}
+.fc .fc-button-primary {
+    background-color: #ffffff;
+    border-color: var(--fc-button-border-color);
+    color: #2835A2;
+}
+.fc .fc-button-primary:hover {
+    background-color: rgb(40,53,162, 0.4);
+    border-color: var(--fc-button-border-color);
+    color: #ffffff;
+}
+.fc .fc-button-primary:disabled {
+    background-color: #2835A2;
+    border-color: var(--fc-button-border-color);
+    color: #ffffff;
+    opacity: 1;
+}
+
+.fc .fc-prev-button {
+    background-color: #ffffff;
+    border-color: var(--fc-button-border-color);
+    color: #000000;
+    opacity: 1;
+}
+
+.fc .fc-next-button {
+    background-color: #ffffff;
+    border-color: var(--fc-button-border-color);
+    color: #000000;
+    opacity: 1;
+}

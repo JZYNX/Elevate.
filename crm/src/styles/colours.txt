@@ -1,0 +1,2 @@
+gradient for sidebar:
+#87CEEB (light blue) --> #D34DD2 (purple)
