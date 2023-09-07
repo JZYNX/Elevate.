@@ -3,10 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import TextHover from '../utils/TextHover';
 import styled from 'styled-components';
 import bgImg from '../assets/nikuubg.jpg';
-import bgImg2 from '../assets/computer.jpg';
 import googleIcon from '../assets/google.png';
 import fbIcon from '../assets/facebook.png';
 import twitterIcon from '../assets/twitter.png';
+import avatars from "../assets/avatars-removebg-preview.png";
 
 const LoginContainer = styled.div`
   display: flex;
@@ -20,8 +20,6 @@ const LoginContainer = styled.div`
 const BackgroundImage = styled.img`
   /* Add styles for the background image */
   position: absolute;
-  top: 0;
-  left: 0%;
   width: 100%;
   height: 100%;
   object-fit: cover; 
@@ -30,18 +28,10 @@ const BackgroundImage = styled.img`
 `;
 
 const WelcomeMessage = styled.div`
-  flex: 1.4;
-  height: 90vh;
-  background-color: rgba(112, 38, 112, 0.6);
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin-left: 15vh;
-  padding-left: 15vh;
-  padding-right: 15vh;
-  border-top-left-radius: 15px;
-  border-bottom-left-radius: 15px;
+  flex: 1.4;
+  flex-direction: row;
+  padding-left: 5rem;
 
   div.app-title {
     font-size: 48px;
@@ -49,6 +39,11 @@ const WelcomeMessage = styled.div`
     letter-spacing: 0.05em;
   }
 `;
+
+const Avatars = styled.img`
+  width: 100%;
+  height: 100%;
+`
 
 const LoginForm = styled.div`
   flex: 1;
@@ -61,8 +56,7 @@ const LoginForm = styled.div`
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
   color: #333;
   margin-right: 15vh;
-  border-top-right-radius: 25px;
-  border-bottom-right-radius: 25px;
+  border-radius: 25px;
 
   h2.login-header {
     font-size: 26px;
@@ -200,8 +194,8 @@ function Login() {
     <LoginContainer>
       <BackgroundImage src={bgImg} alt="bgImg" />
       <WelcomeMessage>
+        <Avatars src={avatars} alt=" " />
         <div className="app-title">
-          Welcome to 
           {titleMessage.split('').map((letter, index) => {
             return (
               <TextHover key={index}>
