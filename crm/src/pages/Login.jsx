@@ -171,12 +171,35 @@ function Login() {
   const navigate = useNavigate();
   const titleMessage = " ELEVATE.";
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     const { username, password } = credentials;
-    if (username === 'user' && password === 'password') {
+    if (await userExists(username, password)) {
       navigate('/profile');
     } else {
       alert('Login failed. Please check your credentials.');
+    }
+  };
+
+  const userExists = async (username, password) => {
+    try{
+      const response = await fetch('/users');
+      
+      if (!response.ok) {
+        throw new Error("failed to fetch users");
+      }
+
+      const users = await response.json();
+      const matchingUser = users.find((user) => user.username === username && user.password === password);
+
+      if (matchingUser) {
+        console.log("MATCHED");
+        return true;
+      }
+      return false;
+
+    } catch (err) {
+      console.error("Error checking if user exists", err);
+      return false;
     }
   };
 
