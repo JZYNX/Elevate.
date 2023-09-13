@@ -1,0 +1,65 @@
+const { default: mongoose } = require('mongoose')
+const User = require('../models/userModel')
+
+// get all
+const getAllUsers = async (req, res) => {
+    const users = await User.find({})
+
+    return res.status(200).json(users)
+}
+
+// get one
+const getOneUser = async (req, res) => {
+    const {id} = req.params
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).json({error: "Invalid id, needs to be mongo ID"})
+    }
+
+    const user = await User.findById(id)
+
+    if (!user) {
+        return res.status(404).json({error: "No such user"})
+    }
+
+    return res.status(200).json(user)
+}
+
+// POST new user
+const createUser = async (req, res) => {
+    const {username, password, email} = req.body
+
+    try {
+        const user = await User.create({username, password, email})
+        res.status(200).json(user)
+    } catch (err) {
+        res.status(400).json({error: err.message})
+    }
+}
+
+// UPDATE a user
+const updateUser = async (req, res) => {
+    const {id} = req.params
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).json({error: "Invalid id, needs to be mongo ID"})
+    }
+
+    const user = await User.findOneAndUpdate({_id: id}, {
+        ...req.body
+    })
+
+    if (!user) {
+        return res.status(404).json({error: "No such user"})
+    }
+
+    return res.status(200).json(user)
+}
+
+
+module.exports = {
+    createUser,
+    getAllUsers,
+    getOneUser,
+    updateUser
+}

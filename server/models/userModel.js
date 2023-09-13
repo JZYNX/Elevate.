@@ -6,29 +6,30 @@ const addressSchema = new mongoose.Schema({
 })
 
 const userSchema = new mongoose.Schema({
-    username: {type: String, required: true},
+    username: {
+        type: String, 
+        required: true
+    },
     password: {
         type: String, 
         required: true,
         minLength: 10,
         maxLength: 30,
     },
-    dateOfBirth: {type: Date, max: Date()},
-    email: String,
-    createdAt: {
+    dateOfBirth: {
         type: Date, 
-        default: () => Date.now(),
+        max: Date()
     },
-    updatedAt: {
-        type: Date, 
-        default: () => Date.now(),
+    email: {
+        type: String, 
+        required: true
     },
     contacts: {
         type: mongoose.SchemaTypes.ObjectId,
         ref: "User",
     },
     address: addressSchema,
-})
+}, {timestamps: true})
 
 userSchema.methods.sayHi = function(username) {
     console.log(`Hi, my username is ${this.username}`)
