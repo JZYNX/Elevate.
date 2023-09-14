@@ -14,7 +14,6 @@ const LoginContainer = styled.div`
   width: 100vw;
   justify-content: center;
   align-items: center;
-  color: white;
   overflow: hidden;
 `;
 
@@ -36,7 +35,7 @@ const WelcomeMessage = styled.div`
 
   div.app-title {
     font-size: 70px;  
-    font-weight: Bold;
+    font-weight: bold;
     font-family: 'Poppins', sans-serif;
     letter-spacing: 0.05em;
     position: absolute;

@@ -1,10 +1,11 @@
 import {motion, useAnimationControls} from 'framer-motion'
 import { useState } from 'react';
+import { primaryColor, secondaryColor } from '../utils/Color';
 
 const TextHover = ({ children }) => {
     const controls = useAnimationControls();
     const [isPlaying, setIsPlaying] = useState(false);
-    const [currColor, setCurrColor] = useState('white');
+    const [currColor, setCurrColor] = useState(primaryColor);
 
     const bounceEffect = () => {
         controls.start({
@@ -23,13 +24,13 @@ const TextHover = ({ children }) => {
     return (
       <motion.span animate = {controls} 
         onMouseOver={() => {
-            setCurrColor('#F9C1E2');
+            setCurrColor(secondaryColor);
             if (!isPlaying){
                 bounceEffect()
             }
         }} 
         onMouseOut={() => {
-            setCurrColor('white');
+            setCurrColor(primaryColor);
         }}
         onAnimationComplete={() => {
             setIsPlaying(false)
