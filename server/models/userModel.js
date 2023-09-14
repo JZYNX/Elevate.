@@ -1,5 +1,13 @@
 const mongoose = require('mongoose')
 
+const validateEmail = (email) => {
+    return String(email)
+      .toLowerCase()
+      .match(
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      );
+  };
+
 const addressSchema = new mongoose.Schema({
     street: String,
     city: String,
@@ -22,7 +30,11 @@ const userSchema = new mongoose.Schema({
     },
     email: {
         type: String, 
-        required: true
+        required: true,
+        validate: {
+            validator: validateEmail, // Use the validateEmail function for validation
+            message: 'Invalid email address',
+        },
     },
     contacts: {
         type: mongoose.SchemaTypes.ObjectId,
