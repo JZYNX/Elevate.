@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import TextHover from '../utils/TextHover';
 import styled from 'styled-components';
-import bgImg from '../assets/bgimg.jpg';
+import bgImg from '../assets/nikuubg.jpg';
 import googleIcon from '../assets/google.png';
 import fbIcon from '../assets/facebook.png';
 import twitterIcon from '../assets/twitter.png';
+import avatars from "../assets/avatars-removebg-preview.png";
 
 const RegisterContainer = styled.div`
   display: flex;
@@ -14,13 +15,12 @@ const RegisterContainer = styled.div`
   justify-content: center;
   align-items: center;
   color: white;
+  overflow: hidden;
 `;
 
 const BackgroundImage = styled.img`
   /* Add styles for the background image */
   position: absolute;
-  top: 0;
-  left: 0%;
   width: 100%;
   height: 100%;
   object-fit: cover; 
@@ -29,29 +29,34 @@ const BackgroundImage = styled.img`
 `;
 
 const WelcomeMessage = styled.div`
-  flex: 1.4;
-  height: 90vh;
-  background-color: rgba(20, 25, 50, 0.8);
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin-left: 15vh;
-  padding-left: 15vh;
-  padding-right: 15vh;
-  border-top-left-radius: 15px;
-  border-bottom-left-radius: 15px;
+  flex: 1.4;
+  flex-direction: row;
+  padding-left: 5rem;
 
   div.app-title {
-    font-size: 48px;
-    font-weight: Normal;
+    font-size: 70px;  
+    font-weight: Bold;
+    font-family: 'Poppins', sans-serif;
     letter-spacing: 0.05em;
+    position: absolute;
+    top: 4rem;
+    left: 13rem;
   }
 `;
+
+const Avatars = styled.img`
+  width: 80%;
+  height: 60%;
+  position: relative;
+  right: 0rem;
+  top: 9rem;
+`
 
 const RegisterForm = styled.div`
   flex: 1;
   height: 90vh;
+  padding: -1rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -60,8 +65,7 @@ const RegisterForm = styled.div`
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
   color: #333;
   margin-right: 15vh;
-  border-top-right-radius: 25px;
-  border-bottom-right-radius: 25px;
+  border-radius: 25px;
 
   h2.login-header {
     font-size: 26px;
@@ -86,7 +90,7 @@ const RegisterForm = styled.div`
     width: 68%;
     padding: 10px;
     margin: 10px 0;
-    background-color: #0a1172;
+    background-color: rgba(112, 38, 112, 1);
     color: white;
     border: none;
     border-radius: 4px;
@@ -172,18 +176,73 @@ const OtherOptions = styled.div`
 
 
 function Register() {
-  const [credentials, setCredentials] = useState({ username: '', password: '' });
+  const [credentials, setCredentials] = useState({ username: '', password: '', email: '' , confirm: ''});
   const navigate = useNavigate();
-  const titleMessage = " ELEVATE.";
+  const titleMessage = " elevate.";
 
-  const handleRegister = () => {
-    const { username, password } = credentials;
-    if (username === 'user' && password === 'password') {
-      navigate('/dashboard');
-    } else {
-      alert('Login failed. Please check your credentials.');
+  const handleRegister = async () => {
+    const { username, password, email, confirm } = credentials;
+    if (!await userExists(username,email)) {
+      postUser(username, password, email, confirm);
     }
   };
+
+  const userExists = async (username,email) => {
+    try{
+      const response = await fetch('/users');
+      
+      if (!response.ok) {
+        throw new Error("failed to fetch users");
+      }
+
+      const users = await response.json();
+      const matchingUser = users.find((user) => user.username === username );
+      const matchingEmail = users.find((user) => user.email === email);
+
+      if (matchingUser) {
+        alert("Username exists, please use another username.")
+        return true;
+      } else if (matchingEmail) {
+        alert("Email exists, please use another Email.")
+        return true;
+      }
+      return false;
+
+    } catch (err) {
+      console.error("Error checking if user exists", err);
+      return false;
+    }
+  };
+
+  const postUser = async (username, password,email, confirm) => {
+    if (password !== confirm) {
+      alert("Passwords do not match!");
+      return;
+    }
+
+    try {
+      const response = await fetch('/users', {
+        method: 'POST', 
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password, email }),
+      });
+
+      if (response.ok) {
+        console.log("User created successfully");
+        navigate('/profile');
+      } else {
+        const errorData = await response.json(); 
+        alert(`Failed to create user: ${errorData.error}`);
+      }
+
+    } catch (error) {
+      console.error("Error creating user", error);
+      alert("Error creating user. Please try again.");
+    }
+
+  }
 
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
@@ -199,8 +258,8 @@ function Register() {
     <RegisterContainer>
       <BackgroundImage src={bgImg} alt="bgImg" />
       <WelcomeMessage>
+      <Avatars src={avatars} alt=" " />
         <div className="app-title">
-          Welcome to 
           {titleMessage.split('').map((letter, index) => {
             return (
               <TextHover key={index}>
