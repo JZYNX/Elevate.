@@ -172,18 +172,73 @@ const OtherOptions = styled.div`
 
 
 function Register() {
-  const [credentials, setCredentials] = useState({ username: '', password: '' });
+  const [credentials, setCredentials] = useState({ username: '', password: '', email: '' , confirm: ''});
   const navigate = useNavigate();
   const titleMessage = " ELEVATE.";
 
-  const handleRegister = () => {
-    const { username, password } = credentials;
-    if (username === 'user' && password === 'password') {
-      navigate('/dashboard');
-    } else {
-      alert('Login failed. Please check your credentials.');
+  const handleRegister = async () => {
+    const { username, password, email, confirm } = credentials;
+    if (!await userExists(username,email)) {
+      postUser(username, password, email, confirm);
     }
   };
+
+  const userExists = async (username,email) => {
+    try{
+      const response = await fetch('/users');
+      
+      if (!response.ok) {
+        throw new Error("failed to fetch users");
+      }
+
+      const users = await response.json();
+      const matchingUser = users.find((user) => user.username === username );
+      const matchingEmail = users.find((user) => user.email === email);
+
+      if (matchingUser) {
+        alert("Username exists, please use another username.")
+        return true;
+      } else if (matchingEmail) {
+        alert("Email exists, please use another Email.")
+        return true;
+      }
+      return false;
+
+    } catch (err) {
+      console.error("Error checking if user exists", err);
+      return false;
+    }
+  };
+
+  const postUser = async (username, password,email, confirm) => {
+    if (password !== confirm) {
+      alert("Passwords do not match!");
+      return;
+    }
+
+    try {
+      const response = await fetch('/users', {
+        method: 'POST', 
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password, email }),
+      });
+
+      if (response.ok) {
+        console.log("User created successfully");
+        navigate('/profile');
+      } else {
+        const errorData = await response.json(); 
+        alert(`Failed to create user: ${errorData.error}`);
+      }
+
+    } catch (error) {
+      console.error("Error creating user", error);
+      alert("Error creating user. Please try again.");
+    }
+
+  }
 
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
