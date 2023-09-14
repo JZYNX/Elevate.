@@ -16,6 +16,12 @@ const CalendarContainer = styled.div`
     background-color:rgba(255, 255, 255, 0.3);
 `;
 
+const SidebarColumn = styled.div`
+  flex: 0 0 15%; /* Fixed width for the sidebar */
+  min-width: 250px; /* Minimum width to prevent squishing */
+  background-color: #f0f0f0; /* Adjust as needed */
+`;
+
 const FullCalendarContainer = styled.div`
     position: relative;
     left: 5rem;
@@ -40,7 +46,9 @@ function Calendar() {
 
   return (
     <CalendarContainer>
-      <Sidebar />
+      <SidebarColumn>
+          <Sidebar />
+      </SidebarColumn>
       {/* <BackgroundImage src={bgImg} alt="bgImg" /> */}
       <FullCalendarContainer>
         <FullCalendar

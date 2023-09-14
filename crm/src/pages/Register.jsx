@@ -15,7 +15,6 @@ const RegisterContainer = styled.div`
   width: 100vw;
   justify-content: center;
   align-items: center;
-  color: white;
   overflow: hidden;
 `;
 
@@ -50,18 +49,18 @@ const BackgroundImage = styled.img`
 
 const WelcomeMessage = styled.div`
   display: flex;
-  flex: 1.4;
   flex-direction: row;
   padding-left: 5rem;
+  width: 45%;
 
   div.app-title {
-    font-size: 70px;  
-    font-weight: Bold;
+    font-size: 80px;  
+    font-weight: bold;
     font-family: 'Poppins', sans-serif;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.02em;
     position: absolute;
-    top: 4rem;
-    left: 6rem;
+    top: 5rem;
+    left: 7rem;
   }
 `;
 
@@ -74,9 +73,8 @@ const Avatars = styled.img`
 `
 
 const RegisterForm = styled.div`
-  flex: 1;
+  width: 70vh;
   height: 90vh;
-  padding: -1rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -84,8 +82,8 @@ const RegisterForm = styled.div`
   background-color: rgba(255, 255, 255, 1);
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
   color: #333;
-  margin-right: 15vh;
-  border-radius: 25px;
+  border-radius: 40px;
+  margin-right: 5rem;
 
   h2.login-header {
     font-size: 26px;
@@ -101,20 +99,20 @@ const RegisterForm = styled.div`
     padding: 10px;
     margin: 10px 0;
     border: 2px solid #ddd;
-    border-radius: 4px;
-    font-size: 16px;
+    border-radius: 20px;
+    font-size: 14px;
     outline: none;
   }
 
   // LOGIN AND FORGET LOGIN BUTTONS
   button.login-button {
-    width: 68%;
+    width: 30%;
     padding: 10px;
-    margin: 10px 0;
+    margin-top: 20px;
     background-color: ${primaryColor};
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 20px;
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s;

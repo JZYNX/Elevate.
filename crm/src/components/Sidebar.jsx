@@ -5,7 +5,7 @@ import bgImg from '../assets/nikuubg.jpg';
 
 const SidebarContainer = styled.div`
     height: 100%;
-    width: 15%;
+    width: 100%;
     // background-color: rgba(112, 38, 112, 0.5);
     // background: linear-gradient(to bottom, #87CEEB, #D34DD2);
     background-image: url(${bgImg});

@@ -18,16 +18,6 @@ const LoginContainer = styled.div`
   overflow: hidden;
 `;
 
-// const BackgroundImage = styled.img`
-//   /* Add styles for the background image */
-//   position: absolute;
-//   width: 100%;
-//   height: 100%;
-//   object-fit: cover; 
-//   object-position: right;
-//   z-index: -1; /* Put the image behind other content */
-// `;
-
 const changeColors = keyframes`
   0%, 100% {
     filter: hue-rotate(0deg); /* Start and end with pink (320 degrees) */
@@ -47,21 +37,20 @@ const BackgroundImage = styled.img`
   animation: ${changeColors} 5s infinite linear; /* Apply the animation */
 `;
 
-
 const WelcomeMessage = styled.div`
   display: flex;
-  flex: 1.4;
   flex-direction: row;
   padding-left: 5rem;
+  width: 45%;
 
   div.app-title {
-    font-size: 70px;  
+    font-size: 80px;  
     font-weight: bold;
     font-family: 'Poppins', sans-serif;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.02em;
     position: absolute;
-    top: 4rem;
-    left: 6rem;
+    top: 5rem;
+    left: 7rem;
   }
 `;
 
@@ -74,7 +63,7 @@ const Avatars = styled.img`
 `
 
 const LoginForm = styled.div`
-  flex: 1;
+  width: 70vh;
   height: 90vh;
   display: flex;
   flex-direction: column;
@@ -83,13 +72,13 @@ const LoginForm = styled.div`
   background-color: rgba(255, 255, 255, 1);
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
   color: #333;
-  margin-right: 15vh;
-  border-radius: 25px;
+  border-radius: 40px;
+  margin-right: 5rem;
 
   h2.login-header {
     font-size: 26px;
     font-family: 'Poppins', sans-serif;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
     font-weight: Normal;
     letter-spacing: 0.02em;
   }
@@ -100,20 +89,20 @@ const LoginForm = styled.div`
     padding: 10px;
     margin: 10px 0;
     border: 2px solid #ddd;
-    border-radius: 4px;
-    font-size: 16px;
+    border-radius: 20px;
+    font-size: 14px;
     outline: none;
   }
 
   // LOGIN AND FORGET LOGIN BUTTONS
   button.login-button {
-    width: 68%;
+    width: 30%;
     padding: 10px;
-    margin: 10px 0;
+    margin-top: 20px;
     background-color: ${primaryColor};
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 20px;
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s;
@@ -167,7 +156,7 @@ const RegisterContainer = styled.div`
     border: none;
     font-size: 16px;
     transition: color 0.3s;
-    padding-bottom: 10px;
+    padding-bottom: 20px;
 
     &:hover {
       color: #151e3d;
@@ -258,7 +247,7 @@ function Login() {
         </div>
       </WelcomeMessage>
       <LoginForm>
-        <h2 className="login-header"> <strong>User Login</strong></h2>
+        <h2 className="login-header"> <strong>Login</strong></h2>
         <RegisterContainer>
           Don't have an account yet? 
           <button className="register-button" onClick={() => handleNavigation('/register')}>
