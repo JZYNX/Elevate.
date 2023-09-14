@@ -40,8 +40,8 @@ const WelcomeMessage = styled.div`
     font-family: 'Poppins', sans-serif;
     letter-spacing: 0.05em;
     position: absolute;
-    top: 6rem;
-    left: 6rem;
+    top: 4rem;
+    left: 13rem;
   }
 `;
 
@@ -49,14 +49,14 @@ const Avatars = styled.img`
   width: 80%;
   height: 60%;
   position: relative;
-  right: 6rem;
+  right: 0rem;
   top: 9rem;
 `
 
 const RegisterForm = styled.div`
-  flex: 0.7;
+  flex: 1;
   height: 90vh;
-  width: 80px;
+  padding: -1rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -178,7 +178,7 @@ const OtherOptions = styled.div`
 function Register() {
   const [credentials, setCredentials] = useState({ username: '', password: '' });
   const navigate = useNavigate();
-  const titleMessage = " ELEVATE.";
+  const titleMessage = " elevate.";
 
   const handleRegister = () => {
     const { username, password } = credentials;
