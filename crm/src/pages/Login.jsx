@@ -15,6 +15,7 @@ const LoginContainer = styled.div`
   justify-content: center;
   align-items: center;
   color: white;
+  overflow: hidden;
 `;
 
 const BackgroundImage = styled.img`
@@ -34,15 +35,22 @@ const WelcomeMessage = styled.div`
   padding-left: 5rem;
 
   div.app-title {
-    font-size: 48px;
-    font-weight: Normal;
+    font-size: 70px;  
+    font-weight: Bold;
+    font-family: 'Poppins', sans-serif;
     letter-spacing: 0.05em;
+    position: absolute;
+    top: 6rem;
+    left: 6rem;
   }
 `;
 
 const Avatars = styled.img`
-  width: 100%;
-  height: 100%;
+  width: 80%;
+  height: 60%;
+  position: relative;
+  right: 6rem;
+  top: 9rem;
 `
 
 const LoginForm = styled.div`
@@ -169,7 +177,7 @@ const OtherLoginOptions = styled.div`
 function Login() {
   const [credentials, setCredentials] = useState({ username: '', password: '' });
   const navigate = useNavigate();
-  const titleMessage = " ELEVATE.";
+  const titleMessage = " elevate.";
 
   const handleLogin = async () => {
     const { username, password } = credentials;
