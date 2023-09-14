@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import TextHover from '../utils/TextHover';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import bgImg from '../assets/nikuubg.jpg';
 import googleIcon from '../assets/google.png';
 import fbIcon from '../assets/facebook.png';
@@ -18,6 +18,24 @@ const LoginContainer = styled.div`
   overflow: hidden;
 `;
 
+// const BackgroundImage = styled.img`
+//   /* Add styles for the background image */
+//   position: absolute;
+//   width: 100%;
+//   height: 100%;
+//   object-fit: cover; 
+//   object-position: right;
+//   z-index: -1; /* Put the image behind other content */
+// `;
+
+const changeColors = keyframes`
+  0%, 100% {
+    filter: hue-rotate(0deg); /* Start and end with pink (320 degrees) */
+  }
+  50% {
+    filter: hue-rotate(60deg); /* Transition to purple (240 degrees) */
+  }
+`;
 const BackgroundImage = styled.img`
   /* Add styles for the background image */
   position: absolute;
@@ -26,7 +44,9 @@ const BackgroundImage = styled.img`
   object-fit: cover; 
   object-position: right;
   z-index: -1; /* Put the image behind other content */
+  animation: ${changeColors} 5s infinite linear; /* Apply the animation */
 `;
+
 
 const WelcomeMessage = styled.div`
   display: flex;
