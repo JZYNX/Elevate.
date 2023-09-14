@@ -7,6 +7,7 @@ import googleIcon from '../assets/google.png';
 import fbIcon from '../assets/facebook.png';
 import twitterIcon from '../assets/twitter.png';
 import avatars from "../assets/avatars-removebg-preview.png";
+import { primaryColor, secondaryColor }from '../utils/Color';
 
 const LoginContainer = styled.div`
   display: flex;
@@ -39,17 +40,17 @@ const WelcomeMessage = styled.div`
     font-family: 'Poppins', sans-serif;
     letter-spacing: 0.05em;
     position: absolute;
-    top: 6rem;
+    top: 4rem;
     left: 6rem;
   }
 `;
 
 const Avatars = styled.img`
-  width: 80%;
-  height: 60%;
+  width: 100%;
+  height: 80%;
   position: relative;
-  right: 6rem;
-  top: 9rem;
+  right: 2rem;
+  top: 12rem;
 `
 
 const LoginForm = styled.div`
@@ -67,6 +68,7 @@ const LoginForm = styled.div`
 
   h2.login-header {
     font-size: 26px;
+    font-family: 'Poppins', sans-serif;
     margin-bottom: 30px;
     font-weight: Normal;
     letter-spacing: 0.02em;
@@ -88,7 +90,7 @@ const LoginForm = styled.div`
     width: 68%;
     padding: 10px;
     margin: 10px 0;
-    background-color: rgba(112, 38, 112, 1);
+    background-color: ${primaryColor};
     color: white;
     border: none;
     border-radius: 4px;
@@ -97,7 +99,7 @@ const LoginForm = styled.div`
     transition: background-color 0.3s;
 
     &:hover {
-      background-color: #151e3d;
+      background-color: ${secondaryColor};
     }
   }
   button.forget-button {

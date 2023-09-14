@@ -7,6 +7,7 @@ import googleIcon from '../assets/google.png';
 import fbIcon from '../assets/facebook.png';
 import twitterIcon from '../assets/twitter.png';
 import avatars from "../assets/avatars-removebg-preview.png";
+import { primaryColor, secondaryColor }from '../utils/Color';
 
 const RegisterContainer = styled.div`
   display: flex;
@@ -41,16 +42,16 @@ const WelcomeMessage = styled.div`
     letter-spacing: 0.05em;
     position: absolute;
     top: 4rem;
-    left: 13rem;
+    left: 6rem;
   }
 `;
 
 const Avatars = styled.img`
-  width: 80%;
-  height: 60%;
+  width: 100%;
+  height: 80%;
   position: relative;
-  right: 0rem;
-  top: 9rem;
+  right: 2rem;
+  top: 12rem;
 `
 
 const RegisterForm = styled.div`
@@ -69,9 +70,10 @@ const RegisterForm = styled.div`
 
   h2.login-header {
     font-size: 26px;
+    font-family: 'Poppins', sans-serif
     margin-bottom: 30px;
     font-weight: Normal;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.02em;
   }
 
   // INPUT BOX
@@ -90,7 +92,7 @@ const RegisterForm = styled.div`
     width: 68%;
     padding: 10px;
     margin: 10px 0;
-    background-color: rgba(112, 38, 112, 1);
+    background-color: ${primaryColor};
     color: white;
     border: none;
     border-radius: 4px;
@@ -148,7 +150,7 @@ const LoginContainer = styled.div`
     font-size: 16px;
     transition: color 0.3s;
     padding-bottom: 10px;
-
+    padding-top: 10px;
     &:hover {
       color: #151e3d;
     }
@@ -270,7 +272,7 @@ function Register() {
         </div>
       </WelcomeMessage>
       <RegisterForm>
-        <h2 className="login-header"> Welcome to <strong>ELEVATE</strong></h2>
+        <h2 className="login-header">Welcome to<strong> elevate.</strong></h2>
         <LoginContainer>
           Already have an account?
           <button className="register-button" onClick={() => handleNavigation('/')}>
