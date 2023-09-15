@@ -41,7 +41,7 @@ const WelcomeMessage = styled.div`
   display: flex;
   flex-direction: row;
   padding-left: 5rem;
-  width: 40%;
+  width: 50%;
 
   div.app-title {
     font-size: 80px;  
@@ -50,7 +50,7 @@ const WelcomeMessage = styled.div`
     letter-spacing: 0.02em;
     position: absolute;
     top: 5rem;
-    left: 10rem;
+    left: 9rem;
   }
 `;
 
@@ -58,7 +58,7 @@ const Avatars = styled.img`
   width: 100%;
   height: 80%;
   position: relative;
-  right: 2rem;
+  right: 0rem;
   top: 12rem;
 `
 
@@ -73,7 +73,7 @@ const LoginForm = styled.div`
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
   color: #333;
   border-radius: 40px;
-  margin-right: 0rem;
+  margin-right: 3rem;
 
   h2.login-header {
     font-size: 26px;
