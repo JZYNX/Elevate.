@@ -20,16 +20,16 @@
     opacity: 1;
 }
 
-.fc .fc-prev-button {
+.fc .fc-prev-button .fc-next-button {
     background-color: #ffffff;
     border-color: var(--fc-button-border-color);
     color: #000000;
     opacity: 1;
 }
 
-.fc .fc-next-button {
-    background-color: #ffffff;
-    border-color: var(--fc-button-border-color);
-    color: #000000;
-    opacity: 1;
+body {
+    margin: 0;
+    font-family: 'Poppins', 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
 }
