@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import Sidebar from '../components/Sidebar';
 import bgImg from '../assets/nikuubg.jpg';
 import styled, { keyframes } from 'styled-components';
@@ -61,9 +61,10 @@ const ProfileColumns = styled.div`
   display: flex;
   padding-top: 3rem;
   padding-left: 10rem;
+  padding-right: 15rem;
 
   h2.info-header {
-    font-size: 20px;
+    font-size: 18px;
     font-family: 'Poppins', sans-serif;
     margin-bottom: 10px;
     margin-top: 20px;
@@ -73,48 +74,16 @@ const ProfileColumns = styled.div`
   p.info-text {
     font-size: 16px;
     font-family: 'Poppins', sans-serif;
-    margin-bottom: 10px;
-    margin-top: 20px;
     font-weight: normal;
   }
 
   .profile-info {
     flex: 1;
-    margin-right: 20px;
     h2 {
       font-weight: bold;
     }
     p {
       margin: 0;
-    }
-  }
-
-  .profile-pic {
-    flex: 1;
-
-    .button-group {
-      display: flex;
-      flex-direction: column;
-      margin-top: 10px;
-    }
-
-    .profile-button {
-      width: 40%; /* Set a consistent width for all buttons */
-      margin-top: 5px; /* Adjust margin as needed */
-      background-color: ${primaryColor};
-      padding-top: 0.5rem;
-      padding-bottom: 0.5rem;
-      color: white;
-      border: none;
-      cursor: pointer;
-      font-size: 14px;
-      border-radius: 5px;
-      text-align: center;
-      transition: background-color 0.3s ease;
-    }
-      
-    .profile-button:hover {
-    background-color: ${secondaryColor};
     }
   }
 `;
@@ -133,12 +102,58 @@ const ProfilePicImage = styled.img`
   object-fit: cover;
 `;
 
+const ButtonGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+
+  .profile-button {
+      width: 100%;
+    margin-top: 5px;
+    background-color: ${primaryColor};
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 5px;
+    text-align: center;
+    transition: background-color 0.3s ease;
+    font-family: 'Poppins', sans-serif;
+
+    &:hover {
+      background-color: ${secondaryColor};
+    }
+  }
+`;
+
+const ProfileButton = styled.button`
+  width: 100%;
+  margin-top: 5px;
+  background-color: ${primaryColor};
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  border-radius: 5px;
+  text-align: center;
+  transition: background-color 0.3s ease;
+  font-family: 'Poppins', sans-serif;
+
+  &:hover {
+    background-color: ${secondaryColor};
+  }
+`;
+
 function Profile() {
   const [selectedImage, setSelectedImage] = useState(null);
 
   const handleImageUpload = (event) => {
-    const file = event.target.files[0]; // Get the selected file
-    setSelectedImage(URL.createObjectURL(file)); // Create a preview URL for the image
+    const file = event.target.files[0];
+    setSelectedImage(URL.createObjectURL(file));
   };
 
   return (
@@ -177,19 +192,19 @@ function Profile() {
             <ProfilePicContainer>
               <ProfilePicImage src={selectedImage} alt="" />
             </ProfilePicContainer>
-            <div className="button-group">
-                <label className="profile-button">
+            <ButtonGroup>
+              <label className="profile-button">
                 Upload Photo
                 <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageUpload}
-                    style={{ display: 'none' }}
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  style={{ display: 'none' }}
                 />
-                </label>
-                <button className="profile-button">Change Password</button>
-                <button className="profile-button">Edit Profile</button>
-            </div>
+              </label>
+              <ProfileButton>Change Password</ProfileButton>
+              <ProfileButton>Edit Profile</ProfileButton>
+            </ButtonGroup>
           </div>
         </ProfileColumns>
       </ProfileInfoContainer>
