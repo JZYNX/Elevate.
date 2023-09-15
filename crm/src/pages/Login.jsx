@@ -10,7 +10,7 @@ import avatars from "../assets/avatars-removebg-preview.png";
 import { primaryColor, secondaryColor }from '../utils/Color';
 
 const LoginContainer = styled.div`
-  display: flex;
+  display: flex; 
   height: 100vh;
   width: 100vw;
   justify-content: center;
