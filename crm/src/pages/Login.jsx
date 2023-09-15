@@ -6,7 +6,7 @@ import bgImg from '../assets/nikuubg.jpg';
 import googleIcon from '../assets/google.png';
 import fbIcon from '../assets/facebook.png';
 import twitterIcon from '../assets/twitter.png';
-import avatars from "../assets/avatars-removebg-preview.png";
+import avatars from "../assets/Avatar.png";
 import { primaryColor, secondaryColor }from '../utils/Color';
 
 const LoginContainer = styled.div`
