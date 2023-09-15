@@ -41,7 +41,7 @@ const WelcomeMessage = styled.div`
   display: flex;
   flex-direction: row;
   padding-left: 5rem;
-  width: 45%;
+  width: 40%;
 
   div.app-title {
     font-size: 80px;  
@@ -50,7 +50,7 @@ const WelcomeMessage = styled.div`
     letter-spacing: 0.02em;
     position: absolute;
     top: 5rem;
-    left: 7rem;
+    left: 10rem;
   }
 `;
 
@@ -63,8 +63,8 @@ const Avatars = styled.img`
 `
 
 const LoginForm = styled.div`
-  width: 70vh;
-  height: 90vh;
+  width: 60vh;
+  height: 80vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -73,7 +73,7 @@ const LoginForm = styled.div`
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
   color: #333;
   border-radius: 40px;
-  margin-right: 5rem;
+  margin-right: 0rem;
 
   h2.login-header {
     font-size: 26px;
@@ -85,12 +85,12 @@ const LoginForm = styled.div`
 
   // INPUT BOX
   input {
-    width: 65%;
+    width: 70%;
     padding: 10px;
     margin: 10px 0;
     border: 2px solid #ddd;
     border-radius: 20px;
-    font-size: 14px;
+    font-size: 13px;
     outline: none;
   }
 
@@ -103,7 +103,7 @@ const LoginForm = styled.div`
     color: white;
     border: none;
     border-radius: 20px;
-    font-size: 16px;
+    font-size: 14px;
     cursor: pointer;
     transition: background-color 0.3s;
 
@@ -127,19 +127,20 @@ const LoginForm = styled.div`
   // SEPARATOR BETWEEN LOGIN AND ALT LOGINS
   .separator-container {
     display: flex;
-    margin: 20px 0; 
+    margin-top: 20px;
+    margin-bottom: 5px;
     width: 67%;
     padding: 10px;
     justify-content: center;
   }
   .separator-line {
     flex-grow: 1;
-    height: 0.5px;
+    height: 0px;
     background-color: black;
   }
   .separator-text {
     margin: 0 10px;
-    font-size: 14px;
+    font-size: 13px;
     white-space: nowrap;
   }
 
