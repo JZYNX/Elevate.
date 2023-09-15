@@ -153,7 +153,12 @@ function Profile() {
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
-    setSelectedImage(URL.createObjectURL(file));
+    try {
+      setSelectedImage(URL.createObjectURL(file));
+    }
+    catch (error) {
+      return;
+    }
   };
 
   return (
