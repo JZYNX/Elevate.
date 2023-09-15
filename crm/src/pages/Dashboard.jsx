@@ -1,13 +1,27 @@
 import React from 'react';
 import styled from 'styled-components';
+import Sidebar from '../components/Sidebar';
+import bgImg from '../assets/nikuubg.jpg';
 
-const dashboardContainer = styled.div`
+const DashboardContainer = styled.div`
   display: flex;
   height: 100vh;
   width: 100vw;
-  justify-content: center;
-  align-items: center;
-  color: white;
+`;
+
+const SidebarColumn = styled.div`
+  flex: 0 0 15%;
+  min-width: 250px;
+  background-color: #f0f0f0;
+`;
+
+const BackgroundImage = styled.img`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: right;
+  z-index: -1;
 `;
 
 function Dashboard() {
@@ -25,25 +39,31 @@ function Dashboard() {
   ];
 
   return (
-    <div className="dashboard"> 
-      <h2>Dashboard</h2>
-      <div className="task-list"> 
-        <h3>Today's Tasks</h3>
-        <ul>
-          {todayTasks.map(task => (
-            <li key={task.id} className="task">{task.title} - {task.time}</li> 
-          ))}
-        </ul>
+    <DashboardContainer>
+      <SidebarColumn>
+        <Sidebar />
+      </SidebarColumn>
+      <BackgroundImage src={bgImg} alt="bgImg" />
+      <div className="dashboard"> 
+        <h2>Dashboard</h2>
+        <div className="task-list"> 
+          <h3>Today's Tasks</h3>
+          <ul>
+            {todayTasks.map(task => (
+              <li key={task.id} className="task">{task.title} - {task.time}</li> 
+            ))}
+          </ul>
+        </div>
+        <div className="notification-list"> 
+          <h3>Recent Notifications</h3>
+          <ul>
+            {recentNotifications.map(notification => (
+              <li key={notification.id} className="notification">{notification.text} - {notification.time}</li> 
+            ))}
+          </ul>
+        </div>
       </div>
-      <div className="notification-list"> 
-        <h3>Recent Notifications</h3>
-        <ul>
-          {recentNotifications.map(notification => (
-            <li key={notification.id} className="notification">{notification.text} - {notification.time}</li> 
-          ))}
-        </ul>
-      </div>
-    </div>
+    </DashboardContainer>
   );
 }
 
