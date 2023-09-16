@@ -1,6 +1,6 @@
 .fc .fc-button-primary:not(:disabled).fc-button-active, .fc .fc-button-primary:not(:disabled):active {
     background-color: #2835A2;
-    border-color: var(--fc-button-active-border-color);
+    border-color: #e0e0e0;
     color: var(--fc-button-text-color);
 }
 
@@ -11,24 +11,24 @@
 
 .fc .fc-button-primary {
     background-color: #ededed;
-    border-color: var(--fc-button-border-color);
     color: black;
+    border: 1px solid #e0e0e0;
 }
 .fc .fc-button-primary:hover {
     background-color: rgb(40,53,162, 0.5);
-    border-color: var(--fc-button-border-color);
-    color: #ffffff;
+    border-color: #e0e0e0;
+    color: black;
 }
 .fc .fc-button-primary:disabled {
     background-color: #2835A2;
-    border-color: var(--fc-button-border-color);
+    border-color: #e0e0e0;
     color: #ffffff;
     opacity: 1;
 }
 
 .fc .fc-prev-button, .fc .fc-next-button {
     background-color: #ededed;
-    border-color: var(--fc-button-border-color);
+    border-color: #e0e0e0;
     color: #000000;
     border-radius: 0.5rem;
     width: 25%;
@@ -47,20 +47,24 @@
 
 /* Scroll bar styling */
 .fc .fc-scroller-liquid-absolute::-webkit-scrollbar {
-width: 8px; 
+    width: 8px; 
+}
+
+/* Hide scroll bar for day and all-day rows */
+.fc-scroller::-webkit-scrollbar {
+    width: 0px;
 }
 
 /* Thumb */
-.fc .fc-scroller-liquid-absolute::-webkit-scrollbar-thumb {
-background-color: #e0e0e0; /* Scrollbar thumb color */
-border-radius: 4px; /* Rounded corners */
+.fc .fc-scroller-liquid-absolute::-webkit-scrollbar-thumb{
+    background-color: #e0e0e0; /* Scrollbar thumb color */
+    border-radius: 4px; /* Rounded corners */
 }
 
 /* Handle on hover */
 .fc .fc-scroller-liquid-absolute::-webkit-scrollbar-thumb:hover {
-background-color: #555; /* Scrollbar thumb color on hover */
+    background-color: #555; /* Scrollbar thumb color on hover */
 }
-
 
 body {
     margin: 0;
