@@ -8,10 +8,10 @@ import "../styles/modal.css";
 
 Modal.setAppElement('#root');
 
-function ModalPopup({ isOpen, onClose, onSave, mode, event, date }) {
+function ModalPopup({ isOpen, onClose, onSave, mode, event, start, end }) {
     const [eventName, setEventName] = useState('');
-    const [startDatetime, setStartDatetime] = useState(date);
-    const [endDatetime, setEndDatetime] = useState(date);
+    const [startDatetime, setStartDatetime] = useState(start);
+    const [endDatetime, setEndDatetime] = useState(end);
 
     useEffect(() => {
         if (event) {
@@ -24,10 +24,10 @@ function ModalPopup({ isOpen, onClose, onSave, mode, event, date }) {
             }
         } else {
             setEventName('');
-            setStartDatetime(date);
-            setEndDatetime(date);
+            setStartDatetime(start);
+            setEndDatetime(end);
         }
-    }, [event, date]);
+    }, [event, start, end]);
 
     const handleSave = () => {
         const updatedEvent = {

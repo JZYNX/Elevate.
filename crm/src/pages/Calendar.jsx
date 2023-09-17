@@ -7,7 +7,9 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
 import ModalPopup from '../components/ModalPopup';
+import { bgColor, defaultEventColor, textColor } from "../utils/Color";
 import "../styles/calendar.css";
+
 
 const CalendarContainer = styled.div`
     display: flex;
@@ -30,6 +32,8 @@ const FullCalendarContainer = styled.div`
     color: black;
 `;
 
+let eventIdCounter = 3;
+
 function Calendar() {
     const [currEvents, setEvents] = useState([
         {
@@ -45,22 +49,34 @@ function Calendar() {
             end: '2023-09-21T16:00:00',
         },
     ]);
-    let eventIdCounter = 3;
     const [selectedEvent, setSelectedEvent] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [currDate, setCurrDate] = useState(new Date());
+    const [startDate, setStartDate] = useState(new Date());
+    const [endDate, setEndDate] = useState(new Date());
     const [modalMode, setModalMode] = useState('create');
 
     const handleDateClick = (info) => {
         setModalMode('create');
-        setCurrDate(info.date);
+        setStartDate(info.date);
+        const nEndDate = new Date(info.date);
+        nEndDate.setMinutes(nEndDate.getMinutes() + 30);
+        setEndDate(nEndDate);
         setSelectedEvent(null);
         setIsModalOpen(true);
     };
 
+    const HandleDateDrag = (info) => {
+        setModalMode('create');
+        setStartDate(info.start);
+        setEndDate(info.end);
+        setSelectedEvent(null);
+        setIsModalOpen(true);
+    }
+
     const handleEventClick = (info) => {
         setModalMode('edit');
-        setCurrDate(null);
+        setStartDate(null);
+        setEndDate(null);
         setSelectedEvent(info.event);
         setIsModalOpen(true);
     }
@@ -71,12 +87,12 @@ function Calendar() {
 
     const handleCreateEvent = (event) => {
         if (modalMode === 'create') {
-          const newEvent = {
-            id: eventIdCounter.toString(), 
-            ...event
-          };
+            const newEvent = {
+                id: eventIdCounter.toString(), 
+                ...event
+            };
             setEvents([...currEvents, newEvent]);
-          eventIdCounter++;
+            eventIdCounter += 1;
         } else if (modalMode === 'edit') {
             const updatedEvents = currEvents.map((e) =>
                 e.id === selectedEvent.id ? { ...e, ...event } : e
@@ -86,6 +102,20 @@ function Calendar() {
 
         setIsModalOpen(false);
         setSelectedEvent(null);
+    };
+
+    const handleEventChange = (info) => {
+        const updatedEvent = {
+            ...info.event.toPlainObject(), 
+            start: info.event.start.toISOString(),
+            end: info.event.end.toISOString(),
+        };
+    
+        const updatedEvents = currEvents.map((event) =>
+            event.id === updatedEvent.id ? updatedEvent : event
+        );
+    
+        setEvents(updatedEvents);
     };
 
     return (
@@ -101,15 +131,30 @@ function Calendar() {
                     headerToolbar={{
                         left: "prev,today,next",
                         center: "title",
-                        right: "dayGridMonth,timeGridWeek,timeGridDay,listMonth",
+                        right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek",
                     }}
                     events={currEvents}
                     eventResizableFromStart={true}
+                    eventStartEditable={true}
                     dateClick={handleDateClick}
                     eventClick={handleEventClick}
+                    select={HandleDateDrag}
+                    eventBackgroundColor={defaultEventColor}
+                    eventBorderColor={defaultEventColor}
+                    eventTextColor={textColor}
+                    eventDisplay={'block'}
                     selectable={true}
                     editable={true}
                     selectMirror={true}
+                    dayMaxEventRows={true}
+                    eventTimeFormat={{
+                        hour: 'numeric',
+                        minute: '2-digit',
+                        meridiem: false
+                    }}
+                    navLinks={true}
+                    eventDrop={handleEventChange} 
+                    eventResize={handleEventChange}
                 />
                 <ModalPopup
                     isOpen={isModalOpen}
@@ -117,7 +162,8 @@ function Calendar() {
                     onSave={handleCreateEvent}
                     mode={modalMode}
                     event={selectedEvent}
-                    date={currDate}
+                    start={startDate}
+                    end={endDate}
                 />
             </FullCalendarContainer>
         </CalendarContainer>

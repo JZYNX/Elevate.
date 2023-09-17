@@ -11,6 +11,10 @@
     justify-content: center;
     align-items: center;
     z-index: 1000; 
+
+    &:focus{
+        border: none;
+    }
 }
 
 .modal-content {
