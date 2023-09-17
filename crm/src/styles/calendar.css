@@ -1,30 +1,74 @@
 .fc .fc-button-primary:not(:disabled).fc-button-active, .fc .fc-button-primary:not(:disabled):active {
     background-color: #2835A2;
-    border-color: var(--fc-button-active-border-color);
+    border-color: #e0e0e0;
     color: var(--fc-button-text-color);
 }
+
+/* Remove box shadow on active button press */
+.fc .fc-button-primary:not(:disabled).fc-button-active:focus, .fc .fc-button-primary:not(:disabled):active:focus {
+    box-shadow: none;
+}
+
 .fc .fc-button-primary {
-    background-color: #ffffff;
-    border-color: var(--fc-button-border-color);
-    color: #2835A2;
+    background-color: #ededed;
+    color: black;
+    border: 1px solid #e0e0e0;
 }
 .fc .fc-button-primary:hover {
-    background-color: rgb(40,53,162, 0.4);
-    border-color: var(--fc-button-border-color);
-    color: #ffffff;
+    background-color: rgb(40,53,162, 0.5);
+    border-color: #e0e0e0;
+    color: black;
 }
 .fc .fc-button-primary:disabled {
     background-color: #2835A2;
-    border-color: var(--fc-button-border-color);
+    border-color: #e0e0e0;
     color: #ffffff;
     opacity: 1;
 }
 
-.fc .fc-prev-button .fc-next-button {
-    background-color: #ffffff;
-    border-color: var(--fc-button-border-color);
+.fc .fc-prev-button, .fc .fc-next-button {
+    background-color: #ededed;
+    border-color: #e0e0e0;
     color: #000000;
+    border-radius: 0.5rem;
+    width: 25%;
+    height: 5%;
     opacity: 1;
+}
+
+.fc .fc-prev-button:focus, .fc .fc-next-button:focus {
+    box-shadow: none;
+}
+
+/* Current day styling */
+.fc .fc-daygrid-day.fc-day-today, .fc .fc-timegrid-col.fc-day-today {
+    background-color: #e8f4f8;
+}
+
+/* Highlighted day styling */
+.fc .fc-highlight {
+    background: #ffe9ec;
+}
+
+/* Scroll bar styling */
+.fc .fc-scroller-liquid-absolute::-webkit-scrollbar {
+    width: 8px; 
+}
+
+/* Hide scroll bar for day and all-day rows */
+.fc-scroller::-webkit-scrollbar {
+    width: 0px;
+}
+
+/* Thumb */
+.fc .fc-scroller-liquid-absolute::-webkit-scrollbar-thumb{
+    background-color: #e0e0e0; /* Scrollbar thumb color */
+    border-radius: 4px; /* Rounded corners */
+}
+
+/* Handle on hover */
+.fc .fc-scroller-liquid-absolute::-webkit-scrollbar-thumb:hover {
+    background-color: #555; /* Scrollbar thumb color on hover */
 }
 
 body {

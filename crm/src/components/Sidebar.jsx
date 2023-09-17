@@ -55,7 +55,6 @@ const ListrowItem = styled.div`
     margin-bottom: 0.7em;
     border-radius: 0.8em;
     transition: background-color 0.3s;
-    font-weight: ${props => (props.isActive ? 'bold' : 'normal')};
     &:hover {
         cursor: pointer;
         background-color: rgba(255,255,255,0.8);
@@ -88,7 +87,6 @@ function Sidebar() {
                     return (
                         <ListrowItem 
                             key={key}
-                            isActive={window.location.pathname === val.link} // Add an active state based on the current URL
                             onClick={()=>{
                                 window.location.pathname = val.link;
                             }}
