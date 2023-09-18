@@ -60,6 +60,11 @@ const createUser = async (req, res) => {
 
 const postImage =  async (req, res) => {
     const body = req.body;
+    const {myFile} = req.body;
+    if (myFile == null || myFile == "") {
+        console.log(myFile)
+        return res.status(400).json({msg: "no image uploaded"})
+    }
     try{
         const newImage = await Post.create(body)
         newImage.save();
