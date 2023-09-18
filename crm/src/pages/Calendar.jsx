@@ -8,6 +8,8 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
 import ModalPopup from '../components/ModalPopup';
 import { bgColor, defaultEventColor, textColor } from "../utils/Color";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import "../styles/calendar.css";
 
 
@@ -107,8 +109,8 @@ function Calendar() {
     const handleEventChange = (info) => {
         const updatedEvent = {
             ...info.event.toPlainObject(), 
-            start: info.event.start.toISOString(),
-            end: info.event.end.toISOString(),
+            start: info.event.start?.toISOString() || null,
+            end: info.event.end?.toISOString() || null,
         };
     
         const updatedEvents = currEvents.map((event) =>
@@ -122,6 +124,7 @@ function Calendar() {
 
     return (
         <CalendarContainer>
+            <ToastContainer position="bottom-right" autoClose={3000} hideProgressBar />
             <SidebarColumn>
                 <Sidebar />
             </SidebarColumn>
