@@ -1,5 +1,6 @@
 const { default: mongoose } = require('mongoose')
 const User = require('../models/userModel')
+const Post = require('../models/postModel')
 
 // get all
 const getAllUsers = async (req, res) => {
@@ -57,9 +58,21 @@ const updateUser = async (req, res) => {
 }
 
 
+const postImage =  async (req, res) => {
+    const body = req.body;
+    try{
+        const newImage = await Post.create(body)
+        newImage.save();
+        res.status(201).json({ msg : "New image uploaded...!"})
+    }catch(error){
+        res.status(409).json({ message : error.message })
+    }
+}
+
 module.exports = {
     createUser,
     getAllUsers,
     getOneUser,
-    updateUser
+    updateUser,
+    postImage
 }

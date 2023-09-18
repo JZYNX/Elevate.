@@ -41,6 +41,10 @@ const userSchema = new mongoose.Schema({
         ref: "User",
     },
     address: addressSchema,
+    profilePic: {
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: "Post",
+    }
 }, {timestamps: true})
 
 userSchema.methods.sayHi = function(username) {
@@ -50,5 +54,6 @@ userSchema.methods.sayHi = function(username) {
 userSchema.statics.findByUsername = function(username) {
     return this.where({username})
 }
+
 
 module.exports = mongoose.model('User', userSchema)

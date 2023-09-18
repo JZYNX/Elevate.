@@ -3,7 +3,8 @@ const {
     createUser,
     getOneUser,
     getAllUsers,
-    updateUser
+    updateUser,
+    postImage
 } = require('../controllers/userController')
 
 const router = express.Router()
@@ -19,5 +20,7 @@ router.post('/', createUser)
 
 //UPDATE a user
 router.patch('/:id', updateUser)
+
+router.post('/uploads', postImage)
 
 module.exports = router

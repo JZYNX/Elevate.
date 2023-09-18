@@ -3,6 +3,7 @@ import Sidebar from '../components/Sidebar';
 import bgImg from '../assets/nikuubg.jpg';
 import styled, { keyframes } from 'styled-components';
 import { primaryColor, secondaryColor } from '../utils/Color';
+import axios from 'axios';
 
 const ProfileContainer = styled.div`
   display: flex;
@@ -165,7 +166,15 @@ function Profile() {
   const [isEditMode, setIsEditMode] = useState(false); 
   const [changesSaved, setChangesSaved] = useState(false); 
   const [selectedImage, setSelectedImage] = useState(null);
+  const [postImage, setPostImage] = useState( { myFile : ""})
 
+  const createPost = async (newImage) => {
+    try{
+      await axios.post('users/uploads', newImage)
+    }catch(error){
+      console.log(error)
+    }
+  }
   // user info
   const [firstName, setFirstName] = useState('John');
   const [lastName, setLastName] = useState('Smith');
@@ -176,21 +185,20 @@ function Profile() {
   const [city, setCity] = useState('Melbourne');
   const [state, setState] = useState('Victoria');
 
-  const handleImageUpload = (event) => {
+  const handleImageUpload = async (event) => {
     const file = event.target.files[0];
-    try {
-      setSelectedImage(URL.createObjectURL(file));
-    }
-    catch (error) {
-      return;
-    }
+    const base64 = await convertToBase64(file);
+    console.log(base64);
+    setPostImage({ ...postImage, myFile : base64 })
   };
 
   const toggleEditMode = () => {
     setIsEditMode((prevEditMode) => !prevEditMode);
   };
 
-  const handleSaveChanges = () => {
+  const handleSaveChanges = (event) => {
+    event.preventDefault();
+    createPost(postImage);
     setChangesSaved(true);
     setIsEditMode(false);
   };
@@ -285,7 +293,7 @@ function Profile() {
           <div className="profile-pic">
             <h2 className="info-header">Profile Pic</h2>
             <ProfilePicContainer>
-              <ProfilePicImage src={selectedImage} alt="" />
+              <ProfilePicImage src={postImage.myFile} alt="" />
             </ProfilePicContainer>
             <ButtonGroup>
               {isEditMode ? (
@@ -317,4 +325,16 @@ function Profile() {
   );
 }
 
+function convertToBase64(file){
+  return new Promise((resolve, reject) => {
+    const fileReader = new FileReader();
+    fileReader.readAsDataURL(file);
+    fileReader.onload = () => {
+      resolve(fileReader.result)
+    };
+    fileReader.onerror = (error) => {
+      reject(error)
+    }
+  })
+}
 export default Profile;
