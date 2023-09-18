@@ -19,8 +19,12 @@ router.get('/:id', getOneUser)
 router.post('/', createUser)
 
 //UPDATE a user
-router.patch('/:id', updateUser)
+// router.patch('/:id', updateUser)
 
 router.post('/uploads', postImage)
+
+router.patch('/', updateUser)
+
+
 
 module.exports = router

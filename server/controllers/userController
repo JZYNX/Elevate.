@@ -39,23 +39,23 @@ const createUser = async (req, res) => {
 }
 
 // UPDATE a user
-const updateUser = async (req, res) => {
-    const {id} = req.params
+// const updateUser = async (req, res) => {
+//     const {id} = req.params
 
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(404).json({error: "Invalid id, needs to be mongo ID"})
-    }
+//     if (!mongoose.Types.ObjectId.isValid(id)) {
+//         return res.status(404).json({error: "Invalid id, needs to be mongo ID"})
+//     }
 
-    const user = await User.findOneAndUpdate({_id: id}, {
-        ...req.body
-    })
+//     const user = await User.findOneAndUpdate({_id: id}, {
+//         ...req.body
+//     })
 
-    if (!user) {
-        return res.status(404).json({error: "No such user"})
-    }
+//     if (!user) {
+//         return res.status(404).json({error: "No such user"})
+//     }
 
-    return res.status(200).json(user)
-}
+//     return res.status(200).json(user)
+// }
 
 
 const postImage =  async (req, res) => {
@@ -68,6 +68,31 @@ const postImage =  async (req, res) => {
         res.status(409).json({ message : error.message })
     }
 }
+
+const updateUser = async (req, res) => {
+    const { username } = req.body; // Assuming the username is sent in the request body
+    const updatedUserData = req.body;
+  
+    try {
+      // Find the user based on the username
+      const updatedUser = await User.findOneAndUpdate(
+        { username }, // Query to find the user by username
+        { $set: updatedUserData }, // Update the user's data with the provided data
+        { new: true } // Return the updated user
+      );
+  
+      if (!updatedUser) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+  
+      return res.status(200).json(updatedUser);
+    } catch (error) {
+      console.error('Error updating user:', error);
+      return res.status(500).json({ error: 'Internal server error' });
+    }
+  };
+
+
 
 module.exports = {
     createUser,
