@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 import DateTimePicker from 'react-datetime-picker';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import 'react-datetime-picker/dist/DateTimePicker.css';
 import 'react-calendar/dist/Calendar.css';
 import 'react-clock/dist/Clock.css';
@@ -30,6 +32,10 @@ function ModalPopup({ isOpen, onClose, onSave, mode, event, start, end }) {
     }, [event, start, end]);
 
     const handleSave = () => {
+        if (!eventName){
+            toast.error('You must enter a name before submitting.');
+            return
+        }
         const timeDiff = endDatetime.getTime() - startDatetime.getTime();
         const isAllDay = timeDiff >= 86400000;
         const updatedEvent = {
