@@ -7,7 +7,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
 import ModalPopup from '../components/ModalPopup';
-import { bgColor, defaultEventColor, textColor } from "../utils/Color";
+import { defaultEventColor, textColor } from "../utils/Color";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import "../styles/calendar.css";
@@ -153,6 +153,7 @@ function Calendar() {
                     editable={true}
                     selectMirror={true}
                     dayMaxEventRows={true}
+                    businessHours={true}
                     eventTimeFormat={{
                         hour: 'numeric',
                         minute: '2-digit',
