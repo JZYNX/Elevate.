@@ -193,7 +193,7 @@ function Login() {
   const handleLogin = async () => {
     const { username, password } = credentials;
     if (await userExists(username, password)) {
-      navigate('/profile');
+      navigate('/dashboard');
     } else {
       alert('Login failed. Please check your credentials.');
     }
