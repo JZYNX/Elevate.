@@ -118,6 +118,8 @@ function Calendar() {
         setEvents(updatedEvents);
     };
 
+    console.log(currEvents);
+
     return (
         <CalendarContainer>
             <SidebarColumn>
@@ -133,6 +135,7 @@ function Calendar() {
                         center: "title",
                         right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek",
                     }}
+                    allDaySlot={true}
                     events={currEvents}
                     eventResizableFromStart={true}
                     eventStartEditable={true}
@@ -150,7 +153,7 @@ function Calendar() {
                     eventTimeFormat={{
                         hour: 'numeric',
                         minute: '2-digit',
-                        meridiem: false
+                        meridiem: 'short'
                     }}
                     navLinks={true}
                     eventDrop={handleEventChange} 
