@@ -55,6 +55,9 @@ const userSchema = new mongoose.Schema({
     lastName: {
         type: String,
     },
+    userImage: {
+        type:String,
+    },
 }, {timestamps: true})
 
 userSchema.methods.sayHi = function(username) {

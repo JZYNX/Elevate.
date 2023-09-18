@@ -166,6 +166,7 @@ function Profile() {
   const [isEditMode, setIsEditMode] = useState(false); 
   const [changesSaved, setChangesSaved] = useState(false); 
   const [postImage, setPostImage] = useState( { myFile : ""})
+  const [selectedImagePath, setSelectedImagePath] = useState('');
   const [userData, setUserData] = useState({
     firstName: '',
     lastName: '',
@@ -195,13 +196,6 @@ function Profile() {
     fetchUserDataAndSetState();
   }, [storedUsername]);
 
-  const createPost = async (newImage) => {
-    try{
-      await axios.post('users/uploads', newImage)
-    }catch(error){
-      console.log(error)
-    }
-  }
   // console.log("The email is " + userData.email);
   // // user info
   // const [firstName, setFirstName] = useState('John');
@@ -215,10 +209,29 @@ function Profile() {
 
   const handleImageUpload = async (event) => {
     const file = event.target.files[0];
-    const base64 = await convertToBase64(file);
-    // console.log(base64);
-    setPostImage({ ...postImage, myFile : base64 })
+    const formData = new FormData();
+    formData.append('userImage', file);
+    try {
+      const response = await fetch('/users/uploadImage', {
+        method: 'PUT',
+        body: formData,
+      });
+  
+      if (response.status === 200) {
+        const responseData = await response.json();
+        
+        setSelectedImagePath(responseData.filePath);
+        console.log('Image uploaded successfully');
+      } else {
+        console.error('Failed to upload image:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error uploading image:', error);
+    }
   };
+  
+  
+
 
   const toggleEditMode = () => {
     setIsEditMode((prevEditMode) => !prevEditMode);
@@ -226,16 +239,23 @@ function Profile() {
 
   const handleSaveChanges = async (event) => {
     event.preventDefault();
-  
     try {
       // console.log('Stored Username:', storedUsername);
-      const updatedData = { ...userData, username: storedUsername };
-      const response = await axios.patch(`/users/`, updatedData);
+      const commonData = { ...userData, username: storedUsername };
+      
+      // Check if a new image was selected and update the data object accordingly
+      if (selectedImagePath) {
+        commonData.userImage = selectedImagePath;
+      }
+
+      // Send a PATCH request with the common data
+      const response = await axios.patch(`/users/`, commonData);
       
       if (response.status === 200) {
         // Changes were successfully saved in the backend
         setChangesSaved(true);
         setIsEditMode(false);
+        window.location.reload();
       } else {
         // Handle error if the request was not successful
         console.error('Failed to save changes to the backend.');
@@ -336,7 +356,7 @@ function Profile() {
           <div className="profile-pic">
             <h2 className="info-header">Profile Pic</h2>
             <ProfilePicContainer>
-              <ProfilePicImage src={postImage.myFile} alt="" />
+              <ProfilePicImage src={userData.userImage ? '/' + userData.userImage : ''} alt="" />
             </ProfilePicContainer>
             <ButtonGroup>
               {isEditMode ? (
@@ -368,18 +388,6 @@ function Profile() {
   );
 }
 
-function convertToBase64(file){
-  return new Promise((resolve, reject) => {
-    const fileReader = new FileReader();
-    fileReader.readAsDataURL(file);
-    fileReader.onload = () => {
-      resolve(fileReader.result)
-    };
-    fileReader.onerror = (error) => {
-      reject(error)
-    }
-  })
-}
 
 const fetchUserData = async (username) => {
   try {
@@ -396,7 +404,6 @@ const fetchUserData = async (username) => {
       throw new Error(`User with username "${username}" not found`);
     }
 
-    // console.log(userData);
     return userData;
   } catch (error) {
     console.error('Error fetching user data:', error);

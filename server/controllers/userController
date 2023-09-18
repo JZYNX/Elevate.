@@ -2,6 +2,8 @@ const { default: mongoose } = require('mongoose')
 const User = require('../models/userModel')
 const Post = require('../models/postModel')
 
+
+
 // get all
 const getAllUsers = async (req, res) => {
     const users = await User.find({})
@@ -58,33 +60,42 @@ const createUser = async (req, res) => {
 // }
 
 
-const postImage =  async (req, res) => {
-    const body = req.body;
-    const {myFile} = req.body;
-    if (myFile == null || myFile == "") {
-        console.log(myFile)
-        return res.status(400).json({msg: "no image uploaded"})
-    }
-    try{
-        const newImage = await Post.create(body)
+const postImage = async (req, res,next) => {
+    try {
+        // Check if a file was uploaded
+        if (!req.file) {
+            
+            return res.status(400).json({ msg: "No image uploaded" });
+        }
+        // Assuming you want to save the file path to the database
+        const { path } = req.file;
+        const newImage = await Post.create({ imagePath: path });
         newImage.save();
-        res.status(201).json({ msg : "New image uploaded...!"})
-    }catch(error){
-        res.status(409).json({ message : error.message })
+        console.log("THE returning IAMGE omg " + path);
+        return res.status(200).json({ msg: "New image uploaded...!", filePath: path });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: "Internal server error" });
     }
-}
+};
 
 const updateUser = async (req, res) => {
     const { username } = req.body; // Assuming the username is sent in the request body
     const updatedUserData = req.body;
-  
+
     try {
-      // Find the user based on the username
-      const updatedUser = await User.findOneAndUpdate(
+        //check if profile pic was uploaded.
+        if (req.file) {
+            updatedUserData.userImage = req.file.path;
+        }
+        // Find the user based on the username
+        const updatedUser = await User.findOneAndUpdate(
         { username }, // Query to find the user by username
         { $set: updatedUserData }, // Update the user's data with the provided data
         { new: true } // Return the updated user
       );
+
+
   
       if (!updatedUser) {
         return res.status(404).json({ error: 'User not found' });
@@ -98,11 +109,19 @@ const updateUser = async (req, res) => {
   };
 
 
-
+const updateImage = async (req , res) => {
+    if (!req.file) {
+        return res.status(400).json({ message: 'No image uploaded' });
+    }
+    const imageUrl = req.file.path;
+    res.status(200).json({ message: 'Image uploaded successfully', imageUrl });
+    return;
+}
 module.exports = {
     createUser,
     getAllUsers,
     getOneUser,
     updateUser,
-    postImage
+    postImage,
+    updateImage
 }
