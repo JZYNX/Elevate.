@@ -10,13 +10,23 @@ const ProfileContainer = styled.div`
   width: 100vw;
 `;
 
+const changeColors = keyframes`
+  0%, 100% {
+    filter: hue-rotate(0deg); /* Start and end with pink (320 degrees) */
+  }
+  50% {
+    filter: hue-rotate(60deg); /* Transition to purple (240 degrees) */
+  }
+`;
 const BackgroundImage = styled.img`
+  /* Add styles for the background image */
   position: absolute;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: cover; 
   object-position: right;
-  z-index: -1;
+  z-index: -1; /* Put the image behind other content */
+  animation: ${changeColors} 5s infinite linear; /* Apply the animation */
 `;
 
 const ProfileInfoContainer = styled.div`
@@ -26,17 +36,8 @@ const ProfileInfoContainer = styled.div`
   width: 100vw;
 `;
 
-const changeColors = keyframes`
-  0%, 100% {
-    filter: hue-rotate(0deg);
-  }
-  50% {
-    filter: hue-rotate(60deg);
-  }
-`;
-
 const ProfileTitle = styled.div`
-  padding-top: 2rem;
+  padding-top: 4rem;
   font-weight: bold;
   padding-left: 10rem;
 
@@ -44,7 +45,7 @@ const ProfileTitle = styled.div`
     font-size: 30px;
     font-family: 'Poppins', sans-serif;
     margin-bottom: 10px;
-    margin-top: 20px;
+    margin-top: 10px;
     font-weight: bold;
   }
 `;
@@ -61,7 +62,7 @@ const ProfileColumns = styled.div`
   display: flex;
   padding-top: 3rem;
   padding-left: 10rem;
-  padding-right: 15rem;
+  padding-right: 20rem;
 
   h2.info-header {
     font-size: 18px;
@@ -69,6 +70,16 @@ const ProfileColumns = styled.div`
     margin-bottom: 10px;
     margin-top: 20px;
     font-weight: bold;
+  }
+
+  input {
+    width: 70%;
+    padding: 5px;
+    border: 1px solid #ddd;
+    font-family: 'Poppins', sans-serif;
+    border-radius: 5px;
+    font-size: 13px;
+    outline: none;
   }
 
   p.info-text {
@@ -109,10 +120,11 @@ const ButtonGroup = styled.div`
 
   .profile-button {
       width: 100%;
-    margin-top: 5px;
-    background-color: ${primaryColor};
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    background-color: ${secondaryColor};
+    padding-top: 0.3rem;
+    padding-bottom: 0.3rem;
     color: white;
     border: none;
     cursor: pointer;
@@ -123,17 +135,18 @@ const ButtonGroup = styled.div`
     font-family: 'Poppins', sans-serif;
 
     &:hover {
-      background-color: ${secondaryColor};
+      background-color: ${primaryColor};
     }
   }
 `;
 
 const ProfileButton = styled.button`
   width: 100%;
-  margin-top: 5px;
-  background-color: ${primaryColor};
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  background-color: ${secondaryColor};
+  padding-top: 0.3rem;
+  padding-bottom: 0.3rem;
   color: white;
   border: none;
   cursor: pointer;
@@ -144,12 +157,24 @@ const ProfileButton = styled.button`
   font-family: 'Poppins', sans-serif;
 
   &:hover {
-    background-color: ${secondaryColor};
+    background-color: ${primaryColor};
   }
 `;
 
 function Profile() {
+  const [isEditMode, setIsEditMode] = useState(false); 
+  const [changesSaved, setChangesSaved] = useState(false); 
   const [selectedImage, setSelectedImage] = useState(null);
+
+  // user info
+  const [firstName, setFirstName] = useState('John');
+  const [lastName, setLastName] = useState('Smith');
+  const [email, setEmail] = useState('example@gmail.com');
+  const [password, setPassword] = useState('Jsmith1923');
+  const [contactNumber, setContactNumber] = useState('0452382938');
+  const [address, setAddress] = useState('197 Joy Street');
+  const [city, setCity] = useState('Melbourne');
+  const [state, setState] = useState('Victoria');
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
@@ -159,6 +184,15 @@ function Profile() {
     catch (error) {
       return;
     }
+  };
+
+  const toggleEditMode = () => {
+    setIsEditMode((prevEditMode) => !prevEditMode);
+  };
+
+  const handleSaveChanges = () => {
+    setChangesSaved(true);
+    setIsEditMode(false);
   };
 
   return (
@@ -174,23 +208,79 @@ function Profile() {
         <ProfileColumns>
           <div className="profile-info">
             <h2 className="info-header">First Name</h2>
-            <p className="info-text">Evan</p>
+            <input
+              type="text"
+              placeholder="etc. John"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              disabled={!isEditMode}
+              className={isEditMode ? 'input-edit-mode' : 'input-nonedit-mode'}
+            />
             <h2 className="info-header">Last Name</h2>
-            <p className="info-text">Doe</p>
+            <input
+              type="text"
+              placeholder="etc. Smith"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              disabled={!isEditMode}
+              className={isEditMode ? 'input-edit-mode' : ''}
+            />
             <h2 className="info-header">Email</h2>
-            <p className="info-text">example@email.com</p>
+            <input
+              type="text"
+              placeholder="etc. example@gmail.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              disabled={!isEditMode}
+              className={isEditMode ? 'input-edit-mode' : ''}
+            />
             <h2 className="info-header">Password</h2>
-            <p className="info-text">********</p>
-            <h2 className="info-header">Contact Number</h2>
-            <p className="info-text">(123) 456-7890</p>
+            <input
+              type="password"
+              placeholder="etc. Jsmith1923"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              disabled={!isEditMode}
+              className={isEditMode ? 'input-edit-mode' : ''}
+            />         
           </div>
           <div className="profile-info">
+            <h2 className="info-header">Contact Number</h2>
+            <input
+              type="text"
+              placeholder="etc. 0452382938"
+              value={contactNumber}
+              onChange={(e) => setContactNumber(e.target.value)}
+              disabled={!isEditMode}
+              className={isEditMode ? 'input-edit-mode' : ''}
+            />
             <h2 className="info-header">Address</h2>
-            <p className="info-text">123 Main St</p>
+            <input
+              type="text"
+              placeholder="197 Joy Street"
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+              disabled={!isEditMode}
+              className={isEditMode ? 'input-edit-mode' : ''}
+            />
             <h2 className="info-header">City</h2>
-            <p className="info-text">New York</p>
+            <input
+              type="text"
+              placeholder="etc. Melbourne"
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
+              disabled={!isEditMode}
+              className={isEditMode ? 'input-edit-mode' : ''}
+            />
             <h2 className="info-header">State</h2>
-            <p className="info-text">New York</p>
+            <input
+              type="text"
+              placeholder="etc. Victoria"
+              value={state}
+              onChange={(e) => setState(e.target.value)}
+              disabled={!isEditMode}
+              className={isEditMode ? 'input-edit-mode' : ''}
+            />
           </div>
           <div className="profile-pic">
             <h2 className="info-header">Profile Pic</h2>
@@ -198,17 +288,27 @@ function Profile() {
               <ProfilePicImage src={selectedImage} alt="" />
             </ProfilePicContainer>
             <ButtonGroup>
-              <label className="profile-button">
-                Upload Photo
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageUpload}
-                  style={{ display: 'none' }}
-                />
-              </label>
-              <ProfileButton>Change Password</ProfileButton>
-              <ProfileButton>Edit Profile</ProfileButton>
+              {isEditMode ? (
+                <label className="profile-button">
+                  Upload Photo
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                    style={{ display: 'none' }}
+                  />
+                </label>
+              ) : null}
+              {isEditMode ? (
+                <>
+                  <ProfileButton>Change Password</ProfileButton>
+                  <ProfileButton onClick={handleSaveChanges}>
+                    Save Changes
+                  </ProfileButton>
+                </>
+              ) : (
+                <ProfileButton onClick={toggleEditMode}>Edit Profile</ProfileButton>
+              )}
             </ButtonGroup>
           </div>
         </ProfileColumns>
