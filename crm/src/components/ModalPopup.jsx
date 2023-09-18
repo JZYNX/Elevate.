@@ -30,10 +30,13 @@ function ModalPopup({ isOpen, onClose, onSave, mode, event, start, end }) {
     }, [event, start, end]);
 
     const handleSave = () => {
+        const timeDiff = endDatetime.getTime() - startDatetime.getTime();
+        const isAllDay = timeDiff >= 86400000;
         const updatedEvent = {
             title: eventName,
             start: startDatetime.toISOString(),
             end: endDatetime.toISOString(),
+            allDay: isAllDay
         };
 
         onSave(updatedEvent);
