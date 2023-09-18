@@ -24,6 +24,12 @@ const SidebarColumn = styled.div`
   background-color: #f0f0f0;
 `;
 
+const DashboardInfo = styled.div`
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+`;
+
 // stats row on dashboard
 const StatsContainer = styled.div`
   display: flex;
@@ -34,22 +40,61 @@ const StatsContainer = styled.div`
 const StatBox = styled.div`
   flex: 1;
   text-align: left;
-`;
-const Number = styled.h2`
-  font-size: 40px; /* Adjust the font size as needed */
-  padding-top: 30px;
-  margin-bottom: 0;
-  font-weight: bold;
-`;
-const Descriptor = styled.p`
-  font-size: 20px; /* Adjust the font size as needed */
-  margin-top: 5px;
+
+  h2.number {
+    font-size: 40px; /* Adjust the font size as needed */
+    padding-top: 30px;
+    margin-bottom: 0;
+    font-weight: bold;
+    text-align: left;
+  }
+  p.descriptor {
+    font-size: 20px; /* Adjust the font size as needed */
+    margin-top: 5px;
+    text-align:
+  }
 `;
 
-const EventsContainer = styled.div`
-
+// second row of dashboard including events and new connections
+const SocialsBox = styled.div`
+  display: flex;
+  flex: 0.8;
+  flex-direction: row;
+  margin-left: 10%;
+`;
+const EventsDisplay = styled.div`
+  flex: 1;
+  p.descriptor {
+    font-size: 18px; /* Adjust the font size as needed */
+    font-weight: bold;
+    margin-top: 5px;
+    text-align:
+  }
+`;
+const ConnectionsDisplay = styled.div`
+  flex: 1;
+  p.descriptor {
+    font-size: 18px; /* Adjust the font size as needed */
+    font-weight: bold;
+    margin-top: 5px;
+    text-align:
+  }
 `;
 
+// implement notes display and create pop up notes feature
+const NotesBox = styled.div`
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  margin-left: 10%;
+
+  p.descriptor {
+    font-size: 18px; /* Adjust the font size as needed */
+    font-weight: bold;
+    margin-top: 5px;
+    text-align:
+  }
+`;
 
 function Dashboard() {
   return (
@@ -58,22 +103,34 @@ function Dashboard() {
         <Sidebar />
       </SidebarColumn>
       <BackgroundImage src={bgImg} alt="bgImg" />
-      <StatsContainer>
-        <StatBox>
-          <Number>150</Number>
-          <Descriptor>Connections</Descriptor>
-        </StatBox>
-        <StatBox>
-          <Number>12</Number>
-          <Descriptor>Upcoming Events</Descriptor>
-        </StatBox>
-        <StatBox>
-          <Number>4</Number>
-          <Descriptor>To-do Tasks</Descriptor>
-        </StatBox>
-      </StatsContainer>
-
-
+      
+      <DashboardInfo>
+        <StatsContainer>
+          <StatBox>
+            <h2 className="number">150</h2>
+            <p className="descriptor">Connections</p>
+          </StatBox>
+          <StatBox>
+            <h2 className="number">12</h2>
+            <p className="descriptor">Upcoming Events</p>
+          </StatBox>
+          <StatBox>
+            <h2 className="number">4</h2>
+            <p className="descriptor">To-do Tasks</p>
+          </StatBox>
+        </StatsContainer>
+        <SocialsBox>
+          <EventsDisplay>
+            <p className="descriptor">Upcoming Events</p> 
+          </EventsDisplay>
+          <ConnectionsDisplay>
+            <p className="descriptor">New Connections</p> 
+          </ConnectionsDisplay>
+        </SocialsBox>
+        <NotesBox>
+          <p className="descriptor">Notes</p> 
+        </NotesBox>
+      </DashboardInfo>
     </DashboardContainer>
   );
 }
