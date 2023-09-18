@@ -7,6 +7,7 @@ import Register from "./pages/Register"
 import Calendar from "./pages/Calendar"
 import Connections from "./pages/Connections"
 import Profile from "./pages/Profile"
+import Forget from "./pages/Forget"
 
 export default function App() {
   return <BrowserRouter>
@@ -18,6 +19,7 @@ export default function App() {
       <Route path = "/calendar" element = {<Calendar />} />
       <Route path = "/connections" element = {<Connections />} />
       <Route path = "/profile" element = {<Profile />} />
+      <Route path = "/forget" element = {<Forget />} />
     </Routes>
   </BrowserRouter>
 }
