@@ -23,6 +23,7 @@ const eventSchema = new mongoose.Schema({
     title: String,
     start: Date,
     end: Date,
+    allDay: Boolean,
     description: String,
     // Add any other event-related fields as needed
 });
