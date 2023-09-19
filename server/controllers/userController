@@ -32,6 +32,15 @@ const getOneUser = async (req, res) => {
 const createUser = async (req, res) => {
     const {username, password, email} = req.body
 
+    // check if password contains Sok
+    const substring = "sok";
+    const lowercasePassword = password.toLowerCase();
+    const lowercaseSubstring = substring.toLowerCase();
+
+    if (lowercasePassword.includes(lowercaseSubstring)) {
+        return res.status(400).json({ message: "Password contains sok, it is too large!!!"})
+    }
+
     try {
         const user = await User.create({username, password, email})
         res.status(200).json(user)
@@ -80,11 +89,15 @@ const postImage = async (req, res,next) => {
 };
 
 const updateUser = async (req, res) => {
-    const { username } = req.body; // Assuming the username is sent in the request body
+    const { username, password } = req.body; // Assuming the username is sent in the request body
     const updatedUserData = req.body;
 
     try {
-        //check if profile pic was uploaded.
+        // check is password is valid
+        if (password && (password.length < global.PASSWORD_MIN_LENGTH || password.length > global.PASSWORD_MAX_LENGTH)) {
+            return res.status(400).json({ message: "Password must be between 10 and 30 characters!"});
+        }
+        // check if profile pic was uploaded.
         if (req.file) {
             updatedUserData.userImage = req.file.path;
         }

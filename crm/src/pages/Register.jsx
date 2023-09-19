@@ -256,7 +256,7 @@ function Register() {
         navigate('/profile');
       } else {
         const errorData = await response.json(); 
-        alert(`Failed to create user: ${errorData.error}`);
+        alert(`Failed to create user: ${errorData.message}`);
       }
 
     } catch (error) {

@@ -1,5 +1,9 @@
 const mongoose = require('mongoose')
 
+// global variables
+global.PASSWORD_MIN_LENGTH = 10;
+global.PASSWORD_MAX_LENGTH = 30;
+
 const validateEmail = (email) => {
     return String(email)
       .toLowerCase()
@@ -22,8 +26,8 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String, 
         required: true,
-        minLength: 10,
-        maxLength: 30,
+        minLength: global.PASSWORD_MIN_LENGTH,
+        maxLength: global.PASSWORD_MAX_LENGTH,
     },
     dateOfBirth: {
         type: Date, 
@@ -45,7 +49,7 @@ const userSchema = new mongoose.Schema({
         ref: "User",
     },
     address: addressSchema,
-    profilePic: {
+    profilePic: {       // Not using this field for now
         type: mongoose.SchemaTypes.ObjectId,
         ref: "Post",
     },
@@ -59,10 +63,6 @@ const userSchema = new mongoose.Schema({
         type:String,
     },
 }, {timestamps: true})
-
-userSchema.methods.sayHi = function(username) {
-    console.log(`Hi, my username is ${this.username}`)
-}
 
 userSchema.statics.findByUsername = function(username) {
     return this.where({username})

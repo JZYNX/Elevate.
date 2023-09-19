@@ -196,17 +196,6 @@ function Profile() {
     fetchUserDataAndSetState();
   }, [storedUsername]);
 
-  // console.log("The email is " + userData.email);
-  // // user info
-  // const [firstName, setFirstName] = useState('John');
-  // const [lastName, setLastName] = useState('Smith');
-  // const [email, setEmail] = useState('example@gmail.com');
-  // const [password, setPassword] = useState('Jsmith1923');
-  // const [contactNumber, setContactNumber] = useState('0452382938');
-  // const [address, setAddress] = useState('197 Joy Street');
-  // const [city, setCity] = useState('Melbourne');
-  // const [state, setState] = useState('Victoria');
-
   const handleImageUpload = async (event) => {
     const file = event.target.files[0];
     const formData = new FormData();
@@ -239,18 +228,19 @@ function Profile() {
 
   const handleSaveChanges = async (event) => {
     event.preventDefault();
+  
+    // console.log('Stored Username:', storedUsername);
+    const commonData = { ...userData, username: storedUsername };
+  
+    // Check if a new image was selected and update the data object accordingly
+    if (selectedImagePath) {
+      commonData.userImage = selectedImagePath;
+    }
+  
     try {
-      // console.log('Stored Username:', storedUsername);
-      const commonData = { ...userData, username: storedUsername };
-      
-      // Check if a new image was selected and update the data object accordingly
-      if (selectedImagePath) {
-        commonData.userImage = selectedImagePath;
-      }
-
       // Send a PATCH request with the common data
       const response = await axios.patch(`/users/`, commonData);
-      
+  
       if (response.status === 200) {
         // Changes were successfully saved in the backend
         setChangesSaved(true);
@@ -261,11 +251,14 @@ function Profile() {
         console.error('Failed to save changes to the backend.');
       }
     } catch (error) {
-      console.error('Error while saving changes:', error);
+      console.error('Error in axios request:', error);
+      // Handle the error as needed
+      const errorMessage = error.response?.data?.message || 'An error occurred';
+      alert(errorMessage);
     }
   };
   
-
+  
   return (
     <ProfileContainer>
       <SidebarColumn>
