@@ -150,13 +150,11 @@ const LoginForm = styled.div`
 
 `;
 
-const ForgetMessageContainer = styled.div`
+
+const MessageContainer = styled.div`
   font-size: 14px;
-  font-family: 'Poppins', sans-serif;
-  padding-left: 70px;
-  padding-right: 70px;
-  padding-bottom: 10px;
   color: #888;
+  text-align: left;
 
   button.forget-button {
     cursor: pointer;
@@ -164,26 +162,6 @@ const ForgetMessageContainer = styled.div`
     background-color: white;
     border: none;
     font-size: 14px;
-    transition: color 0.3s;
-    padding-bottom: 20px;
-
-    &:hover {
-      color: #151e3d;
-    }
-  }
-`;
-
-
-const RegisterContainer = styled.div`
-  font-size: 16px;
-  color: #888;
-
-  button.forget-button {
-    cursor: pointer;
-    color: #0a1172;
-    background-color: white;
-    border: none;
-    font-size: 16px;
     transition: color 0.3s;
     padding-bottom: 20px;
 
@@ -277,28 +255,38 @@ function Login() {
         </div>
       </WelcomeMessage>
       <LoginForm>
-        <h2 className="login-header"> <strong>Email Verification</strong></h2>
-        <ForgetMessageContainer>
-          We have sent a code to your email
-        </ForgetMessageContainer>
+        <h2 className="login-header"> <strong>Change your password</strong></h2>
+        <MessageContainer>
+          New Password
+        </MessageContainer>
         <input
           className="user-input"
           type="text"
-          placeholder="Username"
+          placeholder="Enter new password"
           value={credentials.username}
           onChange={(e) => setCredentials({ ...credentials, username: e.target.value })}
         />
 
-        <button className="reset-button" onClick={() => handleNavigation('/reset')}>
-          Verify account
+        <MessageContainer>
+          Confirm Password
+        </MessageContainer>
+        <input
+          className="user-input"
+          type="text"
+          placeholder="Confirm your password"
+          value={credentials.username}
+          onChange={(e) => setCredentials({ ...credentials, username: e.target.value })}
+        />
+
+        <button className="reset-button" onClick={() => handleNavigation('/sendOTP')}>
+          Confirm
         </button>
 
-        <RegisterContainer> 
-            Didn't receive code?
+        <MessageContainer> 
           <button className="forget-button" onClick={() => handleNavigation('/')}>
-            Resend OTP
+            Back to login
           </button>
-        </RegisterContainer>
+        </MessageContainer>
 
         <div className="separator-container">
           <hr className="separator-line" />
