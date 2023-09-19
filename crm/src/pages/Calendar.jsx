@@ -6,15 +6,10 @@ import interactionPlugin from "@fullcalendar/interaction";
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
-<<<<<<< Updated upstream
-import ModalPopup from '../components/ModalPopup';
-import { bgColor, defaultEventColor, textColor } from "../utils/Color";
-=======
 import CalendarPopup from '../components/CalendarPopup';
 import { defaultEventColor, textColor } from "../utils/Color";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
->>>>>>> Stashed changes
 import "../styles/calendar.css";
 
 
