@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Sidebar from '../components/Sidebar';
 import FullCalendar from "@fullcalendar/react";
@@ -34,23 +34,32 @@ const FullCalendarContainer = styled.div`
     color: black;
 `;
 
-let eventIdCounter = 3;
+let eventIdCounter = 0;
 
 function Calendar() {
-    const [currEvents, setEvents] = useState([
-        {
-            id: '1',
-            title: 'Event 1',
-            start: '2023-09-20T10:00:00',
-            end: '2023-09-20T12:00:00',
-        },
-        {
-            id: '2',
-            title: 'Event 2',
-            start: '2023-09-21T14:00:00',
-            end: '2023-09-21T16:00:00',
-        },
-    ]);
+    const urlParams = new URLSearchParams(window.location.search);
+    // Get the 'username' parameter value from the URL
+    const storedUsername = urlParams.get('username');
+    const [userEvent, setUserEvent] = useState([]);
+    useEffect(() => {
+        async function fetchUserDataAndSetState() {
+        try {
+            const userResponse = await fetchUserEvents(storedUsername);
+            if (userResponse.length === 0) {
+                setUserEvent([]);
+                eventIdCounter = 0;
+            } else {
+                setUserEvent(userResponse);
+                const maxId = Math.max(...userResponse.map(event => parseInt(event.id)));
+                eventIdCounter = maxId + 1;
+            }
+        } catch (error) {
+                console.error('Error fetching user data:', error);
+            }
+        }
+
+        fetchUserDataAndSetState();
+    }, [storedUsername]);
     const [selectedEvent, setSelectedEvent] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [startDate, setStartDate] = useState(new Date());
@@ -93,27 +102,85 @@ function Calendar() {
                 id: eventIdCounter.toString(), 
                 ...event
             };
-            setEvents([...currEvents, newEvent]);
-            console.log(`Event with id:${newEvent.id} created`);
+            const requestData = {
+                username: storedUsername,
+                event: newEvent,
+            };
+            createEventsOnServer(requestData)
             eventIdCounter += 1;
         } else if (modalMode === 'edit') {
-            const updatedEvents = currEvents.map((e) =>
+            const updatedEvents = userEvent.map((e) =>
                 e.id === selectedEvent.id ? { ...e, ...event } : e
             );
-            console.log(`Event with id:${selectedEvent.id} edited`);
-            setEvents(updatedEvents);
+            const requestData = {
+                username: storedUsername,
+                event: updatedEvents
+            }
+            editEventsOnServer(requestData)
         }
 
         setIsModalOpen(false);
         setSelectedEvent(null);
     };
 
+    const createEventsOnServer = (requestData) => {
+        // Assuming you send the entire updated events array to the server
+        fetch('/users/createEvent', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(requestData),
+        })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+          })
+          .then((updatedUserData) => {
+            setUserEvent(updatedUserData.events);
+          })
+          .catch((error) => {
+            console.error('Error updating events:', error);
+          });
+    };
+
+    const editEventsOnServer = (requestData) => {
+        // Assuming you send the entire updated events array to the server
+        fetch('/users/editEvents', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(requestData),
+        })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+          })
+          .then((updatedUserData) => {
+            // Assuming your backend returns the updated user data
+            // Update the userEvent state with the new data (if needed)
+            setUserEvent(updatedUserData.events);
+          })
+          .catch((error) => {
+            console.error('Error updating events:', error);
+          });
+    };
+
     const handleDeleteEvent = () => {
         const confirmDel = window.confirm("Are you sure you want to delete this event?");
 
         if (confirmDel){
-            const updatedEvents = currEvents.filter(event => event.id !== selectedEvent.id);
-            setEvents(updatedEvents);
+            const updatedEvents = userEvent.filter(event => event.id !== selectedEvent.id);
+            const requestData = {
+                username: storedUsername,
+                event: updatedEvents
+            }
+            editEventsOnServer(requestData)
             setIsModalOpen(false);
             console.log(`Event with id:${selectedEvent.id} deleted`);
         } else {
@@ -128,11 +195,16 @@ function Calendar() {
             end: info.event.end?.toISOString() || null,
         };
     
-        const updatedEvents = currEvents.map((event) =>
+        const updatedEvents = userEvent.map((event) =>
             event.id === updatedEvent.id ? updatedEvent : event
         );
-    
-        setEvents(updatedEvents);
+
+        const requestData = {
+            username: storedUsername,
+            event: updatedEvents
+        }
+        editEventsOnServer(requestData)
+
     };
 
     return (
@@ -152,7 +224,7 @@ function Calendar() {
                         right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek",
                     }}
                     allDaySlot={true}
-                    events={currEvents}
+                    events={userEvent}
                     eventResizableFromStart={true}
                     eventStartEditable={true}
                     dateClick={handleDateClick}
@@ -189,6 +261,32 @@ function Calendar() {
             </FullCalendarContainer>
         </CalendarContainer>
     );
+    
 }
+
+const fetchUserEvents = async (username) => {
+    try {
+      const response = await fetch(`/users`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      const allUserData = await response.json();
+  
+      // Filter the user data to find the matching username
+      const userData = allUserData.find(user => user.username === username);
+  
+      if (!userData) {
+        throw new Error(`User with username "${username}" not found`);
+      }
+  
+      // Extract the "Events" field and return it
+      const events = userData.events || []; // Default to an empty array if "Events" is not present
+      return events;
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+      throw error; // Handle the error as needed
+    }
+};
+  
 
 export default Calendar;

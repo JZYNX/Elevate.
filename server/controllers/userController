@@ -117,11 +117,61 @@ const updateImage = async (req , res) => {
     res.status(200).json({ message: 'Image uploaded successfully', imageUrl });
     return;
 }
+
+const uploadEvent = async (req, res) => {
+    try {
+      // Assuming the frontend sends both the username and event data in the request body
+      const { username, event } = req.body;
+  
+      // Find the user by username and update their events array
+      const updatedUser = await User.findOneAndUpdate(
+        { username: username },
+        { $push: { events: event } }, // Add the event to the events array
+        { new: true } // Return the updated user
+      );
+  
+      if (!updatedUser) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+  
+      // Respond with a success message or updated user data
+      res.status(200).json(updatedUser);
+    } catch (error) {
+      console.error('Error uploading event:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  };
+
+const updateEvents = async (req, res) => {
+    try {
+      // Assuming the frontend sends both the username and the complete events array
+      const { username, event } = req.body;
+      // Find the user by username and set their events array to the updatedEvents
+      const updatedUser = await User.findOneAndUpdate(
+        { username: username },
+        { events: event }, // Set the events array to the new updatedEvents
+        { new: true } // Return the updated user
+      );
+  
+      if (!updatedUser) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+  
+      // Respond with a success message or updated user data
+      res.status(200).json(updatedUser);
+    } catch (error) {
+      console.error('Error uploading event:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
 module.exports = {
     createUser,
     getAllUsers,
     getOneUser,
     updateUser,
     postImage,
-    updateImage
+    updateImage,
+    uploadEvent,
+    updateEvents,
 }

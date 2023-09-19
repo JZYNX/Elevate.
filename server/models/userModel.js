@@ -14,6 +14,15 @@ const addressSchema = new mongoose.Schema({
     state: String,
 })
 
+const eventSchema = new mongoose.Schema({
+    id: String,
+    title: String,
+    start: Date,
+    end: Date,
+    description: String,
+    // Add any other event-related fields as needed
+});
+
 const userSchema = new mongoose.Schema({
     username: {
         type: String, 
@@ -58,6 +67,7 @@ const userSchema = new mongoose.Schema({
     userImage: {
         type:String,
     },
+    events: [eventSchema],
 }, {timestamps: true})
 
 userSchema.methods.sayHi = function(username) {
