@@ -71,6 +71,11 @@
     background-color: #555; /* Scrollbar thumb color on hover */
 }
 
+/* grey out saturday and sunday for daygridmonth view */
+.fc-dayGridMonth-view .fc-daygrid-body .fc-day-sat, .fc-dayGridMonth-view .fc-daygrid-body .fc-day-sun {
+    background-color: hsla(0,0%,84%,.3);
+}
+
 body {
     margin: 0;
     font-family: 'Poppins', 'Segoe UI', 'Roboto', 'Oxygen',

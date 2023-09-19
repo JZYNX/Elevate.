@@ -6,7 +6,7 @@ import interactionPlugin from "@fullcalendar/interaction";
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
-import ModalPopup from '../components/ModalPopup';
+import CalendarPopup from '../components/CalendarPopup';
 import { defaultEventColor, textColor } from "../utils/Color";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -94,17 +94,32 @@ function Calendar() {
                 ...event
             };
             setEvents([...currEvents, newEvent]);
+            console.log(`Event with id:${newEvent.id} created`);
             eventIdCounter += 1;
         } else if (modalMode === 'edit') {
             const updatedEvents = currEvents.map((e) =>
                 e.id === selectedEvent.id ? { ...e, ...event } : e
             );
+            console.log(`Event with id:${selectedEvent.id} edited`);
             setEvents(updatedEvents);
         }
 
         setIsModalOpen(false);
         setSelectedEvent(null);
     };
+
+    const handleDeleteEvent = () => {
+        const confirmDel = window.confirm("Are you sure you want to delete this event?");
+
+        if (confirmDel){
+            const updatedEvents = currEvents.filter(event => event.id !== selectedEvent.id);
+            setEvents(updatedEvents);
+            setIsModalOpen(false);
+            console.log(`Event with id:${selectedEvent.id} deleted`);
+        } else {
+            return
+        }
+    }
 
     const handleEventChange = (info) => {
         const updatedEvent = {
@@ -119,8 +134,6 @@ function Calendar() {
     
         setEvents(updatedEvents);
     };
-
-    console.log(currEvents);
 
     return (
         <CalendarContainer>
@@ -163,10 +176,11 @@ function Calendar() {
                     eventDrop={handleEventChange} 
                     eventResize={handleEventChange}
                 />
-                <ModalPopup
+                <CalendarPopup
                     isOpen={isModalOpen}
                     onClose={handleModalClose}
                     onSave={handleCreateEvent}
+                    onDelete={handleDeleteEvent}
                     mode={modalMode}
                     event={selectedEvent}
                     start={startDate}

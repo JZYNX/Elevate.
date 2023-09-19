@@ -10,7 +10,7 @@ import "../styles/modal.css";
 
 Modal.setAppElement('#root');
 
-function ModalPopup({ isOpen, onClose, onSave, mode, event, start, end }) {
+function CalendarPopup({ isOpen, onClose, onSave, onDelete, mode, event, start, end }) {
     const [eventName, setEventName] = useState('');
     const [startDatetime, setStartDatetime] = useState(start);
     const [endDatetime, setEndDatetime] = useState(end);
@@ -36,6 +36,10 @@ function ModalPopup({ isOpen, onClose, onSave, mode, event, start, end }) {
             toast.error('You must enter a name before submitting.');
             return
         }
+        if (!startDatetime || !endDatetime){
+            toast.error('Please enter a valid time-frame.');
+            return
+        }
         const timeDiff = endDatetime.getTime() - startDatetime.getTime();
         const isAllDay = timeDiff >= 86400000;
         const updatedEvent = {
@@ -59,8 +63,13 @@ function ModalPopup({ isOpen, onClose, onSave, mode, event, start, end }) {
             className="modal-content"
             overlayClassName="modal-overlay"
         >
-            <div className='popup-inputs'>
+            <div className='header'>
                 <h2 className='event-title'>{mode === 'create' ? 'Create Event' : 'Edit Event'}</h2>
+                {mode === 'edit' ? (
+                    <button className='delete-btn' onClick={onDelete}>Delete</button>
+                ) : null}
+            </div>
+            <div className='popup-inputs'>
                 <div className="event-name">
                     <label>Event name: </label>
                     <input
@@ -93,4 +102,4 @@ function ModalPopup({ isOpen, onClose, onSave, mode, event, start, end }) {
     );
 }
 
-export default ModalPopup;
+export default CalendarPopup;
