@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 import DateTimePicker from 'react-datetime-picker';
 import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import 'react-datetime-picker/dist/DateTimePicker.css';
 import 'react-calendar/dist/Calendar.css';
 import 'react-clock/dist/Clock.css';

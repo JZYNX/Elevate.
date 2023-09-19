@@ -79,9 +79,20 @@ const TitleContainer = styled.div`
 `;
 
 function Sidebar() {
+    const linkStyle = {
+        textDecoration: 'none', // Remove the underline
+        color: 'inherit', // Inherit the text color
+      };
+
     return (
         <SidebarContainer> 
-            <SidebarTitle><h2 className="sidebar-title"><strong>elevate.</strong></h2></SidebarTitle>
+            <a href="/dashboard" style={linkStyle}>
+                <SidebarTitle>
+                <h2 className="sidebar-title">
+                    <strong>elevate.</strong>
+                </h2>
+                </SidebarTitle>
+            </a>
             <SidebarList>
                 {SidebarData.map((val, key)=>{
                     return (

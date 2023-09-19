@@ -124,8 +124,8 @@ function Calendar() {
     const handleEventChange = (info) => {
         const updatedEvent = {
             ...info.event.toPlainObject(), 
-            start: info.event.start.toISOString(),
-            end: info.event.end.toISOString(),
+            start: info.event.start?.toISOString() || null,
+            end: info.event.end?.toISOString() || null,
         };
     
         const updatedEvents = currEvents.map((event) =>
@@ -166,6 +166,7 @@ function Calendar() {
                     editable={true}
                     selectMirror={true}
                     dayMaxEventRows={true}
+                    businessHours={true}
                     eventTimeFormat={{
                         hour: 'numeric',
                         minute: '2-digit',

@@ -162,7 +162,19 @@ const ProfileButton = styled.button`
 `;
 
 function Profile() {
+  const [isEditMode, setIsEditMode] = useState(false); 
+  const [changesSaved, setChangesSaved] = useState(false); 
   const [selectedImage, setSelectedImage] = useState(null);
+
+  // user info
+  const [firstName, setFirstName] = useState('John');
+  const [lastName, setLastName] = useState('Smith');
+  const [email, setEmail] = useState('example@gmail.com');
+  const [password, setPassword] = useState('Jsmith1923');
+  const [contactNumber, setContactNumber] = useState('0452382938');
+  const [address, setAddress] = useState('197 Joy Street');
+  const [city, setCity] = useState('Melbourne');
+  const [state, setState] = useState('Victoria');
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
@@ -172,6 +184,15 @@ function Profile() {
     catch (error) {
       return;
     }
+  };
+
+  const toggleEditMode = () => {
+    setIsEditMode((prevEditMode) => !prevEditMode);
+  };
+
+  const handleSaveChanges = () => {
+    setChangesSaved(true);
+    setIsEditMode(false);
   };
 
   return (
@@ -187,46 +208,78 @@ function Profile() {
         <ProfileColumns>
           <div className="profile-info">
             <h2 className="info-header">First Name</h2>
-            {/* <p className="info-text">Evan</p> */}
             <input
-              type='text'
+              type="text"
               placeholder="etc. John"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              disabled={!isEditMode}
+              className={isEditMode ? 'input-edit-mode' : 'input-nonedit-mode'}
             />
             <h2 className="info-header">Last Name</h2>
             <input
-              type='text'
+              type="text"
               placeholder="etc. Smith"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              disabled={!isEditMode}
+              className={isEditMode ? 'input-edit-mode' : ''}
             />
             <h2 className="info-header">Email</h2>
             <input
-              type='text'
+              type="text"
               placeholder="etc. example@gmail.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              disabled={!isEditMode}
+              className={isEditMode ? 'input-edit-mode' : ''}
             />
             <h2 className="info-header">Password</h2>
             <input
-              type='password'
+              type="password"
               placeholder="etc. Jsmith1923"
-            />          </div>
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              disabled={!isEditMode}
+              className={isEditMode ? 'input-edit-mode' : ''}
+            />         
+          </div>
           <div className="profile-info">
             <h2 className="info-header">Contact Number</h2>
             <input
-              type='text'
+              type="text"
               placeholder="etc. 0452382938"
+              value={contactNumber}
+              onChange={(e) => setContactNumber(e.target.value)}
+              disabled={!isEditMode}
+              className={isEditMode ? 'input-edit-mode' : ''}
             />
             <h2 className="info-header">Address</h2>
             <input
-              type='text'
+              type="text"
               placeholder="197 Joy Street"
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+              disabled={!isEditMode}
+              className={isEditMode ? 'input-edit-mode' : ''}
             />
             <h2 className="info-header">City</h2>
             <input
-              type='text'
+              type="text"
               placeholder="etc. Melbourne"
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
+              disabled={!isEditMode}
+              className={isEditMode ? 'input-edit-mode' : ''}
             />
             <h2 className="info-header">State</h2>
             <input
-              type='text'
+              type="text"
               placeholder="etc. Victoria"
+              value={state}
+              onChange={(e) => setState(e.target.value)}
+              disabled={!isEditMode}
+              className={isEditMode ? 'input-edit-mode' : ''}
             />
           </div>
           <div className="profile-pic">
@@ -235,17 +288,27 @@ function Profile() {
               <ProfilePicImage src={selectedImage} alt="" />
             </ProfilePicContainer>
             <ButtonGroup>
-              <label className="profile-button">
-                Upload Photo
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageUpload}
-                  style={{ display: 'none' }}
-                />
-              </label>
-              <ProfileButton>Change Password</ProfileButton>
-              <ProfileButton>Edit Profile</ProfileButton>
+              {isEditMode ? (
+                <label className="profile-button">
+                  Upload Photo
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                    style={{ display: 'none' }}
+                  />
+                </label>
+              ) : null}
+              {isEditMode ? (
+                <>
+                  <ProfileButton>Change Password</ProfileButton>
+                  <ProfileButton onClick={handleSaveChanges}>
+                    Save Changes
+                  </ProfileButton>
+                </>
+              ) : (
+                <ProfileButton onClick={toggleEditMode}>Edit Profile</ProfileButton>
+              )}
             </ButtonGroup>
           </div>
         </ProfileColumns>

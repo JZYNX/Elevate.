@@ -193,7 +193,7 @@ function Login() {
   const handleLogin = async () => {
     const { username, password } = credentials;
     if (await userExists(username, password)) {
-      navigate('/profile');
+      navigate('/dashboard');
     } else {
       alert('Login failed. Please check your credentials.');
     }
@@ -270,7 +270,7 @@ function Login() {
           onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
           onKeyPress={handleKeyPress}
         />
-         <button className="forget-button" >
+         <button className="forget-button" onClick={() => handleNavigation('/forget')}>
           Forgot your password?
         </button>
         <button className="login-button" onClick={handleLogin}>
