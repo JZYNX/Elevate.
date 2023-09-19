@@ -49,6 +49,28 @@ input {
     }
 }
 
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+
+    .delete-btn {
+        background-color: #ff9daa;
+        font-family: 'Poppins';
+        padding: 10px 20px;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+
+        &:hover {
+            background-color: red;
+        }
+    }
+}
+
 /* Date Time Picker */
 .datetime-picker {
     margin-bottom: 15px;
@@ -69,6 +91,7 @@ input {
 .popup-btns {
     display: flex;
     justify-content: right;
+    font-family: 'Poppins';
 
     .btn {
         padding: 10px 20px;
@@ -100,8 +123,3 @@ input {
 }
 
 
-/* Title */
-.event-title {
-    font-size: 24px;
-    margin-bottom: 20px;
-}
