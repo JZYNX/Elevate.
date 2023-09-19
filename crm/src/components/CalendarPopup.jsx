@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 import DateTimePicker from 'react-datetime-picker';
+import { toast } from 'react-toastify';
 import 'react-datetime-picker/dist/DateTimePicker.css';
 import 'react-calendar/dist/Calendar.css';
 import 'react-clock/dist/Clock.css';
@@ -30,8 +31,6 @@ function CalendarPopup({ isOpen, onClose, onSave, onDelete, mode, event, start, 
     }, [event, start, end]);
 
     const handleSave = () => {
-<<<<<<< Updated upstream:crm/src/components/ModalPopup.jsx
-=======
         if (!eventName){
             toast.error('You must enter a name before submitting.');
             return
@@ -40,7 +39,6 @@ function CalendarPopup({ isOpen, onClose, onSave, onDelete, mode, event, start, 
             toast.error('Please enter a valid time-frame.');
             return
         }
->>>>>>> Stashed changes:crm/src/components/CalendarPopup.jsx
         const timeDiff = endDatetime.getTime() - startDatetime.getTime();
         const isAllDay = timeDiff >= 86400000;
         const updatedEvent = {

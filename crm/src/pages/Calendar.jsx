@@ -137,6 +137,7 @@ function Calendar() {
 
     return (
         <CalendarContainer>
+            <ToastContainer position="bottom-right" autoClose={3000} hideProgressBar />
             <SidebarColumn>
                 <Sidebar />
             </SidebarColumn>
