@@ -277,9 +277,9 @@ function Login() {
         </div>
       </WelcomeMessage>
       <LoginForm>
-        <h2 className="login-header"> <strong>Reset account password</strong></h2>
+        <h2 className="login-header"> <strong>Email Verification</strong></h2>
         <ForgetMessageContainer>
-          Enter the email address associated with your account and we'll send you a link to reset your password
+          We have sent a code to your email
         </ForgetMessageContainer>
         <input
           className="user-input"
@@ -290,12 +290,13 @@ function Login() {
         />
 
         <button className="reset-button" onClick={() => handleNavigation('/sendOTP')}>
-          Send password reset email
+          Verify account
         </button>
 
         <RegisterContainer> 
+            Didn't receive code?
           <button className="forget-button" onClick={() => handleNavigation('/')}>
-            Back to sign-in
+            Resend OTP
           </button>
         </RegisterContainer>
 
