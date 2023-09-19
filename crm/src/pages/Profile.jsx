@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Sidebar from '../components/Sidebar';
 import bgImg from '../assets/nikuubg.jpg';
 import styled, { keyframes } from 'styled-components';
 import { primaryColor, secondaryColor } from '../utils/Color';
+import axios from 'axios';
 
 const ProfileContainer = styled.div`
   display: flex;
@@ -164,36 +165,106 @@ const ProfileButton = styled.button`
 function Profile() {
   const [isEditMode, setIsEditMode] = useState(false); 
   const [changesSaved, setChangesSaved] = useState(false); 
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [postImage, setPostImage] = useState( { myFile : ""})
+  const [selectedImagePath, setSelectedImagePath] = useState('');
+  const [userData, setUserData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+    contactNumber: '',
+    address: '',
+    city: '',
+    state: '',
+    // Add other user properties here
+  });
+  // Create a URLSearchParams object to parse the URL parameters
+  const urlParams = new URLSearchParams(window.location.search);
 
-  // user info
-  const [firstName, setFirstName] = useState('John');
-  const [lastName, setLastName] = useState('Smith');
-  const [email, setEmail] = useState('example@gmail.com');
-  const [password, setPassword] = useState('Jsmith1923');
-  const [contactNumber, setContactNumber] = useState('0452382938');
-  const [address, setAddress] = useState('197 Joy Street');
-  const [city, setCity] = useState('Melbourne');
-  const [state, setState] = useState('Victoria');
-
-  const handleImageUpload = (event) => {
-    const file = event.target.files[0];
-    try {
-      setSelectedImage(URL.createObjectURL(file));
+  // Get the 'username' parameter value from the URL
+  const storedUsername = urlParams.get('username');
+  useEffect(() => {
+    async function fetchUserDataAndSetState() {
+      try {
+        const userResponse = await fetchUserData(storedUsername);
+        setUserData(userResponse);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
     }
-    catch (error) {
-      return;
+
+    fetchUserDataAndSetState();
+  }, [storedUsername]);
+
+  // console.log("The email is " + userData.email);
+  // // user info
+  // const [firstName, setFirstName] = useState('John');
+  // const [lastName, setLastName] = useState('Smith');
+  // const [email, setEmail] = useState('example@gmail.com');
+  // const [password, setPassword] = useState('Jsmith1923');
+  // const [contactNumber, setContactNumber] = useState('0452382938');
+  // const [address, setAddress] = useState('197 Joy Street');
+  // const [city, setCity] = useState('Melbourne');
+  // const [state, setState] = useState('Victoria');
+
+  const handleImageUpload = async (event) => {
+    const file = event.target.files[0];
+    const formData = new FormData();
+    formData.append('userImage', file);
+    try {
+      const response = await fetch('/users/uploadImage', {
+        method: 'PUT',
+        body: formData,
+      });
+  
+      if (response.status === 200) {
+        const responseData = await response.json();
+        
+        setSelectedImagePath(responseData.filePath);
+        console.log('Image uploaded successfully');
+      } else {
+        console.error('Failed to upload image:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error uploading image:', error);
     }
   };
+  
+  
+
 
   const toggleEditMode = () => {
     setIsEditMode((prevEditMode) => !prevEditMode);
   };
 
-  const handleSaveChanges = () => {
-    setChangesSaved(true);
-    setIsEditMode(false);
+  const handleSaveChanges = async (event) => {
+    event.preventDefault();
+    try {
+      // console.log('Stored Username:', storedUsername);
+      const commonData = { ...userData, username: storedUsername };
+      
+      // Check if a new image was selected and update the data object accordingly
+      if (selectedImagePath) {
+        commonData.userImage = selectedImagePath;
+      }
+
+      // Send a PATCH request with the common data
+      const response = await axios.patch(`/users/`, commonData);
+      
+      if (response.status === 200) {
+        // Changes were successfully saved in the backend
+        setChangesSaved(true);
+        setIsEditMode(false);
+        window.location.reload();
+      } else {
+        // Handle error if the request was not successful
+        console.error('Failed to save changes to the backend.');
+      }
+    } catch (error) {
+      console.error('Error while saving changes:', error);
+    }
   };
+  
 
   return (
     <ProfileContainer>
@@ -211,8 +282,8 @@ function Profile() {
             <input
               type="text"
               placeholder="etc. John"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
+              value={userData.firstName}
+              onChange={(e) => setUserData({ ...userData, firstName: e.target.value })}
               disabled={!isEditMode}
               className={isEditMode ? 'input-edit-mode' : 'input-nonedit-mode'}
             />
@@ -220,8 +291,8 @@ function Profile() {
             <input
               type="text"
               placeholder="etc. Smith"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
+              value={userData.lastName}
+              onChange={(e) => setUserData({ ...userData, lastName: e.target.value })}
               disabled={!isEditMode}
               className={isEditMode ? 'input-edit-mode' : ''}
             />
@@ -229,8 +300,8 @@ function Profile() {
             <input
               type="text"
               placeholder="etc. example@gmail.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={userData.email}
+              onChange={(e) => setUserData({ ...userData, email: e.target.value })}
               disabled={!isEditMode}
               className={isEditMode ? 'input-edit-mode' : ''}
             />
@@ -238,8 +309,8 @@ function Profile() {
             <input
               type="password"
               placeholder="etc. Jsmith1923"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={userData.password}
+              onChange={(e) => setUserData({ ...userData, password: e.target.value })}
               disabled={!isEditMode}
               className={isEditMode ? 'input-edit-mode' : ''}
             />         
@@ -249,8 +320,8 @@ function Profile() {
             <input
               type="text"
               placeholder="etc. 0452382938"
-              value={contactNumber}
-              onChange={(e) => setContactNumber(e.target.value)}
+              value={userData.contactNumber}
+              onChange={(e) => setUserData({ ...userData, contactNumber: e.target.value })}
               disabled={!isEditMode}
               className={isEditMode ? 'input-edit-mode' : ''}
             />
@@ -258,8 +329,8 @@ function Profile() {
             <input
               type="text"
               placeholder="197 Joy Street"
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
+              value={userData.address ? userData.address.street : ''}
+              onChange={(e) => setUserData({ ...userData, address: { ...userData.address, street: e.target.value } })}
               disabled={!isEditMode}
               className={isEditMode ? 'input-edit-mode' : ''}
             />
@@ -267,8 +338,8 @@ function Profile() {
             <input
               type="text"
               placeholder="etc. Melbourne"
-              value={city}
-              onChange={(e) => setCity(e.target.value)}
+              value={userData.address ? userData.address.city : ''}
+              onChange={(e) => setUserData({ ...userData, address: { ...userData.address, city: e.target.value } })}
               disabled={!isEditMode}
               className={isEditMode ? 'input-edit-mode' : ''}
             />
@@ -276,8 +347,8 @@ function Profile() {
             <input
               type="text"
               placeholder="etc. Victoria"
-              value={state}
-              onChange={(e) => setState(e.target.value)}
+              value={userData.address ? userData.address.state : ''}
+              onChange={(e) => setUserData({ ...userData, address: { ...userData.address, state: e.target.value } })}
               disabled={!isEditMode}
               className={isEditMode ? 'input-edit-mode' : ''}
             />
@@ -285,7 +356,7 @@ function Profile() {
           <div className="profile-pic">
             <h2 className="info-header">Profile Pic</h2>
             <ProfilePicContainer>
-              <ProfilePicImage src={selectedImage} alt="" />
+              <ProfilePicImage src={userData.userImage ? '/' + userData.userImage : ''} alt="" />
             </ProfilePicContainer>
             <ButtonGroup>
               {isEditMode ? (
@@ -316,5 +387,35 @@ function Profile() {
     </ProfileContainer>
   );
 }
+
+
+const fetchUserData = async (username) => {
+  try {
+    const response = await fetch(`/users`);
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    const allUserData = await response.json();
+
+    // Filter the user data to find the matching username
+    const userData = allUserData.find(user => user.username === username);
+
+    if (!userData) {
+      throw new Error(`User with username "${username}" not found`);
+    }
+
+    return userData;
+  } catch (error) {
+    console.error('Error fetching user data:', error);
+    throw error; // Handle the error as needed
+  }
+};
+
+
+
+
+
+// Get the username from the cookie
+
 
 export default Profile;

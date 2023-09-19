@@ -185,15 +185,22 @@ const OtherLoginOptions = styled.div`
 `;
 
 
+
 function Login() {
   const [credentials, setCredentials] = useState({ username: '', password: '' });
   const navigate = useNavigate();
   const titleMessage = " elevate.";
+  const expirationDate = new Date();
+  expirationDate.setDate(expirationDate.getDate() + 7); // 7 days from now
+
 
   const handleLogin = async () => {
     const { username, password } = credentials;
     if (await userExists(username, password)) {
-      navigate('/dashboard');
+      // document.cookie = `username=${username}; expires=${expirationDate.toUTCString()}; path=/`;
+      // navigate('/profile');
+      const profileURL = `/profile?username=${username}`;
+      window.location.href = profileURL;
     } else {
       alert('Login failed. Please check your credentials.');
     }

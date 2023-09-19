@@ -11,6 +11,7 @@ const validateEmail = (email) => {
 const addressSchema = new mongoose.Schema({
     street: String,
     city: String,
+    state: String,
 })
 
 const userSchema = new mongoose.Schema({
@@ -36,11 +37,27 @@ const userSchema = new mongoose.Schema({
             message: 'Invalid email address',
         },
     },
+    contactNumber:{
+        type: String, 
+    },
     contacts: {
         type: mongoose.SchemaTypes.ObjectId,
         ref: "User",
     },
     address: addressSchema,
+    profilePic: {
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: "Post",
+    },
+    firstName: {
+        type: String,
+    },
+    lastName: {
+        type: String,
+    },
+    userImage: {
+        type:String,
+    },
 }, {timestamps: true})
 
 userSchema.methods.sayHi = function(username) {
@@ -50,5 +67,7 @@ userSchema.methods.sayHi = function(username) {
 userSchema.statics.findByUsername = function(username) {
     return this.where({username})
 }
+
+
 
 module.exports = mongoose.model('User', userSchema)
