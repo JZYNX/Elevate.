@@ -40,6 +40,8 @@ const {
     getAllUsers,
     updateUser,
     postImage,
+    uploadEvent,
+    updateEvents,
 } = require('../controllers/userController')
 
 
@@ -62,6 +64,9 @@ router.patch('/',updateUser)
 
 router.put('/uploadImage', upload.single('userImage'), postImage)
 
+router.put('/createEvent', uploadEvent); 
+
+router.put('/editEvents', updateEvents); 
 
 
 module.exports = router
