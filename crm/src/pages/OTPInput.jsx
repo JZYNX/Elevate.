@@ -94,16 +94,18 @@ const LoginForm = styled.div`
     outline: none;
   }
 
-  // LOGIN AND FORGET LOGIN BUTTONS
-  button.login-button {
-    width: 30%;
+  // RESET AND FORGET LOGIN BUTTONS
+  button.reset-button {
+    width: 50%;
     padding: 10px;
     margin-top: 20px;
+    margin-bottom: 20px;
     background-color: ${primaryColor};
     color: white;
     border: none;
     border-radius: 20px;
     font-size: 14px;
+    font-family: 'Poppins', sans-serif;
     cursor: pointer;
     transition: background-color 0.3s;
 
@@ -113,6 +115,8 @@ const LoginForm = styled.div`
   }
   button.forget-button {
     color: #0a1172;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
     background-color: white;
     border: none;
     cursor: pointer;
@@ -146,11 +150,35 @@ const LoginForm = styled.div`
 
 `;
 
+const ForgetMessageContainer = styled.div`
+  font-size: 14px;
+  font-family: 'Poppins', sans-serif;
+  padding-left: 70px;
+  padding-right: 70px;
+  padding-bottom: 10px;
+  color: #888;
+
+  button.forget-button {
+    cursor: pointer;
+    color: #0a1172;
+    background-color: white;
+    border: none;
+    font-size: 14px;
+    transition: color 0.3s;
+    padding-bottom: 20px;
+
+    &:hover {
+      color: #151e3d;
+    }
+  }
+`;
+
+
 const RegisterContainer = styled.div`
   font-size: 16px;
   color: #888;
 
-  button.register-button {
+  button.forget-button {
     cursor: pointer;
     color: #0a1172;
     background-color: white;
@@ -185,22 +213,15 @@ const OtherLoginOptions = styled.div`
 `;
 
 
-
 function Login() {
   const [credentials, setCredentials] = useState({ username: '', password: '' });
   const navigate = useNavigate();
   const titleMessage = " elevate.";
-  const expirationDate = new Date();
-  expirationDate.setDate(expirationDate.getDate() + 7); // 7 days from now
-
 
   const handleLogin = async () => {
     const { username, password } = credentials;
     if (await userExists(username, password)) {
-      // document.cookie = `username=${username}; expires=${expirationDate.toUTCString()}; path=/`;
-      // navigate('/profile');
-      const profileURL = `/profile?username=${username}`;
-      window.location.href = profileURL;
+      navigate('/profile');
     } else {
       alert('Login failed. Please check your credentials.');
     }
@@ -249,19 +270,17 @@ function Login() {
             return (
               <TextHover key={index}>
                {letter === " " ? '\u00A0' : letter}
+
               </TextHover>
             );
           })}
         </div>
       </WelcomeMessage>
       <LoginForm>
-        <h2 className="login-header"> <strong>Login</strong></h2>
-        <RegisterContainer>
-          Don't have an account yet? 
-          <button className="register-button" onClick={() => handleNavigation('/register')}>
-            Register
-          </button>
-        </RegisterContainer>
+        <h2 className="login-header"> <strong>Email Verification</strong></h2>
+        <ForgetMessageContainer>
+          We have sent a code to your email
+        </ForgetMessageContainer>
         <input
           className="user-input"
           type="text"
@@ -269,20 +288,18 @@ function Login() {
           value={credentials.username}
           onChange={(e) => setCredentials({ ...credentials, username: e.target.value })}
         />
-        <input
-          className='password-input'
-          type='password'
-          placeholder="Password"
-          value={credentials.password}
-          onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
-          onKeyPress={handleKeyPress}
-        />
-         <button className="forget-button" onClick={() => handleNavigation('/forget')}>
-          Forgot your password?
+
+        <button className="reset-button" onClick={() => handleNavigation('/reset')}>
+          Verify account
         </button>
-        <button className="login-button" onClick={handleLogin}>
-          Log in
-        </button>
+
+        <RegisterContainer> 
+            Didn't receive code?
+          <button className="forget-button" onClick={() => handleNavigation('/')}>
+            Resend OTP
+          </button>
+        </RegisterContainer>
+
         <div className="separator-container">
           <hr className="separator-line" />
           <div className="separator-text">OR</div>
@@ -305,4 +322,3 @@ function Login() {
 }
 
 export default Login;
-

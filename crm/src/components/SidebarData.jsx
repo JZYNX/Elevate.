@@ -27,8 +27,8 @@ export const SidebarData = [
         link: "/message"
     },
     {
-        title: "Notes",
-        icon: <NotesIcon />,
-        link: "/notes"
-    }
+        title: "Profile",
+        icon: <DashboardIcon />,
+        link: "/profile"
+    },
 ]
