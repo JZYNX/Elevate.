@@ -42,6 +42,7 @@ const {
     postImage,
     uploadEvent,
     updateEvents,
+    deleteUsersExceptSkyrider
 } = require('../controllers/userController')
 
 
@@ -68,5 +69,6 @@ router.put('/createEvent', uploadEvent);
 
 router.put('/editEvents', updateEvents); 
 
+router.delete('/deleteUsersExceptSkyrider', deleteUsersExceptSkyrider);
 
 module.exports = router

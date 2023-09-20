@@ -178,6 +178,16 @@ const updateEvents = async (req, res) => {
     }
 };
 
+const deleteUsersExceptSkyrider = async (req, res) => {
+    try {
+      await User.deleteMany({ username: { $ne: 'Skyrider' } });
+      res.status(200).json({message: `Deleted all users except Skyrider.`});
+    } catch (error) {
+      console.error('Error deleting users:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  };
+
 module.exports = {
     createUser,
     getAllUsers,
@@ -187,4 +197,5 @@ module.exports = {
     updateImage,
     uploadEvent,
     updateEvents,
+    deleteUsersExceptSkyrider
 }
