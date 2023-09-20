@@ -1,13 +1,13 @@
 
 require('dotenv').config()
-
+const cors = require("cors");
 const express = require('express')
 const mongoose = require('mongoose')
 const userRoutes = require('./routes/users') 
 
 // express app
 const app = express()
-
+app.use(cors({ origin: true }));
 // middleware
 app.use(express.json())
 
@@ -32,25 +32,3 @@ mongoose.connect(process.env.MONGO_URI)
     console.log(err)
   }) 
 
-// run()
-// async function run() {
-//     try{
-//         const user = await User.create({
-//             username: "John", 
-//             password: "23ig3i2gub3bgus",
-//             address: {
-//                 street: "MckinnonRoad",
-//                 city: "Melbourne"
-//             },
-//             dateOfBirth: "2023-03-28",
-//             contacts: "64fec27cc3111213abfea1fd",
-//         })
-//         await user.save()
-//         console.log(user)
-        
-//         const user2 = await User.findByUsername("John")
-//         console.log(user2)
-//     } catch (e) {
-//         console.log(e.message)
-//     }
-// }
