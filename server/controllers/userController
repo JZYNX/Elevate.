@@ -49,26 +49,6 @@ const createUser = async (req, res) => {
     }
 }
 
-// UPDATE a user
-// const updateUser = async (req, res) => {
-//     const {id} = req.params
-
-//     if (!mongoose.Types.ObjectId.isValid(id)) {
-//         return res.status(404).json({error: "Invalid id, needs to be mongo ID"})
-//     }
-
-//     const user = await User.findOneAndUpdate({_id: id}, {
-//         ...req.body
-//     })
-
-//     if (!user) {
-//         return res.status(404).json({error: "No such user"})
-//     }
-
-//     return res.status(200).json(user)
-// }
-
-
 const postImage = async (req, res,next) => {
     try {
         // Check if a file was uploaded
@@ -89,10 +69,16 @@ const postImage = async (req, res,next) => {
 };
 
 const updateUser = async (req, res) => {
-    const { username, password } = req.body; // Assuming the username is sent in the request body
+    const { username, password } = req.body;
     const updatedUserData = req.body;
 
     try {
+        // Check if the username exists in the database
+        const existingUser = await User.findOne({ username });
+        if (!existingUser) {
+            return res.status(400).json({ message: "Username must exist" });
+        }
+
         // check is password is valid
         if (password && (password.length < global.PASSWORD_MIN_LENGTH || password.length > global.PASSWORD_MAX_LENGTH)) {
             return res.status(400).json({ message: "Password must be between 10 and 30 characters!"});
@@ -108,13 +94,11 @@ const updateUser = async (req, res) => {
         { new: true } // Return the updated user
       );
 
-
-  
       if (!updatedUser) {
         return res.status(404).json({ error: 'User not found' });
       }
-  
       return res.status(200).json(updatedUser);
+      
     } catch (error) {
       console.error('Error updating user:', error);
       return res.status(500).json({ error: 'Internal server error' });
