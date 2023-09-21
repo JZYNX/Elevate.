@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import {SidebarData} from './SidebarData';
 import bgImg from '../assets/nikuubg.jpg';
+import { useNavigate } from 'react-router-dom';
 
 const SidebarContainer = styled.div`
     height: 100%;
@@ -79,20 +80,27 @@ const TitleContainer = styled.div`
 `;
 
 function Sidebar() {
+    const navigate = useNavigate();
+
     const linkStyle = {
         textDecoration: 'none', // Remove the underline
         color: 'inherit', // Inherit the text color
       };
 
+    const handleNavigation = (path) => {
+        navigate(path);
+    };
+    
     return (
         <SidebarContainer> 
-            <a href="/dashboard" style={linkStyle}>
-                <SidebarTitle>
-                <h2 className="sidebar-title">
+            <SidebarTitle>
+                <h2 
+                    className="sidebar-title" 
+                    onClick={() => handleNavigation('/dashboard')}
+                    style={{ cursor: 'pointer' }}>
                     <strong>elevate.</strong>
                 </h2>
-                </SidebarTitle>
-            </a>
+            </SidebarTitle>
             <SidebarList>
                 {SidebarData.map((val, key)=>{
                     return (

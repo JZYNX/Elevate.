@@ -1,73 +1,62 @@
-// import React, { useState } from 'react';
-
-// function Message() {
-//   const [message, setMessage] = useState('');
-//   const [messages, setMessages] = useState([]);
-
-//   const handleSendMessage = () => {
-//     if (message.trim() !== '') {
-//       setMessages([...messages, { text: message, sender: 'user' }]);
-//       setMessage('');
-//     }
-//   };
-
-//   return (
-//     <div className="message-container">
-//       <h2>Messaging</h2>
-//       <div className="message-list">
-//         {messages.map((msg, index) => (
-//           <div key={index} className={`message ${msg.sender}`}>
-//             {msg.text}
-//           </div>
-//         ))}
-//       </div>
-//       <div className="message-input">
-//         <input
-//           type="text"
-//           placeholder="Type your message..."
-//           value={message}
-//           onChange={(e) => setMessage(e.target.value)}
-//         />
-//         <button onClick={handleSendMessage}>Send</button>
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default Message;
-
-
-// import {PrettyChatWindow } from 'react-chat-engine-pretty'
-// const urlParams = new URLSearchParams(window.location.search);
-
-//   // Get the 'username' parameter value from the URL
-// const storedUsername = urlParams.get('username');
-
-// const ChatsPage = (props) => {
-  
-//   return (
-//     <div style = {{height:'100vh'}}>
-//       <PrettyChatWindow
-//         projectId='f9f667d7-4e0a-4460-9608-a7129b2e6e04'
-//         username={storedUsername}
-//         secret={storedUsername}
-//         style={{height:'100%'}}
-//         />
-//     </div>
-//   )
-// }
-
-// export default ChatsPage
-
-
 import React, {useState, useEffect, useRef} from "react";
-import styled from "styled-components";
+import styled, { keyframes } from 'styled-components';
+import bgImg from '../assets/nikuubg.jpg';
 import axios from "axios";
 import Contacts from "./Contacts";
+import Sidebar from '../components/Sidebar';
 import Welcome from "../components/Welcome";
 import ChatContainer from "../components/ChatContainer";
 import {io} from "socket.io-client";
 import {host} from "../utils/APIRoutes"
+
+const changeColors = keyframes`
+  0%, 100% {
+    filter: hue-rotate(0deg); /* Start and end with pink (320 degrees) */
+  }
+  50% {
+    filter: hue-rotate(60deg); /* Transition to purple (240 degrees) */
+  }
+`;
+const BackgroundImage = styled.img`
+  /* Add styles for the background image */
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; 
+  object-position: right;
+  z-index: -1; /* Put the image behind other content */
+  animation: ${changeColors} 5s infinite linear; /* Apply the animation */
+`;
+
+const SidebarColumn = styled.div`
+  flex: 1;
+  background-color: #f0f0f0;
+`;
+
+const Container = styled.div`
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+  align-items: center;
+  background-image: url(${bgImg}); /* Set the background image */
+  background-size: cover; /* Ensure the image covers the entire container */
+  background-position: right;
+  // background-color: #131324;
+  .container {
+    background-color: rgb(0, 0, 0, 0.3);
+    height: 100vh;
+    width: 100vw;
+    display: grid;
+    grid-template-columns: 20% 80%;
+    @media screen and (min-width: 720px) and (max-width: 1080px) {
+      grid-template-columns: 35% 65%;
+    }
+  }
+`;
+
 function Message(){
   const [contacts, setContacts] = useState([]);
   const urlParams = new URLSearchParams(window.location.search);
@@ -144,26 +133,5 @@ function Message(){
     </Container>
   )
 }
-
-const Container = styled.div`
-  height: 100vh;
-  width: 100vw;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 1rem;
-  align-items: center;
-  background-color: #131324;
-  .container {
-    height: 85vh;
-    width: 85vw;
-    background-color: #00000076;
-    display: grid;
-    grid-template-columns: 25% 75%;
-    @media screen and (min-width: 720px) and (max-width: 1080px) {
-      grid-template-columns: 35% 65%;
-    }
-  }
-`;
 
 export default Message;
