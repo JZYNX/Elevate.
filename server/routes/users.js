@@ -42,6 +42,7 @@ const {
     postImage,
     uploadEvent,
     updateEvents,
+    getOneUserByUsername,
 } = require('../controllers/userController')
 
 
@@ -58,7 +59,7 @@ router.post('/', createUser)
 //UPDATE a user
 // router.patch('/:id', updateUser)
 
-
+router.post('/getUser', getOneUserByUsername);
 
 router.patch('/',updateUser)
 

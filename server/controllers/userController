@@ -11,7 +11,7 @@ const getAllUsers = async (req, res) => {
     return res.status(200).json(users)
 }
 
-// get one
+// get one user by id
 const getOneUser = async (req, res) => {
     const {id} = req.params
 
@@ -27,6 +27,20 @@ const getOneUser = async (req, res) => {
 
     return res.status(200).json(user)
 }
+
+// get one user by username
+const getOneUserByUsername = async (req, res) => {
+  const {username} = req.body
+
+  const user = await User.findOne({username})
+
+  if (!user) {
+      return res.status(404).json({error: "No such user", user})
+  }
+
+  return res.status(200).json(user)
+}
+
 
 // POST new user
 const createUser = async (req, res) => {
@@ -58,24 +72,7 @@ const createUser = async (req, res) => {
     }
 }
 
-// UPDATE a user
-// const updateUser = async (req, res) => {
-//     const {id} = req.params
 
-//     if (!mongoose.Types.ObjectId.isValid(id)) {
-//         return res.status(404).json({error: "Invalid id, needs to be mongo ID"})
-//     }
-
-//     const user = await User.findOneAndUpdate({_id: id}, {
-//         ...req.body
-//     })
-
-//     if (!user) {
-//         return res.status(404).json({error: "No such user"})
-//     }
-
-//     return res.status(200).json(user)
-// }
 
 
 const postImage = async (req, res,next) => {
@@ -196,4 +193,5 @@ module.exports = {
     updateImage,
     uploadEvent,
     updateEvents,
+    getOneUserByUsername,
 }
