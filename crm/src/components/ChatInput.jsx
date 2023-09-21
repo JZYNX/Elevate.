@@ -8,7 +8,7 @@ const Container = styled.div`
   display: grid;
   align-items: center;
   grid-template-columns: 5% 95%;
-  background-color: #080420;
+  background-color: rgb(0, 0, 0, 0.4);
   padding: 0 2rem;
   @media screen and (min-width: 720px) and (max-width: 1080px) {
     padding: 0 1rem;
@@ -75,6 +75,10 @@ const Container = styled.div`
       }
       &:focus {
         outline: none;
+      }
+      &::placeholder {
+        font-size: 1.1rem;
+        color: white;
       }
     }
     button {

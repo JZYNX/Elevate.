@@ -56,10 +56,10 @@ const Container = styled.div`
     }
   }
   .chat-messages {
-    padding: 1rem 2rem;
+    padding-left:2rem;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 0rem;
     overflow: auto;
     &::-webkit-scrollbar {
       width: 0.2rem;
