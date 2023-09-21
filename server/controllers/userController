@@ -1,7 +1,7 @@
 const { default: mongoose } = require('mongoose')
 const User = require('../models/userModel')
 const Post = require('../models/postModel')
-
+const { default: axios } = require('axios')
 
 
 // get all
@@ -11,7 +11,7 @@ const getAllUsers = async (req, res) => {
     return res.status(200).json(users)
 }
 
-// get one
+// get one user by id
 const getOneUser = async (req, res) => {
     const {id} = req.params
 
@@ -28,6 +28,20 @@ const getOneUser = async (req, res) => {
     return res.status(200).json(user)
 }
 
+// get one user by username
+const getOneUserByUsername = async (req, res) => {
+  const {username} = req.body
+
+  const user = await User.findOne({username})
+
+  if (!user) {
+      return res.status(404).json({error: "No such user", user})
+  }
+
+  return res.status(200).json(user)
+}
+
+
 // POST new user
 const createUser = async (req, res) => {
     const {username, password, email} = req.body
@@ -43,7 +57,16 @@ const createUser = async (req, res) => {
 
     try {
         const user = await User.create({username, password, email})
-        res.status(200).json(user)
+        
+        
+        const r = await axios.put(
+          'https://api.chatengine.io/users/',
+          {username:username, secret:username, first_name:username},
+          {headers: {"private-key" : "03afede7-020b-4a77-8c46-6558ae0b88c6"}}
+        )
+        res.status(200).json(r.data)
+        
+       
     } catch (err) {
         res.status(400).json({error: err.message})
     }
@@ -181,5 +204,6 @@ module.exports = {
     updateImage,
     uploadEvent,
     updateEvents,
-    deleteUsersExceptSkyrider
+    deleteUsersExceptSkyrider,
+    getOneUserByUsername
 }

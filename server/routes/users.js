@@ -40,7 +40,8 @@ const {
     postImage,
     uploadEvent,
     updateEvents,
-    deleteUsersExceptSkyrider
+    deleteUsersExceptSkyrider,
+    getOneUserByUsername
 } = require('../controllers/userController')
 
 //GET all users
@@ -51,6 +52,8 @@ router.get('/:id', getOneUser)
 
 //POST a new user
 router.post('/', createUser)
+
+router.post('/getUser', getOneUserByUsername);
 
 router.patch('/',updateUser)
 
