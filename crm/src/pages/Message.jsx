@@ -50,7 +50,7 @@ const Container = styled.div`
     height: 100vh;
     width: 100vw;
     display: grid;
-    grid-template-columns: 20% 80%;
+    grid-template-columns: 17% 83%;
     @media screen and (min-width: 720px) and (max-width: 1080px) {
       grid-template-columns: 35% 65%;
     }

@@ -38,12 +38,12 @@ const Container = styled.div`
     align-items: center;
     gap: 1rem;
     justify-content: center;
-    margin-top: 5rem;
+    margin-top: 4rem;
     img {
       height: 2rem;
     }
     h3 {
-      font-size: 40px;
+      font-size: 36px;
       color: ${primaryColor};
     }
   }
@@ -78,7 +78,7 @@ const Container = styled.div`
       //   }
       // }
       .username {
-        margin-left: 5.2rem;
+        margin-left: 4rem;
         h3 {
           font-size: 1rem;
           color: white;
@@ -185,7 +185,7 @@ export default function Contacts({ contacts, changeChat }) {
               onClick={() => handleNavigation('/dashboard')}
               style={{ cursor: 'pointer' }}
               >
-                &lt;&lt;back to dashboard</h2>
+                &lt;&lt;dashboard</h2>
         </div>
         </div>
     </Container>
