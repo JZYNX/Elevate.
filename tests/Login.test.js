@@ -1,45 +1,63 @@
-import React from 'react';
-import { render, fireEvent, waitFor } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom'; // Use MemoryRouter for routing
-import Login from './Login';
+const request = require('supertest');
+const mongoose = require('mongoose');
+const app = require('../server/server'); 
+const User = require('../server/models/userModel'); 
+require('dotenv').config();
 
-// Mock the fetch function to simulate API calls
-global.fetch = jest.fn(() =>
-  Promise.resolve({
-    ok: true,
-    json: () => Promise.resolve([{ username: 'testuser', password: 'testpassword' }]), // Mock the user data from the API
-  })
-);
+// Create a test user
+const testUser = {
+  username: 'testuser',
+  password: 'testpassword123',
+  email: 'test@testing.com'
+};
 
-// Mock the window.location.href to capture redirection
-const originalHref = window.location.href;
-beforeEach(() => {
-  delete window.location;
-  window.location = { href: originalHref };
+// Mock MongoDB connection
+beforeAll(async () => {
+  await mongoose.connect(process.env.MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
 });
 
-test('Successful login redirects to dashboard', async () => {
-  // Render the Login component wrapped in MemoryRouter for routing
-  const { getByPlaceholderText, getByText } = render(
-    <MemoryRouter>
-      <Login />
-    </MemoryRouter>
-  );
+// Clean up the test user after the test
+afterAll(async () => {
+  await User.deleteOne({ username: testUser.username });
+  await mongoose.connection.close();
+});
 
-  // Fill in the username and password inputs
-  const usernameInput = getByPlaceholderText('Username');
-  const passwordInput = getByPlaceholderText('Password');
-  fireEvent.change(usernameInput, { target: { value: 'testuser' } });
-  fireEvent.change(passwordInput, { target: { value: 'testpassword' } });
+describe('User Authentication', () => {
+  it('should allow a registered user to log in', async () => {
+    // Create a test user in the database
+    await User.create(testUser);
 
-  // Click the login button
-  const loginButton = getByText('Log in');
-  fireEvent.click(loginButton);
+    // Send a POST request to the login endpoint with the test user's credentials
+    const response = await request(app)
+      .post('/login') // Replace with your actual login endpoint
+      .send({
+        username: testUser.username,
+        password: testUser.password,
+        email: testUser.email
+      });
 
-  // Wait for the redirection to occur
-  await waitFor(() => {
-    expect(window.location.href).toMatch(/\/profile\?username=testuser$/); // Verify the expected redirection URL
+    // Expect a 200 OK response indicating successful login
+    expect(response.status).toBe(200);
+
+    // You can add more assertions as needed based on your application's behavior
   });
 
-  // You can also add further assertions to verify elements on the dashboard page if needed
+  it('should reject login for an invalid user', async () => {
+    // Send a POST request to the login endpoint with invalid credentials
+    const response = await request(app)
+      .post('/login') // Replace with your actual login endpoint
+      .send({
+        username: 'nonexistentuser',
+        password: 'invalidpassword',
+        email: 'invalidemail'
+      });
+
+    // Expect a 401 Unauthorized or other relevant status code
+    expect(response.status).toBe(401);
+
+    // You can add more assertions as needed based on your application's behavior
+  });
 });
