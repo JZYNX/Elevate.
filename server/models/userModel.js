@@ -54,12 +54,10 @@ const userSchema = new mongoose.Schema({
     contactNumber:{
         type: String, 
     },
-    connections: [
-        {
-            type: mongoose.SchemaTypes.ObjectId,
-            ref: "User",
-        },
-    ],
+    contacts: {
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: "User",
+    },
     address: addressSchema,
     profilePic: {       // Not using this field for now
         type: mongoose.SchemaTypes.ObjectId,
