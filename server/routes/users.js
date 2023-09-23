@@ -37,6 +37,7 @@ const {
     getOneUser,
     getAllUsers,
     updateUser,
+    userExists,
     postImage,
     uploadEvent,
     updateEvents,
@@ -52,6 +53,8 @@ router.get('/:id', getOneUser)
 
 //POST a new user
 router.post('/', createUser)
+
+router.post('/userExists', userExists)
 
 router.post('/getUser', getOneUserByUsername);
 
