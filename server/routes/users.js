@@ -32,8 +32,6 @@ const upload = multer({
 )
 
 
-
-
 const {
     createUser,
     getOneUser,
@@ -42,9 +40,9 @@ const {
     postImage,
     uploadEvent,
     updateEvents,
+    deleteUsersExceptSkyrider,
+    getOneUserByUsername
 } = require('../controllers/userController')
-
-
 
 //GET all users
 router.get('/', getAllUsers)
@@ -55,10 +53,7 @@ router.get('/:id', getOneUser)
 //POST a new user
 router.post('/', createUser)
 
-//UPDATE a user
-// router.patch('/:id', updateUser)
-
-
+router.post('/getUser', getOneUserByUsername);
 
 router.patch('/',updateUser)
 
@@ -68,5 +63,22 @@ router.put('/createEvent', uploadEvent);
 
 router.put('/editEvents', updateEvents); 
 
+router.delete('/deleteUsersExceptSkyrider', deleteUsersExceptSkyrider);
+
+
+const {
+    getAllConnections,
+    addConnectionForUser,
+    deleteConnectionForUser
+} = require('../controllers/connectionsController');
+
+// GET all connections for a user
+router.get('/connections/getAll', getAllConnections)
+
+// PATCH - add a connection for a user
+router.patch('/connections', addConnectionForUser)
+
+// DELETE a connection from a user
+router.delete('/connections', deleteConnectionForUser)
 
 module.exports = router
