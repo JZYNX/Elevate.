@@ -15,7 +15,7 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-  await User.deleteOne(testUser);
+  await User.deleteOne({ username: testUser.username });
 });
 
 describe('User Authentication', () => {
