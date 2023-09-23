@@ -72,6 +72,25 @@ const createUser = async (req, res) => {
     }
 }
 
+const userExists = async (req, res) => {
+  const { username, password } = req.body;
+
+  try {
+    // Check if the user exists in the database
+    const user = await User.findOne({ username });
+
+    if (!user) {
+      return res.status(401).json({ message: 'User not found' });
+    }
+
+    // Authentication is successful
+    return res.status(200).json({ message: 'Login successful' });
+  } catch (error) {
+    console.error('Error during login:', error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+}
+
 const postImage = async (req, res,next) => {
     try {
         // Check if a file was uploaded
@@ -200,6 +219,7 @@ module.exports = {
     getAllUsers,
     getOneUser,
     updateUser,
+    userExists,
     postImage,
     updateImage,
     uploadEvent,

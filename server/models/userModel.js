@@ -81,6 +81,4 @@ userSchema.statics.findByUsername = function(username) {
     return this.where({username})
 }
 
-
-
 module.exports = mongoose.model('User', userSchema)
