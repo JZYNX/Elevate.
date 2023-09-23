@@ -1,37 +1,137 @@
-import React, { useState } from 'react';
+import React, {useState, useEffect, useRef} from "react";
+import styled, { keyframes } from 'styled-components';
+import bgImg from '../assets/nikuubg.jpg';
+import axios from "axios";
+import Contacts from "./Contacts";
+import Sidebar from '../components/Sidebar';
+import Welcome from "../components/Welcome";
+import ChatContainer from "../components/ChatContainer";
+import {io} from "socket.io-client";
+import {host} from "../utils/APIRoutes"
 
-function Message() {
-  const [message, setMessage] = useState('');
-  const [messages, setMessages] = useState([]);
+const changeColors = keyframes`
+  0%, 100% {
+    filter: hue-rotate(0deg); /* Start and end with pink (320 degrees) */
+  }
+  50% {
+    filter: hue-rotate(60deg); /* Transition to purple (240 degrees) */
+  }
+`;
+const BackgroundImage = styled.img`
+  /* Add styles for the background image */
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; 
+  object-position: right;
+  z-index: -1; /* Put the image behind other content */
+  animation: ${changeColors} 5s infinite linear; /* Apply the animation */
+`;
 
-  const handleSendMessage = () => {
-    if (message.trim() !== '') {
-      setMessages([...messages, { text: message, sender: 'user' }]);
-      setMessage('');
+const SidebarColumn = styled.div`
+  flex: 1;
+  background-color: #f0f0f0;
+`;
+
+const Container = styled.div`
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+  align-items: center;
+  background-image: url(${bgImg}); /* Set the background image */
+  background-size: cover; /* Ensure the image covers the entire container */
+  background-position: right;
+  // background-color: #131324;
+  .container {
+    background-color: rgb(0, 0, 0, 0.3);
+    height: 100vh;
+    width: 100vw;
+    display: grid;
+    grid-template-columns: 17% 83%;
+    @media screen and (min-width: 720px) and (max-width: 1080px) {
+      grid-template-columns: 35% 65%;
     }
+  }
+`;
+
+function Message(){
+  const [contacts, setContacts] = useState([]);
+  const urlParams = new URLSearchParams(window.location.search);
+  const storedUsername = urlParams.get('username');
+  const [currentUser,setCurrentUser] = useState(null);
+  const [currentChat, setCurrentChat] = useState(null);
+  const socket = useRef();
+
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        // Fetch user data using fetch
+        const response = await fetch(`/users/getUser`, {
+          method: 'POST',
+          headers:{
+            'Content-Type': 'application/json',
+          },
+          body:JSON.stringify({ username: storedUsername }),
+        });
+        
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+  
+        const loggedInUser = await response.json();
+        setCurrentUser(loggedInUser)
+
+        // Fetch contacts data using fetch
+        const contactsResponse = await fetch('/users');
+        
+        if (!contactsResponse.ok) {
+          throw new Error('Network response was not ok');
+        }
+
+        const contactsData = await contactsResponse.json();
+        setContacts(contactsData);
+        
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    }
+    
+    fetchData();
+  }, [currentUser]);
+  
+  useEffect(() => {
+    if(currentUser){
+      socket.current=io(host);
+      socket.current.emit("add-user", currentUser._id);
+
+    }
+  }, [currentUser]) 
+
+  const handleChatChange = (chat) => {
+    setCurrentChat(chat);
   };
 
   return (
-    <div className="message-container">
-      <h2>Messaging</h2>
-      <div className="message-list">
-        {messages.map((msg, index) => (
-          <div key={index} className={`message ${msg.sender}`}>
-            {msg.text}
-          </div>
-        ))}
+    <Container>
+      <div className="container">
+        <Contacts contacts={contacts} currentUser = {currentUser} changeChat={handleChatChange} />
+        {
+          currentChat === null ?(
+          <Welcome currentUser = {currentUser}/>
+          ): (
+            <ChatContainer currentChat = {currentChat} currentUser = {currentUser} socket={socket}/>
+          )
+
+        }
+        
       </div>
-      <div className="message-input">
-        <input
-          type="text"
-          placeholder="Type your message..."
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-        />
-        <button onClick={handleSendMessage}>Send</button>
-      </div>
-    </div>
-  );
+      
+    </Container>
+  )
 }
 
 export default Message;

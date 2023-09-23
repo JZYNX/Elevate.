@@ -264,7 +264,7 @@ function Profile() {
       <SidebarColumn>
         <Sidebar />
       </SidebarColumn>
-      <BackgroundImage src={bgImg} alt="bgImg" />
+        <BackgroundImage src={bgImg} alt="bgImg" />
       <ProfileInfoContainer>
         <ProfileTitle>
           <h2 className="profile-header">Profile</h2>
