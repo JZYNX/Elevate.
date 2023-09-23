@@ -1,5 +1,4 @@
-const dotenv = require('dotenv');
-dotenv.config({ path: '.env' });
+require('dotenv').config({ path: require('find-config')('.env') })
 const cors = require("cors");
 const express = require('express')
 const mongoose = require('mongoose')
@@ -24,7 +23,7 @@ app.use('/api/messages',messageRoute)
 //global folder for uploading images
 app.use('/uploads/',express.static('uploads'));
 // server listen to port
-server = app.listen(process.env.PORT, () => {
+const server = app.listen(process.env.PORT, () => {
   console.log('listening for requests on port', process.env.PORT)
 })
 // connect to db
