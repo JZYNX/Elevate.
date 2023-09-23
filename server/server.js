@@ -1,10 +1,10 @@
 require('dotenv').config({ path: require('find-config')('.env') })
-const cors = require("cors");
+const cors = require("cors")
 const express = require('express')
 const mongoose = require('mongoose')
 const userRoutes = require('./routes/users') 
 const messageRoute = require('./routes/messageRoute') 
-const socket = require("socket.io");
+const socket = require("socket.io")
 
 // express app
 const app = express()
