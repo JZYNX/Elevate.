@@ -1,18 +1,25 @@
 # comp30022
 
-# running server: 
-npm run devStart
+# Running server: 
+Navigate to /server
+## npm install
+## npm run devStart
 
-# running frontend:
-npm run start
+# Running frontend:
+Navigate to /crm
+## npm install 
+## npm run start
 
-# dependencies:
-npm install 
+# Testing
+Navigate to root
+## npm install
+## npm test
 
-(other potential installations)
-npm install dotenv
-npm install mongoose
-npm install express
+# Testing Pipeline & Framework
+GitHub CI/CD pipeline through node actions
+Testing through Jest Framework
+
+# React Dependencies/Components
 
 React date time picker
 https://www.npmjs.com/package/react-datetime-picker
