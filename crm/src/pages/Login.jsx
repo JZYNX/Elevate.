@@ -199,7 +199,7 @@ function Login() {
     if (await userExists(username, password)) {
       // document.cookie = `username=${username}; expires=${expirationDate.toUTCString()}; path=/`;
       // navigate('/profile');
-      const profileURL = `/profile?username=${username}`;
+      const profileURL = `/dashboard?username=${username}`;
       window.location.href = profileURL;
     } else {
       alert('Login failed. Please check your credentials.');
