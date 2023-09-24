@@ -1,9 +1,10 @@
 const mongoose = require('mongoose')
 
-// global variables
+// global variables for password length
 global.PASSWORD_MIN_LENGTH = 10;
 global.PASSWORD_MAX_LENGTH = 30;
 
+// Function to validate email format
 const validateEmail = (email) => {
     return String(email)
       .toLowerCase()
@@ -12,12 +13,14 @@ const validateEmail = (email) => {
       );
   };
 
+// Sub-document schema for the address
 const addressSchema = new mongoose.Schema({
     street: String,
     city: String,
     state: String,
 })
 
+// Sub-document schema for events
 const eventSchema = new mongoose.Schema({
     id: String,
     title: String,
@@ -25,9 +28,9 @@ const eventSchema = new mongoose.Schema({
     end: Date,
     allDay: Boolean,
     description: String,
-    // Add any other event-related fields as needed
 });
 
+// Main user schema 
 const userSchema = new mongoose.Schema({
     username: {
         type: String, 
@@ -57,13 +60,13 @@ const userSchema = new mongoose.Schema({
     connections: [
         {
             type: mongoose.SchemaTypes.ObjectId,
-            ref: "User",
+            ref: "User", // Reference to other users
         },
     ],
     address: addressSchema,
     profilePic: {       // Not using this field for now
         type: mongoose.SchemaTypes.ObjectId,
-        ref: "Post",
+        ref: "Post",    // Reference to posts (not used)
     },
     firstName: {
         type: String,
@@ -75,10 +78,6 @@ const userSchema = new mongoose.Schema({
         type:String,
     },
     events: [eventSchema],
-}, {timestamps: true})
-
-userSchema.statics.findByUsername = function(username) {
-    return this.where({username})
-}
+}, {timestamps: true}) // Enable timestamps for created and updated dates
 
 module.exports = mongoose.model('User', userSchema)

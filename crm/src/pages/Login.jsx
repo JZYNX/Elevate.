@@ -185,7 +185,14 @@ const OtherLoginOptions = styled.div`
 `;
 
 
-
+/**
+ * Login Component
+ * 
+ * This component represents the login page of the application.
+ * 
+ * @component
+ * @returns {JSX.Element} A JSX element representing the login page.
+ */
 function Login() {
   const [credentials, setCredentials] = useState({ username: '', password: '' });
   const navigate = useNavigate();
@@ -193,7 +200,7 @@ function Login() {
   const expirationDate = new Date();
   expirationDate.setDate(expirationDate.getDate() + 7); // 7 days from now
 
-
+  // Function to handle user login
   const handleLogin = async () => {
     const { username, password } = credentials;
     if (await userExists(username, password)) {
@@ -206,8 +213,10 @@ function Login() {
     }
   };
 
+  // Function to check if a user exists
   const userExists = async (username, password) => {
     try{
+      // Make a request to fetch user data (replace with actual API endpoint)
       const response = await fetch('/users');
       
       if (!response.ok) {
@@ -215,6 +224,8 @@ function Login() {
       }
 
       const users = await response.json();
+
+      // Find a user with matching username and password
       const matchingUser = users.find((user) => user.username === username && user.password === password);
 
       if (matchingUser) {
@@ -229,16 +240,19 @@ function Login() {
     }
   };
 
+   // Function to handle Enter key press for login
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
       handleLogin();
     }
   };
 
+  // Function to handle navigation to other pages
   const handleNavigation = (path) => {
     navigate(path);
   };
 
+  // Render the login page
   return (
     <LoginContainer>
       <BackgroundImage src={bgImg} alt="bgImg" />

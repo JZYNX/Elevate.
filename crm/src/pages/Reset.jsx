@@ -9,6 +9,7 @@ import twitterIcon from '../assets/twitter.png';
 import avatars from "../assets/Avatar.png";
 import { primaryColor, secondaryColor }from '../utils/Color';
 
+// Styled components for styling the password reset page
 const LoginContainer = styled.div`
   display: flex; 
   height: 100vh;
@@ -190,14 +191,25 @@ const OtherLoginOptions = styled.div`
   }
 `;
 
-
+/**
+ * React functional component for the login page.
+ * 
+ * This component provides a user interface for users to log in.
+ * It includes input fields for username and password, as well as buttons for login and alternative login options.
+ * 
+ * @returns {JSX.Element} The JSX markup for the login page.
+ */
 function Login() {
+  
   const [credentials, setCredentials] = useState({ username: '', password: '' });
   const navigate = useNavigate();
   const titleMessage = " elevate.";
 
+  // Function to handle the login button click
   const handleLogin = async () => {
     const { username, password } = credentials;
+
+    // Check if the user exists and navigate to the profile page if successful
     if (await userExists(username, password)) {
       navigate('/profile');
     } else {
@@ -205,8 +217,10 @@ function Login() {
     }
   };
 
+  // Function to check if a user exists
   const userExists = async (username, password) => {
     try{
+      // Fetch the list of users
       const response = await fetch('/users');
       
       if (!response.ok) {
@@ -214,31 +228,36 @@ function Login() {
       }
 
       const users = await response.json();
+
+      // Check if a matching user exists
       const matchingUser = users.find((user) => user.username === username && user.password === password);
 
       if (matchingUser) {
         console.log("MATCHED");
         return true;
       }
-      return false;
 
+      return false;
     } catch (err) {
       console.error("Error checking if user exists", err);
       return false;
     }
   };
 
+  // Function to handle Enter key press
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
       handleLogin();
     }
   };
 
+  // Function to handle navigation to different routes
   const handleNavigation = (path) => {
     navigate(path);
   };
 
   return (
+    // JSX markup for the login page
     <LoginContainer>
       <BackgroundImage src={bgImg} alt="bgImg" />
       <WelcomeMessage>

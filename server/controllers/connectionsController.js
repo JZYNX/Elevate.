@@ -3,7 +3,13 @@ const User = require('../models/userModel')
 const Post = require('../models/postModel')
 
 
-// get all connections of user
+/**
+ * Get all connections of a user.
+ * @function
+ * @param {Object} req - Express request object with 'username' in the request body.
+ * @param {Object} res - Express response object.
+ * @returns {Object} - JSON array of user connections.
+ */
 const getAllConnections= async (req, res) => {
     const { username } = req.body;
 
@@ -24,6 +30,13 @@ const getAllConnections= async (req, res) => {
     }
 }
 
+/**
+ * Add a new connection for a user.
+ * @function
+ * @param {Object} req - Express request object with 'username' and 'newConnection' in the request body.
+ * @param {Object} res - Express response object.
+ * @returns {Object} - JSON response indicating success or failure with updated user data.
+ */
 const addConnectionForUser = async (req, res) => {
     try {
         const { username, newConnection } = req.body;
@@ -59,6 +72,13 @@ const addConnectionForUser = async (req, res) => {
     }
 };
 
+/**
+ * Delete a connection for a user.
+ * @function
+ * @param {Object} req - Express request object with 'username' and 'connectionToDelete' in the request body.
+ * @param {Object} res - Express response object.
+ * @returns {Object} - JSON response indicating success or failure with updated user data.
+ */
 const deleteConnectionForUser = async (req, res) => {
     try {
         const { username, connectionToDelete } = req.body;

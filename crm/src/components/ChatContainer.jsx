@@ -7,6 +7,7 @@ import bgImg from '../assets/nikuubg.jpg';
 import { sendMessageRoute, receiveMessageRoute } from '../utils/APIRoutes';
 import { primaryColor, secondaryColor } from '../utils/Color';
 
+// Define a keyframe animation for changing colors
 const changeColors = keyframes`
   0%, 100% {
     filter: hue-rotate(0deg); /* Start and end with pink (320 degrees) */
@@ -99,12 +100,25 @@ const Container = styled.div`
   }
 `;
 
+/**
+ * This component represents a chat container that displays messages between users.
+ * It handles sending and receiving messages, updating the message list, and scrolling to the latest message.
+ * 
+ * @component
+ * @param {object} currentChat - The current chat or conversation with another user.
+ * @param {object} currentUser - The current user.
+ * @param {object} socket - The socket object for real-time communication.
+ * @returns {JSX.Element} A JSX element representing the chat container.
+ */
 export default function ChatContainer({ currentChat, currentUser , socket}) {
-    
+    // State for incoming messages and messages in the chat
     const [arrivalMessage, setArrivalMessage] = useState(null);
     const [messages, setMessages] = useState([]);
+
+    // Reference to scroll to the latest message
     const scrollRef = useRef();
 
+    // Fetch messages when the currentChat changes
     useEffect(() => {
         if(currentChat){
             async function fetchData() {
@@ -118,23 +132,29 @@ export default function ChatContainer({ currentChat, currentUser , socket}) {
         }
     }, [currentChat])
     
+    // Handle sending a message
     const handleSendMsg = async (msg) => {
+      // Send the message to the server
         await axios.post(sendMessageRoute, {
             from: currentUser._id,
             to: currentChat._id,
             message: msg,
         });
+
+        // Emit a socket event to send the message in real-time
         socket.current.emit("send-msg",{
             to:currentChat._id,
             from:currentUser._id,
             message:msg,
         })
-
+        
+        // Update the local message list with the sent message
         const msgs = [...messages];
         msgs.push({fromSelf:true,message:msg});
         setMessages(msgs);
     };
 
+    // Listen for incoming messages using sockets
     useEffect(() => {
         if (socket.current) {
           socket.current.on("msg-recieve", (msg) => {
@@ -143,18 +163,17 @@ export default function ChatContainer({ currentChat, currentUser , socket}) {
         }
     }, []);
 
+    // Update the message list when an incoming message arrives
     useEffect(() => {
         arrivalMessage && setMessages((prev) => [...prev, arrivalMessage]);
     }, [arrivalMessage]);
       
-    
+    // Scroll to the latest message when the message list changes
     useEffect(() => {
         scrollRef.current?.scrollIntoView({ behavior: "smooth" });
     }, [messages]);
 
-
-
-
+    // Render the chat container
     return (
     <>
     {currentChat &&(

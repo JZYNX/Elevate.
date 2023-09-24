@@ -104,15 +104,25 @@ const Container = styled.div`
   }
 `;
 
+/**
+ * This component represents the chat input area where users can enter messages.
+ * 
+ * @component
+ * @param {Object} props - The component's props.
+ * @param {function} props.handleSendMsg - A callback function to handle sending messages.
+ * @returns {JSX.Element} A JSX element representing the chat input area.
+ */
 export default function ChatInput({ handleSendMsg }) {
   const [msg, setMsg] = useState('');
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [selectedEmoji, setSelectedEmoji] = useState(null);
 
+  // Function to show/hide the emoji picker
   const handleEmojiPickerhideShow = () => {
     setShowEmojiPicker(!showEmojiPicker);
   };
 
+  // Function to handle emoji click
   const handleEmojiClick = (emoji) => {
     // Check if emoji is an object and has a `emoji` property (specific to the emoji-picker-react library)
     if (typeof emoji === 'object' && emoji.hasOwnProperty('emoji')) {
@@ -126,6 +136,7 @@ export default function ChatInput({ handleSendMsg }) {
         setMsg((prevMsg) => `${prevMsg}${emoji.emoji}`);
       }
       
+      // Handle inserting the emoji into the input field (assumes you have an input element with the ID 'message-input')
       const input = document.getElementById('message-input'); // Replace with your input field's ID
       const start = input.selectionStart;
       const end = input.selectionEnd;
@@ -139,6 +150,7 @@ export default function ChatInput({ handleSendMsg }) {
     }
   };
 
+  // Function to send the chat message
   const sendChat = (event) => {
     event.preventDefault();
     if (msg.length > 0) {
@@ -148,6 +160,7 @@ export default function ChatInput({ handleSendMsg }) {
     }
   };
 
+  // Render the chat input area
   return (
     <Container>
       <div className="button-container">
