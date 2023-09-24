@@ -26,9 +26,10 @@ const Container = styled.div`
         color: #ffff00c8;
         cursor: pointer;
       }
-      .emoji-picker-react {
+      .EmojiPickerReact {
         position: absolute;
-        top: -350px;
+        top: -450px;
+        left: 30px;
         background-color: #080420;
         box-shadow: 0 5px 10px #9a86f3;
         border-color: #9a86f3;
@@ -104,23 +105,46 @@ const Container = styled.div`
 `;
 
 export default function ChatInput({ handleSendMsg }) {
-  const [msg, setMsg] = useState("");
+  const [msg, setMsg] = useState('');
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const [selectedEmoji, setSelectedEmoji] = useState(null);
+
   const handleEmojiPickerhideShow = () => {
     setShowEmojiPicker(!showEmojiPicker);
   };
 
-  const handleEmojiClick = (event, emojiObject) => {
-    let message = msg;
-    message += emojiObject.emoji;
-    setMsg(message);
+  const handleEmojiClick = (emoji) => {
+    // Check if emoji is an object and has a `emoji` property (specific to the emoji-picker-react library)
+    if (typeof emoji === 'object' && emoji.hasOwnProperty('emoji')) {
+      // If the same emoji is clicked again, accumulate it in the selectedEmoji state
+      if (selectedEmoji === emoji.emoji) {
+        const updatedMsg = `${msg}${emoji.emoji}`;
+        setMsg(updatedMsg);
+      } else {
+        // If a different emoji is clicked, replace the selectedEmoji state
+        setSelectedEmoji(emoji.emoji);
+        setMsg((prevMsg) => `${prevMsg}${emoji.emoji}`);
+      }
+      
+      const input = document.getElementById('message-input'); // Replace with your input field's ID
+      const start = input.selectionStart;
+      const end = input.selectionEnd;
+      const currentValue = input.value;
+      const newValue = `${currentValue.substring(0, start)}${emoji.emoji}${currentValue.substring(end)}`;
+      input.value = newValue;
+      input.selectionStart = input.selectionEnd = start + emoji.emoji.length;
+      input.focus();
+    } else {
+      // Handle other scenarios if necessary
+    }
   };
 
   const sendChat = (event) => {
     event.preventDefault();
     if (msg.length > 0) {
       handleSendMsg(msg);
-      setMsg("");
+      setMsg('');
+      setSelectedEmoji(null); // Reset selected emoji
     }
   };
 
@@ -132,9 +156,10 @@ export default function ChatInput({ handleSendMsg }) {
           {showEmojiPicker && <Picker onEmojiClick={handleEmojiClick} />}
         </div>
       </div>
-      <form className="input-container" onSubmit={(event) => sendChat(event)}>
+      <form className="input-container" onSubmit={sendChat}>
         <input
           type="text"
+          id="message-input" // Add an ID to your input field
           placeholder="type your message here"
           onChange={(e) => setMsg(e.target.value)}
           value={msg}
@@ -146,3 +171,4 @@ export default function ChatInput({ handleSendMsg }) {
     </Container>
   );
 }
+
