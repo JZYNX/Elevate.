@@ -1,19 +1,17 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
 import {SidebarData} from './SidebarData';
 import bgImg from '../assets/nikuubg.jpg';
 import { useNavigate } from 'react-router-dom';
+import SettingsIcon from '@mui/icons-material/Settings';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 
 const SidebarContainer = styled.div`
     height: 100%;
     width: 100%;
-    // background-color: rgba(112, 38, 112, 0.5);
-    // background: linear-gradient(to bottom, #87CEEB, #D34DD2);
     background-image: url(${bgImg});
     background-size: cover;
     background-position: 350px 0px;
-    // border-right: 1px solid rgba(255, 255, 255, 0.1);
-    // box-shadow: 0px 0px 19px rgba(0, 0, 0, 0.5);
 `;
 
 const SidebarTitle = styled.div`
@@ -33,7 +31,7 @@ const SidebarTitle = styled.div`
 
 const SidebarList = styled.div`
     height: auto;
-    padding-top: 80px;
+    padding-top: 50px;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -62,6 +60,22 @@ const ListrowItem = styled.div`
     }
 `;
 
+const SettingsListrowItem = styled(ListrowItem)`
+    /* Customize the appearance of the cog icon */
+    svg {
+        font-size: 2rem; /* Adjust the size as needed */
+        color: #0A0072; /* Set the color */
+        cursor: pointer;
+    }
+`;
+
+const LogoutListrowItem = styled(ListrowItem)`
+    padding-top: 0rem;
+    padding-bottom: 0rem;
+    margin-left: 0;
+    left: 0;
+`;
+
 const IconContainer = styled.div`
     flex: 30%;
     display: grid;
@@ -81,6 +95,7 @@ const TitleContainer = styled.div`
 
 function Sidebar() {
     const navigate = useNavigate();
+    const [showLogoutOption, setShowLogoutOption] = useState(false);
 
     const linkStyle = {
         textDecoration: 'none', // Remove the underline
@@ -92,32 +107,61 @@ function Sidebar() {
     };
     
     return (
-        <SidebarContainer> 
-            <SidebarTitle>
-                <h2 
-                    className="sidebar-title" 
-                    onClick={() => handleNavigation('/dashboard')}
-                    style={{ cursor: 'pointer' }}>
-                    <strong>elevate.</strong>
-                </h2>
-            </SidebarTitle>
-            <SidebarList>
-                {SidebarData.map((val, key)=>{
-                    return (
-                        <ListrowItem 
-                            key={key}
-                            onClick={()=>{
-                                window.location.pathname = val.link;
-                            }}
-                        > 
-                            <IconContainer>{val.icon}</IconContainer> 
-                            <TitleContainer><h3 className="sidebar-text">{val.title}</h3></TitleContainer>
-                        </ListrowItem>
-                    );  
-                })}
-            </SidebarList>
+        <SidebarContainer>
+          <SidebarTitle>
+            <h2
+              className="sidebar-title"
+              onClick={() => handleNavigation('/dashboard')}
+              style={{ cursor: 'pointer' }}
+            >
+              <strong>elevate.</strong>
+            </h2>
+          </SidebarTitle>
+          <SidebarList>
+            {SidebarData.map((val, key) => {
+              return (
+                <ListrowItem
+                  key={key}
+                  onClick={() => {
+                    window.location.pathname = val.link;
+                  }}
+                >
+                  <IconContainer>{val.icon}</IconContainer>
+                  <TitleContainer>
+                    <h3 className="sidebar-text">{val.title}</h3>
+                  </TitleContainer>
+                </ListrowItem>
+              );
+            })}
+            <SettingsListrowItem
+              key="settings"
+              onClick={() => setShowLogoutOption(!showLogoutOption)}
+            >
+              <IconContainer>
+                <SettingsIcon /> {/* Use the SettingsIcon here */}
+              </IconContainer>
+              <TitleContainer>
+                <h3 className="sidebar-text">Settings</h3>
+              </TitleContainer>
+            </SettingsListrowItem>
+            {showLogoutOption && (
+              <LogoutListrowItem
+                key="logout"
+                onClick={() => {
+                  navigate('/'); // Change '/logout' to the actual logout path
+                }}
+              >
+                <IconContainer>
+                  <ExitToAppIcon /> {/* Use the ExitToAppIcon here */}
+                </IconContainer>
+                <TitleContainer>
+                  <h3 className="sidebar-text">Logout</h3>
+                </TitleContainer>
+              </LogoutListrowItem>
+            )}
+          </SidebarList>
         </SidebarContainer>
-    );
+      );
 }
 
 export default Sidebar;
