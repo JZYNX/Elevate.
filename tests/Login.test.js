@@ -15,6 +15,7 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
+  await app.close();
   await User.deleteOne({ username: testUser.username });
 });
 
