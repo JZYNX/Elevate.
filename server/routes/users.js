@@ -12,6 +12,7 @@ const storage = multer.diskStorage({
         cb(null,file.originalname)
     }
 });
+
 //filter to accept only jpeg and png
 const fileFilter = (req,file,cb) =>{
     if(file.mimetype === 'image/jpeg' || file.mimetype === 'image/png' || file.mimetype === 'image/webp'){
@@ -21,6 +22,7 @@ const fileFilter = (req,file,cb) =>{
         cb(null,false);
     }
 }
+
 //constraint based on our filter and also only allow images to be 5MB max
 const upload = multer({
     storage:storage, 
@@ -45,27 +47,34 @@ const {
     getOneUserByUsername
 } = require('../controllers/userController')
 
-//GET all users
+// GET all users
 router.get('/', getAllUsers)
 
-//GET one user
+// GET one user
 router.get('/:id', getOneUser)
 
-//POST a new user
+// POST a new user
 router.post('/', createUser)
 
+//Check if a user exists
 router.post('/userExists', userExists)
 
+// Get a user by username
 router.post('/getUser', getOneUserByUsername);
 
+// Update a user
 router.patch('/',updateUser)
 
+// Upload an image
 router.put('/uploadImage', upload.single('userImage'), postImage)
 
+// Create an event
 router.put('/createEvent', uploadEvent); 
 
+// Edit events
 router.put('/editEvents', updateEvents); 
 
+// Delete users except Skyrider
 router.delete('/deleteUsersExceptSkyrider', deleteUsersExceptSkyrider);
 
 

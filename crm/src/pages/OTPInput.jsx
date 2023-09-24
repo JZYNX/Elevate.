@@ -212,12 +212,20 @@ const OtherLoginOptions = styled.div`
   }
 `;
 
-
+/**
+ * React component for the login page.
+ * Allows users to verify their email with a code.
+ */
 function Login() {
   const [credentials, setCredentials] = useState({ username: '', password: '' });
   const navigate = useNavigate();
   const titleMessage = " elevate.";
 
+  /**
+   * Handles the login process.
+   * If the provided username and password are valid, it navigates to the profile page.
+   * Otherwise, it displays an alert indicating a failed login attempt.
+ */
   const handleLogin = async () => {
     const { username, password } = credentials;
     if (await userExists(username, password)) {
@@ -227,6 +235,13 @@ function Login() {
     }
   };
 
+  /**
+   * Checks if a user with the provided username and password exists.
+   *
+   * @param {string} username - The username to check.
+   * @param {string} password - The password to check.
+   * @returns {boolean} True if a user with the given username and password exists, false otherwise.
+ */
   const userExists = async (username, password) => {
     try{
       const response = await fetch('/users');
@@ -250,6 +265,7 @@ function Login() {
     }
   };
 
+  // Function to handle key presses, particularly the "Enter" key for login
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
       handleLogin();
