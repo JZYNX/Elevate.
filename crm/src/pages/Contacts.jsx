@@ -53,7 +53,7 @@ const Container = styled.div`
     align-items: center;
     overflow: auto;
     gap: 0.8rem;
-    margin-top: 8rem;
+    margin-top: 5rem;
     &::-webkit-scrollbar {
       width: 0.2rem;
       &-thumb {
