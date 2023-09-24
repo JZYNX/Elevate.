@@ -185,20 +185,27 @@ const OtherLoginOptions = styled.div`
 `;
 
 
-
+/**
+ * Login component handles user authentication and login functionality.
+ */
 function Login() {
+  // State variables to manage user credentials and navigation
   const [credentials, setCredentials] = useState({ username: '', password: '' });
   const navigate = useNavigate();
   const titleMessage = " elevate.";
   const expirationDate = new Date();
-  expirationDate.setDate(expirationDate.getDate() + 7); // 7 days from now
 
+  // Set the expiration date for cookies to 7 days from now, this is for cookie implementation which will come later
+  expirationDate.setDate(expirationDate.getDate() + 7); 
 
+  /**
+   * Handles the login process when the login button is clicked.
+   */
   const handleLogin = async () => {
     const { username, password } = credentials;
+
+    // Check if the user exists and credentials are correct
     if (await userExists(username, password)) {
-      // document.cookie = `username=${username}; expires=${expirationDate.toUTCString()}; path=/`;
-      // navigate('/profile');
       const profileURL = `/profile?username=${username}`;
       window.location.href = profileURL;
     } else {
@@ -206,6 +213,12 @@ function Login() {
     }
   };
 
+  /**
+   * Checks if a user with the provided username and password exists.
+   * @param {string} username - The username to check.
+   * @param {string} password - The password to check.
+   * @returns {boolean} - True if the user exists and the credentials are correct, false otherwise.
+   */
   const userExists = async (username, password) => {
     try{
       const response = await fetch('/users');
@@ -229,6 +242,7 @@ function Login() {
     }
   };
 
+  // Handles key press events, specifically the Enter key to trigger login.
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
       handleLogin();

@@ -34,13 +34,17 @@ const FullCalendarContainer = styled.div`
     color: black;
 `;
 
+// Counter for generating unique event IDs
 let eventIdCounter = 0;
 
+/**
+ * Calendar component displays a user's events and allows them to interact with the calendar.
+ */
 function Calendar() {
     const urlParams = new URLSearchParams(window.location.search);
-    // Get the 'username' parameter value from the URL
     const storedUsername = urlParams.get('username');
     const [userEvent, setUserEvent] = useState([]);
+
     useEffect(() => {
         async function fetchUserDataAndSetState() {
         try {
@@ -60,12 +64,20 @@ function Calendar() {
 
         fetchUserDataAndSetState();
     }, [storedUsername]);
+    
     const [selectedEvent, setSelectedEvent] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
     const [modalMode, setModalMode] = useState('create');
 
+    // Event handlers for interacting with the calendar
+
+    /**
+     * Handle a date click event on the calendar.
+     * Opens the event creation modal.
+     * @param {Object} info - Information about the date click event.
+     */
     const handleDateClick = (info) => {
         setModalMode('create');
         setStartDate(info.date);
@@ -76,6 +88,11 @@ function Calendar() {
         setIsModalOpen(true);
     };
 
+    /**
+     * Handle a date drag event on the calendar.
+     * Opens the event creation modal.
+     * @param {Object} info - Information about the date drag event.
+     */
     const HandleDateDrag = (info) => {
         setModalMode('create');
         setStartDate(info.start);
@@ -84,6 +101,11 @@ function Calendar() {
         setIsModalOpen(true);
     }
 
+    /**
+     * Handle an event click event on the calendar.
+     * Opens the event editing modal.
+     * @param {Object} info - Information about the event click event.
+     */
     const handleEventClick = (info) => {
         setModalMode('edit');
         setStartDate(null);
@@ -96,6 +118,11 @@ function Calendar() {
         setIsModalOpen(false);
     }
 
+    /**
+     * Create or edit an event and update it on the server.
+     * Closes the event creation/editing modal.
+     * @param {Object} event - Event data to create or edit.
+     */
     const handleCreateEvent = (event) => {
         if (modalMode === 'create') {
             const newEvent = {
@@ -123,6 +150,10 @@ function Calendar() {
         setSelectedEvent(null);
     };
 
+    /**
+     * Send a request to the server to create new events.
+     * @param {Object} requestData - Request data containing username and event data.
+     */
     const createEventsOnServer = (requestData) => {
         // Assuming you send the entire updated events array to the server
         fetch('/users/createEvent', {
@@ -146,6 +177,10 @@ function Calendar() {
           });
     };
 
+    /**
+     * Send a request to the server to edit existing events.
+     * @param {Object} requestData - Request data containing username and updated event data.
+     */
     const editEventsOnServer = (requestData) => {
         // Assuming you send the entire updated events array to the server
         fetch('/users/editEvents', {
@@ -171,6 +206,10 @@ function Calendar() {
           });
     };
 
+    /**
+     * Handle the deletion of an event.
+     * Sends a request to the server to remove the event.
+     */
     const handleDeleteEvent = () => {
         const confirmDel = window.confirm("Are you sure you want to delete this event?");
 
@@ -188,6 +227,10 @@ function Calendar() {
         }
     }
 
+    /**
+     * Handle changes to an event's details and update it on the server.
+     * @param {Object} info - Information about the event change.
+     */
     const handleEventChange = (info) => {
         const updatedEvent = {
             ...info.event.toPlainObject(), 
@@ -264,6 +307,11 @@ function Calendar() {
     
 }
 
+/**
+ * Fetch user events from the server.
+ * @param {string} username - The username to fetch events for.
+ * @returns {Promise<Array>} - A promise that resolves to an array of user events.
+ */
 const fetchUserEvents = async (username) => {
     try {
       const response = await fetch(`/users`);

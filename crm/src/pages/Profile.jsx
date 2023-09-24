@@ -5,6 +5,7 @@ import styled, { keyframes } from 'styled-components';
 import { primaryColor, secondaryColor } from '../utils/Color';
 import axios from 'axios';
 
+// Styled components for styling the profile page
 const ProfileContainer = styled.div`
   display: flex;
   height: 100vh;
@@ -162,7 +163,13 @@ const ProfileButton = styled.button`
   }
 `;
 
+/**
+ * React component for the user profile page.
+ * Displays user information and allows editing.
+ */
 function Profile() {
+
+  // store the states
   const [isEditMode, setIsEditMode] = useState(false); 
   const [changesSaved, setChangesSaved] = useState(false); 
   const [postImage, setPostImage] = useState( { myFile : ""})
@@ -176,13 +183,15 @@ function Profile() {
     address: '',
     city: '',
     state: '',
-    // Add other user properties here
   });
+
   // Create a URLSearchParams object to parse the URL parameters
   const urlParams = new URLSearchParams(window.location.search);
 
   // Get the 'username' parameter value from the URL
   const storedUsername = urlParams.get('username');
+
+  // Fetch user data and set it in the component state.
   useEffect(() => {
     async function fetchUserDataAndSetState() {
       try {
@@ -196,6 +205,10 @@ function Profile() {
     fetchUserDataAndSetState();
   }, [storedUsername]);
 
+  /**
+   * Handle the logic for uploading an image.
+   * @param {Event} event - The file input change event.
+   */
   const handleImageUpload = async (event) => {
     const file = event.target.files[0];
     const formData = new FormData();
@@ -219,13 +232,15 @@ function Profile() {
     }
   };
   
-  
-
-
+  // Toggle between edit and view mode for user profile.
   const toggleEditMode = () => {
     setIsEditMode((prevEditMode) => !prevEditMode);
   };
 
+  /**
+   * Handle saving changes to user profile.
+   * @param {Event} event - The form submission event.
+   */
   const handleSaveChanges = async (event) => {
     event.preventDefault();
   
@@ -381,7 +396,12 @@ function Profile() {
   );
 }
 
-
+/**
+ * Fetch user data based on the provided username.
+ * @param {string} username - The username of the user.
+ * @returns {Promise<Object>} A promise that resolves to user data.
+ * @throws {Error} If there is an error fetching user data.
+ */
 const fetchUserData = async (username) => {
   try {
     const response = await fetch(`/users`);
@@ -403,12 +423,5 @@ const fetchUserData = async (username) => {
     throw error; // Handle the error as needed
   }
 };
-
-
-
-
-
-// Get the username from the cookie
-
 
 export default Profile;

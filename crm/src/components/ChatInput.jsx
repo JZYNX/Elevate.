@@ -103,19 +103,34 @@ const Container = styled.div`
   }
 `;
 
+/**
+ * ChatInput component for sending messages in a chat.
+ * @param {function} handleSendMsg - Callback function to handle sending a message.
+ */
 export default function ChatInput({ handleSendMsg }) {
   const [msg, setMsg] = useState("");
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+
+  // Toggle the visibility of the emoji picker.
   const handleEmojiPickerhideShow = () => {
     setShowEmojiPicker(!showEmojiPicker);
   };
 
+  /**
+   * Handle clicking on an emoji in the emoji picker.
+   * @param {object} event - The emoji click event.
+   * @param {object} emojiObject - The selected emoji object.
+   */
   const handleEmojiClick = (event, emojiObject) => {
     let message = msg;
     message += emojiObject.emoji;
     setMsg(message);
   };
 
+  /**
+   * Handle submitting the chat message.
+   * @param {object} event - The form submission event.
+   */
   const sendChat = (event) => {
     event.preventDefault();
     if (msg.length > 0) {

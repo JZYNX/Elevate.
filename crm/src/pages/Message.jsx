@@ -57,7 +57,11 @@ const Container = styled.div`
   }
 `;
 
+/**
+ * Message component manages user data and chat information.
+ */
 function Message(){
+  // State variables to manage user data and chat information
   const [contacts, setContacts] = useState([]);
   const urlParams = new URLSearchParams(window.location.search);
   const storedUsername = urlParams.get('username');
@@ -65,7 +69,9 @@ function Message(){
   const [currentChat, setCurrentChat] = useState(null);
   const socket = useRef();
 
-
+  /**
+   * Fetches user data and contacts data when the currentUser changes.
+   */
   useEffect(() => {
     async function fetchData() {
       try {
@@ -81,7 +87,8 @@ function Message(){
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
-  
+        
+        // Parse and set the current user's data
         const loggedInUser = await response.json();
         setCurrentUser(loggedInUser)
 
@@ -91,7 +98,8 @@ function Message(){
         if (!contactsResponse.ok) {
           throw new Error('Network response was not ok');
         }
-
+        
+        // Parse and set the contacts data
         const contactsData = await contactsResponse.json();
         setContacts(contactsData);
         
@@ -100,17 +108,21 @@ function Message(){
       }
     }
     
+    // Trigger the data fetching function when the currentUser changes
     fetchData();
   }, [currentUser]);
   
+  /**
+   * Initializes a socket connection and adds the current user to the chat when currentUser changes.
+   */
   useEffect(() => {
     if(currentUser){
       socket.current=io(host);
       socket.current.emit("add-user", currentUser._id);
-
     }
   }, [currentUser]) 
 
+  // Function to handle changing the current chat
   const handleChatChange = (chat) => {
     setCurrentChat(chat);
   };

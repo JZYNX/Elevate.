@@ -79,14 +79,20 @@ const TitleContainer = styled.div`
     }
 `;
 
+/**
+ * Sidebar component for the application.
+ * Renders a sidebar with a title and a list of navigation items.
+ */
 function Sidebar() {
     const navigate = useNavigate();
 
+    // Styles for links in the sidebar
     const linkStyle = {
         textDecoration: 'none', // Remove the underline
         color: 'inherit', // Inherit the text color
       };
 
+    // Handle navigation to a specific path.
     const handleNavigation = (path) => {
         navigate(path);
     };

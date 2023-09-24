@@ -3,9 +3,13 @@ import styled from "styled-components";
 import Robot from "../assets/robot.gif";
 
 
-
+/**
+ * Welcome component displays a welcome message and the user's name.
+ */
 export default function Welcome() {
     const [userName, setUserName] = useState("");
+
+    // Retrieve and set the user's name from the URL query parameters
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
         const storedUsername = urlParams.get('username');

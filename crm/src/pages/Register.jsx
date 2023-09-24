@@ -9,6 +9,7 @@ import twitterIcon from '../assets/twitter.png';
 import avatars from "../assets/Avatar.png";
 import { primaryColor, secondaryColor }from '../utils/Color';
 
+// Styled components for styling the Register page
 const RegisterContainer = styled.div`
   display: flex;
   height: 100vh;
@@ -17,16 +18,6 @@ const RegisterContainer = styled.div`
   align-items: center;
   overflow: hidden;
 `;
-
-// const BackgroundImage = styled.img`
-//   /* Add styles for the background image */
-//   position: absolute;
-//   width: 100%;
-//   height: 100%;
-//   object-fit: cover; 
-//   object-position: right;
-//   z-index: -1; /* Put the image behind other content */
-// `;
 
 const changeColors = keyframes`
   0%, 100% {
@@ -196,12 +187,21 @@ const OtherOptions = styled.div`
   }
 `;
 
-
+/**
+ * React functional component for the registration page.
+ * 
+ * This component provides a user interface for users to register a new account.
+ * It includes input fields for username, email, password, and password confirmation,
+ * as well as buttons for registration and alternative registration options.
+ * 
+ * @returns {JSX.Element} The JSX markup for the registration page.
+ */
 function Register() {
   const [credentials, setCredentials] = useState({ username: '', password: '', email: '' , confirm: ''});
   const navigate = useNavigate();
   const titleMessage = " elevate.";
 
+  // Handles the registration process when the registration button is clicked.
   const handleRegister = async () => {
     const { username, password, email, confirm } = credentials;
     if (!await userExists(username,email)) {
@@ -209,6 +209,13 @@ function Register() {
     }
   };
 
+  /**
+   * Checks if a user with the given username or email already exists.
+   * 
+   * @param {string} username - The username to check.
+   * @param {string} email - The email to check.
+   * @returns {boolean} True if a matching username or email is found, false otherwise.
+   */
   const userExists = async (username,email) => {
     try{
       const response = await fetch('/users');
@@ -236,6 +243,14 @@ function Register() {
     }
   };
 
+  /**
+   * Sends a POST request to create a new user account.
+   * 
+   * @param {string} username - The username for the new account.
+   * @param {string} password - The password for the new account.
+   * @param {string} email - The email for the new account.
+   * @param {string} confirm - The password confirmation.
+   */
   const postUser = async (username, password,email, confirm) => {
     if (password !== confirm) {
       alert("Passwords do not match!");
@@ -266,12 +281,14 @@ function Register() {
 
   }
 
+  // Handles keypress events, specifically the Enter key, for triggering registration.
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
       handleRegister();
     }
   };
 
+  // Handles navigation to a specific path using the router.
   const handleNavigation = (path) => {
     navigate(path);
   };

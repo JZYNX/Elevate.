@@ -4,14 +4,25 @@ const Post = require('../models/postModel')
 const { default: axios } = require('axios')
 
 
-// get all
+/**
+ * Get all users from the database.
+ * @function
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {Object} - JSON array of user documents.
+ */
 const getAllUsers = async (req, res) => {
     const users = await User.find({})
-
     return res.status(200).json(users)
 }
 
-// get one user by id
+/**
+ * Get a user by their ID.
+ * @function
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {Object} - JSON representation of the user document.
+ */
 const getOneUser = async (req, res) => {
     const {id} = req.params
 
@@ -28,7 +39,13 @@ const getOneUser = async (req, res) => {
     return res.status(200).json(user)
 }
 
-// get one user by username
+/**
+ * Get a user by their username.
+ * @function
+ * @param {Object} req - Express request object with a username field in the request body.
+ * @param {Object} res - Express response object.
+ * @returns {Object} - JSON representation of the user document.
+ */
 const getOneUserByUsername = async (req, res) => {
   const {username} = req.body
 
@@ -42,36 +59,47 @@ const getOneUserByUsername = async (req, res) => {
 }
 
 
-// POST new user
+/**
+ * Create a new user and save it to the database.
+ * @function
+ * @param {Object} req - Express request object with user data in the request body.
+ * @param {Object} res - Express response object.
+ * @returns {Object} - JSON representation of the created user document.
+ */
 const createUser = async (req, res) => {
     const {username, password, email} = req.body
 
-    // check if password contains Sok
+    // check if password contains a specific substring  
     const substring = "sok";
     const lowercasePassword = password.toLowerCase();
     const lowercaseSubstring = substring.toLowerCase();
 
     if (lowercasePassword.includes(lowercaseSubstring)) {
-        return res.status(400).json({ message: "Password contains sok, it is too large!!!"})
+        return res.status(400).json({ message: "Password contains " + substring})
     }
 
     try {
         const user = await User.create({username, password, email})
         
-        
+        // Create a user on an external service 
         const r = await axios.put(
           'https://api.chatengine.io/users/',
           {username:username, secret:username, first_name:username},
           {headers: {"private-key" : "03afede7-020b-4a77-8c46-6558ae0b88c6"}}
         )
-        res.status(200).json(r.data)
-        
-       
+        res.status(200).json(r.data)    
     } catch (err) {
         res.status(400).json({error: err.message})
     }
 }
 
+/**
+ * Check if a user with the provided username and password exists in the database.
+ * @function
+ * @param {Object} req - Express request object with username and password fields in the request body.
+ * @param {Object} res - Express response object.
+ * @returns {Object} - JSON response indicating the result of the user existence check.
+ */
 const userExists = async (req, res) => {
   const { username, password } = req.body;
 
@@ -91,17 +119,26 @@ const userExists = async (req, res) => {
   }
 }
 
+/**
+ * Upload an image and save its path to the database.
+ * @function
+ * @param {Object} req - Express request object with an uploaded image file.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express middleware function.
+ * @returns {Object} - JSON response containing information about the uploaded image.
+ */
 const postImage = async (req, res,next) => {
     try {
         // Check if a file was uploaded
         if (!req.file) {
-            
             return res.status(400).json({ msg: "No image uploaded" });
         }
-        // Assuming you want to save the file path to the database
+
+        // Save the file path to the database
         const { path } = req.file;
         const newImage = await Post.create({ imagePath: path });
         newImage.save();
+
         console.log("THE returning IAMGE omg " + path);
         return res.status(200).json({ msg: "New image uploaded...!", filePath: path });
     } catch (error) {
@@ -110,6 +147,13 @@ const postImage = async (req, res,next) => {
     }
 };
 
+/**
+ * Update user information.
+ * @function
+ * @param {Object} req - Express request object with updated user data in the request body.
+ * @param {Object} res - Express response object.
+ * @returns {Object} - JSON representation of the updated user document.
+ */
 const updateUser = async (req, res) => {
     const { username, password } = req.body;
     const updatedUserData = req.body;
@@ -147,7 +191,13 @@ const updateUser = async (req, res) => {
     }
   };
 
-
+/**
+ * Update user image.
+ * @function
+ * @param {Object} req - Express request object with an uploaded image file.
+ * @param {Object} res - Express response object.
+ * @returns {Object} - JSON response containing information about the updated user image.
+ */
 const updateImage = async (req , res) => {
     if (!req.file) {
         return res.status(400).json({ message: 'No image uploaded' });
@@ -157,6 +207,13 @@ const updateImage = async (req , res) => {
     return;
 }
 
+/**
+ * Upload an event for a user and update their events array.
+ * @function
+ * @param {Object} req - Express request object with username and event data in the request body.
+ * @param {Object} res - Express response object.
+ * @returns {Object} - JSON representation of the updated user document with the new event.
+ */
 const uploadEvent = async (req, res) => {
     try {
       // Assuming the frontend sends both the username and event data in the request body
@@ -181,6 +238,13 @@ const uploadEvent = async (req, res) => {
     }
   };
 
+  /**
+ * Update user events.
+ * @function
+ * @param {Object} req - Express request object with username and updated events data in the request body.
+ * @param {Object} res - Express response object.
+ * @returns {Object} - JSON representation of the updated user document with the updated events.
+ */
 const updateEvents = async (req, res) => {
     try {
       // Assuming the frontend sends both the username and the complete events array
@@ -204,6 +268,7 @@ const updateEvents = async (req, res) => {
     }
 };
 
+// function for testing purposes only
 const deleteUsersExceptSkyrider = async (req, res) => {
     try {
       await User.deleteMany({ username: { $ne: 'Skyrider' } });
