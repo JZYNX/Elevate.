@@ -1,26 +1,30 @@
-# comp30022
+# COMP30022 IT Project
 
 # Running server: 
-Navigate to /server
-npm install
-npm run devStart
+- cd server
+- npm install
+- npm run devStart
 
 # Running frontend:
-Navigate to /crm
-npm install 
-npm run start
+- cd crm
+- npm install 
+- npm run start
+
+# Running development build (frontend & backend):
+- Remain in root directory
+- npm run start-dev
 
 # Testing
-Navigate to root
-npm install
-npm test
+- Remain in root directory
+- npm install
+- npm test
 
 # Testing Pipeline & Framework
-GitHub CI/CD pipeline through node actions
-Testing through Jest Framework
+- GitHub CI/CD pipeline through node actions
+- Testing through Jest Framework
 
 # React Dependencies/Components
-React date time picker
-https://www.npmjs.com/package/react-datetime-picker
-Full calendar API
-https://fullcalendar.io/docs
+- React date time picker
+- https://www.npmjs.com/package/react-datetime-picker
+- Full calendar API
+- https://fullcalendar.io/docs
