@@ -183,15 +183,15 @@ const NotesPopup = styled.div`
     width: 50%;
     color: white;
     border: none;
-    border-radius: 15px;
+    border-radius: 10px;
     padding: 1rem 2rem;
     cursor: pointer;
     font-size: 16px;
     font-family: 'Poppins', sans-serif;
     margin-top: 2rem;
     margin-bottom: 2rem;
-    margin-left: 1rem;
-    margin-right: 1rem;
+    margin-left: 1.5rem;
+    margin-right: 1.5rem;
     transition: background-color 0.3s;
     &:hover {
       background-color: ${primaryColor}; /* Use a darker color for hover effect */
