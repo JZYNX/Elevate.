@@ -61,6 +61,11 @@ function CalendarPopup({ isOpen, onClose, onSave, onDelete, mode, event, start, 
             return
         }
 
+        if (startDatetime.getTime() > endDatetime.getTime()){
+            toast.error('End-date & time must be later than Start-date & time.');
+            return
+        }
+
         // Calculate the time difference to determine if it's an all-day event
         const timeDiff = endDatetime.getTime() - startDatetime.getTime();
         const isAllDay = timeDiff >= 86400000;
