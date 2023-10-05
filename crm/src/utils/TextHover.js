@@ -1,8 +1,8 @@
-import {motion, useAnimationControls} from 'framer-motion'
+import { motion, useAnimationControls } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import { primaryColor, secondaryColor } from '../utils/Color';
 
-const TextHover = ({ children }) => {
+const TextHover = ({ children, shouldAnimate }) => {
     const controls = useAnimationControls();
     const [isPlaying, setIsPlaying] = useState(false);
     const [currColor, setCurrColor] = useState(primaryColor);
@@ -22,11 +22,13 @@ const TextHover = ({ children }) => {
     }
 
     useEffect(() => {
-        bounceEffect();
-    }, []); 
+        if (shouldAnimate) {
+            bounceEffect();
+        }
+    }, [shouldAnimate]); 
 
     return (
-      <motion.span animate = {controls} 
+      <motion.span animate={controls} 
         onMouseOver={() => {
             setCurrColor(secondaryColor);
             if (!isPlaying){
