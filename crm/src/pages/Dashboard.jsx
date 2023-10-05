@@ -4,6 +4,8 @@ import Sidebar from '../components/Sidebar';
 import { primaryColor, secondaryColor } from '../utils/Color';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import DeleteIcon from '@mui/icons-material/Delete';
+import Delete from '@mui/icons-material/Delete';
 
 const DashboardContainer = styled.div`
   display: flex;
@@ -129,12 +131,18 @@ const NotesList = styled.div`
     width: 43%;
     padding-left: 2rem;
 
+    p.note-title {
+      font-size: 1rem;
+    }
+
     button {
-      border: 1px solid black;
-      border-radius: 1.5rem;
-      height: 1rem;
+      border: none;
       margin: auto 2rem auto auto; 
       background-color: inherit;
+
+      &:hover {
+        cursor: pointer;
+      }
     }
   }
 
@@ -294,8 +302,8 @@ function Dashboard() {
           <NotesList>
             {notes.map((note, index) => (
               <div className="note-item" key={index}>
-                <p>{note ? note.title : 'No Title'}</p>
-                <button onClick={() => deleteNote(index)}>del</button>
+                <p className='note-title'>{note ? note.title : 'No Title'}</p>
+                <button onClick={() => deleteNote(index)} style={{ fontSize: "8px" }}><DeleteIcon/></button>
               </div>
             ))}
           </NotesList>
