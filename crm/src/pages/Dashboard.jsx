@@ -2,6 +2,8 @@ import React, {useState} from 'react';
 import styled from 'styled-components';
 import Sidebar from '../components/Sidebar';
 import { primaryColor, secondaryColor } from '../utils/Color';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const DashboardContainer = styled.div`
   display: flex;
@@ -212,6 +214,9 @@ function Dashboard() {
       setNotes([...notes, { title: newTitle, note: newNote }]);
       setNewTitle('');
       setNewNote('');
+    } else {
+      toast.error("Please include a title and a note.");
+      return;
     }
     setShowNotesPopup(null);
   };
@@ -254,10 +259,10 @@ function Dashboard() {
 
   return (
     <DashboardContainer>
+      <ToastContainer position="bottom-right" autoClose={3000} hideProgressBar />
       <SidebarColumn>
         <Sidebar />
       </SidebarColumn>
-      
       <DashboardInfo>
         <StatsContainer>
           <StatBox>
