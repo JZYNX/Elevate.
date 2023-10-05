@@ -124,7 +124,7 @@ const NotesList = styled.div`
     margin: 0.5rem 2rem;
     background-color: white;
     border-radius: 1rem;
-    width: 40%;
+    width: 43%;
     padding-left: 2rem;
 
     button {
