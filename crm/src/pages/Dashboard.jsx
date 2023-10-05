@@ -226,19 +226,29 @@ function Dashboard() {
   const [notes, setNotes] = useState([]);
   const [newTitle, setNewTitle] = useState('');
   const [newNote, setNewNote] = useState('');
+  const [editingNoteIndex, setEditingNoteIndex] = useState(null);
+  const [isEditing, setIsEditing] = useState(false); // New state for tracking edit mode
 
   const handleAddNote = () => {
     if (newTitle && newNote) {
-      const updatedNotes = [
-        ...notes,
-        { title: newTitle, note: newNote }
-      ];
-      setNotes(updatedNotes);
-      clearNoteInput();
+      if (isEditing) { // Check if we are editing an existing note
+        const updatedNotes = [...notes];
+        updatedNotes[editingNoteIndex] = {
+          title: newTitle,
+          note: newNote,
+        };
+        setNotes(updatedNotes);
+        clearNoteInput();
+        setEditingNoteIndex(null);
+        setIsEditing(false); // Exit edit mode
+      } else {
+        setNotes([...notes, { title: newTitle, note: newNote }]);
+        clearNoteInput();
+      }
+      setShowNotesPopup(null);
     } else {
-      showError('Please include a title and a note.');
+      showError("Please include a title and a note.");
     }
-    setShowNotesPopup(null);
   };
 
   const clearNoteInput = () => {
@@ -252,10 +262,25 @@ function Dashboard() {
 
   const deleteNote = (index) => {
     if (index >= 0 && index < notes.length) {
-      const updatedNotes = [...notes];
-      updatedNotes.splice(index, 1);
-      setNotes(updatedNotes);
+      if (window.confirm("Are you sure you want to delete this note?")) {
+        const updatedNotes = [...notes];
+        updatedNotes.splice(index, 1);
+        setNotes(updatedNotes);
+        if (editingNoteIndex === index) {
+          clearNoteInput();
+          setEditingNoteIndex(null);
+          setIsEditing(false); // Exit edit mode
+        }
+      }
     }
+  };
+
+  const editNote = (index) => {
+    setEditingNoteIndex(index);
+    setShowNotesPopup(index);
+    setNewTitle(notes[index].title);
+    setNewNote(notes[index].note);
+    setIsEditing(true); // Enter edit mode
   };
 
   const updateTitle = (value) => {
@@ -280,21 +305,14 @@ function Dashboard() {
 
   const exitAddNote = () => {
     if (
-      (showNotesPopup !== null && showNotesPopup >= 0 && showNotesPopup < notes.length) ||
-      (newTitle || newNote)
+      (isEditing || newTitle || newNote) && // Check if we're editing or have unsaved changes
+      !window.confirm("Are you sure you want to discard the current note? Any unsaved changes will be lost.")
     ) {
-      // If there are changes, prompt the user for confirmation
-      const confirmDiscard = window.confirm(
-        "Are you sure you want to discard the current note? Any unsaved changes will be lost."
-      );
-      if (!confirmDiscard) {
-        return; // User canceled the discard action
-      }
+      return; // User canceled the discard action
     }
-    // Clear the note content and close the popup
-    setNewTitle('');
-    setNewNote('');
+    clearNoteInput();
     setShowNotesPopup(null);
+    setIsEditing(false); // Exit edit mode
   };
 
   return (
@@ -334,7 +352,9 @@ function Dashboard() {
           <NotesList>
             {notes.map((note, index) => (
               <div className="note-item" key={index}>
-                <p className='note-title'>{note ? note.title : 'No Title'}</p>
+                <p className='note-title' onClick={()=>editNote(index)}>
+                  {note ? note.title : 'No Title'}
+                </p>
                 <button onClick={() => deleteNote(index)} style={{ fontSize: "8px" }}><DeleteIcon/></button>
               </div>
             ))}
