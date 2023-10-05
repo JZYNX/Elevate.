@@ -116,10 +116,13 @@ function Message(){
    * Initializes a socket connection and adds the current user to the chat when currentUser changes.
    */
   useEffect(() => {
-    if(currentUser){
-      socket.current=io(host);
-      socket.current.emit("add-user", currentUser._id);
+    async function setSockets(){
+      if(currentUser){
+        socket.current=io(host);
+        socket.current.emit("add-user", currentUser._id);
+      }
     }
+    setSockets();
   }, [currentUser]) 
 
   // Function to handle changing the current chat
