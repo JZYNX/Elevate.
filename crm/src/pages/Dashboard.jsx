@@ -137,7 +137,6 @@ const NotesList = styled.div`
         cursor: pointer;
       }
     }
-    
     button {
       border: none;
       margin: auto 2rem auto auto; 
@@ -148,7 +147,6 @@ const NotesList = styled.div`
       }
     }
   }
-
   &::-webkit-scrollbar {
       width: 0.2rem;
       &-thumb {
@@ -180,7 +178,6 @@ const NotesPopup = styled.div`
     justify-content: space-between;
     width: 100%;
   }
-
   button {
     background-color: ${secondaryColor}; /* Use your desired button color */
     width: 50%;
@@ -196,7 +193,6 @@ const NotesPopup = styled.div`
     margin-left: 1rem;
     margin-right: 1rem;
     transition: background-color 0.3s;
-
     &:hover {
       background-color: ${primaryColor}; /* Use a darker color for hover effect */
     }
@@ -233,18 +229,25 @@ function Dashboard() {
 
   const handleAddNote = () => {
     if (newTitle && newNote) {
-      setNotes([...notes, { title: newTitle, note: newNote }]);
-      setNewTitle('');
-      setNewNote('');
+      const updatedNotes = [
+        ...notes,
+        { title: newTitle, note: newNote }
+      ];
+      setNotes(updatedNotes);
+      clearNoteInput();
     } else {
-      toast.error("Please include a title and a note.");
-      return;
+      showError('Please include a title and a note.');
     }
     setShowNotesPopup(null);
   };
-    
-  const editNote = (index) => {
-    setShowNotesPopup(index);
+
+  const clearNoteInput = () => {
+    setNewTitle('');
+    setNewNote('');
+  };
+
+  const showError = (message) => {
+    toast.error(message);
   };
 
   const deleteNote = (index) => {
@@ -276,6 +279,21 @@ function Dashboard() {
   };
 
   const exitAddNote = () => {
+    if (
+      (showNotesPopup !== null && showNotesPopup >= 0 && showNotesPopup < notes.length) ||
+      (newTitle || newNote)
+    ) {
+      // If there are changes, prompt the user for confirmation
+      const confirmDiscard = window.confirm(
+        "Are you sure you want to discard the current note? Any unsaved changes will be lost."
+      );
+      if (!confirmDiscard) {
+        return; // User canceled the discard action
+      }
+    }
+    // Clear the note content and close the popup
+    setNewTitle('');
+    setNewNote('');
     setShowNotesPopup(null);
   };
 
