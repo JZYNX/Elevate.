@@ -1,11 +1,32 @@
 import React, {useState} from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import Sidebar from '../components/Sidebar';
 import { primaryColor, secondaryColor } from '../utils/Color';
 import { toast, ToastContainer } from 'react-toastify';
+import bgImg from '../assets/nikuubg.jpg';
 import 'react-toastify/dist/ReactToastify.css';
 import DeleteIcon from '@mui/icons-material/Delete';
-import Delete from '@mui/icons-material/Delete';
+
+const changeColors = keyframes`
+  0%, 100% {
+    filter: hue-rotate(0deg); /* Start and end with pink (320 degrees) */
+  }
+  50% {
+    filter: hue-rotate(60deg); /* Transition to purple (240 degrees) */
+  }
+`;
+
+const BackgroundImage = styled.img`
+  /* Add styles for the background image */
+  position: absolute;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; 
+  object-position: right;
+  z-index: -2; /* Put the image behind other content */
+  animation: ${changeColors} 5s infinite linear; /* Apply the animation */
+`;
 
 const DashboardContainer = styled.div`
   display: flex;
@@ -33,7 +54,8 @@ const StatsContainer = styled.div`
 `;
 const StatBox = styled.div`
   text-align: left;
-  background-color: #ededed;
+  // background-color: #ededed;
+  background-color: rgba(0, 0, 0, 0.1);
   border-radius: 1rem;
   padding: 0.5rem;
   padding-left: 2rem;
@@ -62,7 +84,7 @@ const SocialsBox = styled.div`
 `;
 const EventConnectionDisplay = styled.div`
   flex: 1;
-  background-color: #ededed;
+  background-color: rgba(0, 0, 0, 0.1);
   border-radius: 1rem;
   padding: 0.5rem 0.5rem 0.5rem 2rem;
   margin: 0 0.25rem;
@@ -82,7 +104,7 @@ const NotesBox = styled.div`
   width: 90%;
   max-height: 20rem;
   margin: 2rem auto;
-  background-color: #ededed;
+  background-color: rgba(0, 0, 0, 0.1);
   border-radius: 1rem;
 `;
 const NotesHeader = styled.div`
@@ -126,7 +148,7 @@ const NotesList = styled.div`
   .note-item {
     display: flex;
     margin: 0.5rem 2rem;
-    background-color: white;
+    background-color: rgba(255, 255, 255, 0.4);
     border-radius: 1rem;
     width: 43%;
     padding-left: 2rem;
@@ -140,7 +162,7 @@ const NotesList = styled.div`
     button {
       border: none;
       margin: auto 2rem auto auto; 
-      background-color: inherit;
+      background-color: rgba(255, 255, 255, 0);
 
       &:hover {
         cursor: pointer;
@@ -317,6 +339,7 @@ function Dashboard() {
 
   return (
     <DashboardContainer>
+      <BackgroundImage src={bgImg} alt="bgImg" />
       <ToastContainer position="bottom-right" autoClose={3000} hideProgressBar />
       <SidebarColumn>
         <Sidebar />
