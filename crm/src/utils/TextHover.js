@@ -1,5 +1,5 @@
 import {motion, useAnimationControls} from 'framer-motion'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { primaryColor, secondaryColor } from '../utils/Color';
 
 const TextHover = ({ children }) => {
@@ -20,6 +20,10 @@ const TextHover = ({ children }) => {
         })
         setIsPlaying(true);
     }
+
+    useEffect(() => {
+        bounceEffect();
+    }, []); 
 
     return (
       <motion.span animate = {controls} 
