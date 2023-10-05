@@ -47,7 +47,7 @@ const DashboardInfo = styled.div`
 // stats row on dashboard
 const StatsContainer = styled.div`
   padding-top: 2rem;
-  width: 90%;
+  width: 95%;
   margin: 0 auto;
   display: flex;
   flex-direction: row;
@@ -77,7 +77,7 @@ const StatBox = styled.div`
 const SocialsBox = styled.div`
   display: flex;
   flex: 1;
-  width: 90%;
+  width: 95%;
   margin: auto;
   margin-top: 2rem;
   flex-direction: row;
@@ -101,7 +101,7 @@ const NotesBox = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
-  width: 90%;
+  width: 95%;
   max-height: 20rem;
   margin: 2rem auto;
   background-color: rgba(0, 0, 0, 0.1);
@@ -148,7 +148,7 @@ const NotesList = styled.div`
   .note-item {
     display: flex;
     margin: 0.5rem 2rem;
-    background-color: rgba(255, 255, 255, 0.4);
+    background-color: rgba(255, 255, 255, 0.5);
     border-radius: 1rem;
     width: 43%;
     padding-left: 2rem;
