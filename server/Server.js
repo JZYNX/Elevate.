@@ -40,37 +40,40 @@ mongoose
   .then(() => {
     console.log('Connected to the database');
 
-    const io = socket(server, {
-      cors: {
-        origin: 'http://localhost:3000',
-        credentials: true,
-      },
-    });
-
-    const onlineUsers = new Map();
-
-    io.on('connection', (socket) => {
-      console.log('A user connected');
-
-      socket.on('add-user', (userId) => {
-        onlineUsers.set(userId, socket.id);
-      });
-
-      socket.on('send-msg', (data) => {
-        const sendUserSocket = onlineUsers.get(data.to);
-        if (sendUserSocket) {
-          socket.to(sendUserSocket).emit('msg-receive', data.message);
-        }
-      });
-
-      socket.on('disconnect', () => {
-        console.log('A user disconnected');
-      });
-    });
   })
   .catch((err) => {
     console.error('Error connecting to the database:', err);
   });
+
+//socket stuff
+const io = socket(server, {
+  cors: {
+    origin: 'http://localhost:3000',
+    credentials: true,
+  },
+});
+
+const onlineUsers = new Map();
+
+io.on("connection", (socket) => {
+  console.log('A user connected with ' + socket.id);
+
+  socket.on("add-user", (userId) => {
+    onlineUsers.set(userId, socket.id);
+  });
+
+  socket.on("send-msg", (data) => {
+    const sendUserSocket = onlineUsers.get(data.to);
+    if (sendUserSocket) {
+      socket.to(sendUserSocket).emit("msg-receive", data.message);
+    }
+  });
+
+  socket.on('disconnect', () => {
+    console.log('A user disconnected');
+  });
+});
+
 
 // Properly close MongoDB connection when the application is shutting down
 process.on('SIGINT', () => {

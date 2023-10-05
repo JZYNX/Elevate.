@@ -110,7 +110,7 @@ function Message(){
     
     // Trigger the data fetching function when the currentUser changes
     fetchData();
-  }, [currentUser]);
+  }, []);
   
   /**
    * Initializes a socket connection and adds the current user to the chat when currentUser changes.

@@ -157,7 +157,7 @@ export default function ChatContainer({ currentChat, currentUser , socket}) {
     // Listen for incoming messages using sockets
     useEffect(() => {
         if (socket.current) {
-          socket.current.on("msg-recieve", (msg) => {
+          socket.current.on("msg-receive", (msg) => {
             setArrivalMessage({ fromSelf: false, message: msg });
           });
         }
