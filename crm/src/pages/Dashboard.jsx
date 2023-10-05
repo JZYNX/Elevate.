@@ -132,9 +132,12 @@ const NotesList = styled.div`
     padding-left: 2rem;
 
     p.note-title {
-      font-size: 1rem;
+      font-size: 0.9rem;
+      &:hover {
+        cursor: pointer;
+      }
     }
-
+    
     button {
       border: none;
       margin: auto 2rem auto auto; 
@@ -156,58 +159,69 @@ const NotesList = styled.div`
     }
 `;
 const NotesPopup = styled.div`
-  position: absolute;
-  left: 63rem;
-  background-color: #f0f0f0; /* Use the same background color as the sidebar */
+  position: fixed; /* Change position to fixed */
+  top: 0;
+  left: 15%;
+  width: 85%;
+  height: 100%; 
+  background-color: #f0f0f0;
   border: 1px solid #ccc;
-  border-radius: 20px;
-  padding: 20px;
+  border-radius: 0;
   z-index: 2;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
+  justify-content: center; 
+  align-items: center; 
+  overflow: hidden;
 
-  input[type="text"] {
-    margin-bottom: 10px;
-    padding-left: 10px;
-    padding-right: 10px;
-    border: 1px solid #ccc;
-    border-radius: 20px;
-    font-size: 13px;
-    resize: vertical;
-  }
-
-  textarea {
-    font-family: 'Poppins', sans-serif;
-    margin-bottom: 10px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 20px;
-    font-size: 13px;
-    resize: vertical;
+  .button-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
   }
 
   button {
     background-color: ${secondaryColor}; /* Use your desired button color */
+    width: 50%;
     color: white;
     border: none;
-    border-radius: 20px;
-    padding: 5px 10px;
+    border-radius: 15px;
+    padding: 1rem 2rem;
     cursor: pointer;
-    font-size: 14px;
-    margin-top: 5px;
+    font-size: 16px;
+    font-family: 'Poppins', sans-serif;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
     transition: background-color 0.3s;
 
     &:hover {
       background-color: ${primaryColor}; /* Use a darker color for hover effect */
     }
   }
-  .button-container {
-    display: flex;
-    justify-content: space-between;
-    padding-left: 50px; 
-    padding-right: 50px;
-  }
+`;
+const StyledInput = styled.input`
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 18px;
+  resize: vertical;
+  width: calc(100% - 4rem); /* Calculate the width with margins */
+`;
+
+const StyledTextArea = styled.textarea`
+  font-family: 'Poppins', sans-serif;
+  margin-bottom: 0.5rem;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 16px;
+  resize: vertical;
+  width: calc(100% - 4rem); /* Calculate the width with margins */
 `;
 
 function Dashboard() {
@@ -309,15 +323,14 @@ function Dashboard() {
           </NotesList>
           {showNotesPopup !== null && (
             <NotesPopup>
-              <input
+              <StyledInput
                 type="text"
                 placeholder="Enter title here"
                 value={showNotesPopup !== null && showNotesPopup >= 0 && showNotesPopup < notes.length ? notes[showNotesPopup].title : newTitle}
                 onChange={(e) => updateTitle(e.target.value)}
               />
-              <textarea
-                rows="4"
-                cols="50"
+              <StyledTextArea
+                rows="40"
                 value={showNotesPopup !== null && showNotesPopup >= 0 && showNotesPopup < notes.length ? notes[showNotesPopup].note : newNote}
                 onChange={(e) => updateNote(e.target.value)}
                 placeholder="Enter your note here"
