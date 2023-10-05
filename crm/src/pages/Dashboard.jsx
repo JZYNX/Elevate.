@@ -1,17 +1,7 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
 import Sidebar from '../components/Sidebar';
-import bgImg from '../assets/nikuubg.jpg';
 import { primaryColor, secondaryColor } from '../utils/Color';
-
-const BackgroundImage = styled.img`
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: right;
-  z-index: -1;
-`;
 
 const DashboardContainer = styled.div`
   display: flex;
@@ -19,95 +9,100 @@ const DashboardContainer = styled.div`
   width: 100vw;
   overflow: hidden;
 `;
-
 const SidebarColumn = styled.div`
   flex: 0 0 15%;
   min-width: 250px;
   background-color: #f0f0f0;
 `;
-
 const DashboardInfo = styled.div`
   display: flex;
   flex: 1;
   flex-direction: column;
 `;
-
 // stats row on dashboard
 const StatsContainer = styled.div`
+  padding-top: 2rem;
+  width: 90%;
+  margin: 0 auto;
   display: flex;
-  flex: 0.75;
   flex-direction: row;
-  margin-left: 10%;
 `;
 const StatBox = styled.div`
-  flex: 1;
   text-align: left;
+  background-color: #ededed;
+  border-radius: 1rem;
+  padding: 0.5rem;
+  padding-left: 2rem;
+  margin: 0 0.25rem;
+  height: 100%;
+  width: 100%;
 
   h2.number {
-    font-size: 36px; /* Adjust the font size as needed */
-    padding-top: 30px;
-    margin-bottom: 0;
+    font-size: 36px; 
     font-weight: bold;
-    text-align: left;
+    margin: 0rem;
   }
   p.descriptor {
-    font-size: 18px; /* Adjust the font size as needed */
-    margin-top: 0px;
+    margin: 0;
+    font-size: 18px; 
   }
 `;
-
 // second row of dashboard including events and new connections
 const SocialsBox = styled.div`
   display: flex;
-  flex: 0.8;
+  flex: 1;
+  width: 90%;
+  margin: auto;
+  margin-top: 2rem;
   flex-direction: row;
-  margin-left: 10%;
 `;
-const EventsDisplay = styled.div`
+const EventConnectionDisplay = styled.div`
   flex: 1;
+  background-color: #ededed;
+  border-radius: 1rem;
+  padding: 0.5rem 0.5rem 0.5rem 2rem;
+  margin: 0 0.25rem;
+  height: 100%;
+  width: 100%;
   p.descriptor {
-    font-size: 1.125rem; /* Adjust the font size as needed */
+    font-size: 1.5rem; /* Adjust the font size as needed */
     font-weight: bold;
     margin-top: 0.313rem;
-    text-align:
   }
 `;
-const ConnectionsDisplay = styled.div`
-  flex: 1;
-  p.descriptor {
-    font-size: 1.125rem; /* Adjust the font size as needed */
-    font-weight: bold;
-    margin-top: 0.313rem;
-    text-align:
-  }
-`;
-
 // implement notes display and create pop up notes feature
 const NotesBox = styled.div`
   display: flex;
+  flex-direction: column;
   flex: 1;
-  justify-content: space-between;
-  margin-left: 10%;
-  margin-right: 30%;
+  width: 90%;
+  max-height: 20rem;
+  margin: 2rem auto;
+  background-color: #ededed;
+  border-radius: 1rem;
+`;
+const NotesHeader = styled.div`
+  display: flex;
+  flex: 0.3;
 
   p.descriptor {
     font-size: 1.5rem; /* Adjust the font size as needed */
     font-weight: bold;
-    margin-top: 0rem;
-    text-align: left;
+    padding-left: 2rem;
   }
 
   button {
     height: 2.5rem;
     width: 8rem;
-    text-align: center;
     background-color: ${secondaryColor}; /* Use your desired button color */
     font-family: 'Poppins', sans-serif;
     color: white;
     border: none;
     border-radius: 1.25rem;
     padding: 0.625rem 1.25rem;
-    margin-top: 0rem;
+    margin-left: auto;
+    margin-right: 2rem;
+    margin-top: 1.25rem;
     cursor: pointer;
     font-size: 0.875rem;
     transition: background-color 0.3s;
@@ -116,17 +111,39 @@ const NotesBox = styled.div`
       background-color: ${primaryColor}; /* Use a darker color for hover effect */
     }
   }
+`;
+const NotesList = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+  overflow-y: auto;
 
-  .notes-list {
-    overflow-y: auto;
-    max-height: 200px; /* Adjust the maximum height as needed */
-    margin-top: 10px;
-  }
-
-  /* Style for individual note items */
   .note-item {
-    margin-bottom: 10px;
+    display: flex;
+    margin: 0.5rem 2rem;
+    background-color: white;
+    border-radius: 1rem;
+    width: 40%;
+    padding-left: 2rem;
+
+    button {
+      border: 1px solid black;
+      border-radius: 1.5rem;
+      height: 1rem;
+      margin: auto 2rem auto auto; 
+      background-color: inherit;
+    }
   }
+
+  &::-webkit-scrollbar {
+      width: 0.2rem;
+      &-thumb {
+        background-color: ${secondaryColor};
+        width: 0.1rem;
+        border-radius: 1rem;
+      }
+    }
 `;
 const NotesPopup = styled.div`
   position: absolute;
@@ -203,6 +220,14 @@ function Dashboard() {
     setShowNotesPopup(index);
   };
 
+  const deleteNote = (index) => {
+    if (index >= 0 && index < notes.length) {
+      const updatedNotes = [...notes];
+      updatedNotes.splice(index, 1);
+      setNotes(updatedNotes);
+    }
+  };
+
   const updateTitle = (value) => {
     if (showNotesPopup !== null && showNotesPopup >= 0 && showNotesPopup < notes.length) {
       const updatedNotes = [...notes];
@@ -232,7 +257,6 @@ function Dashboard() {
       <SidebarColumn>
         <Sidebar />
       </SidebarColumn>
-      <BackgroundImage src={bgImg} alt="bgImg" />
       
       <DashboardInfo>
         <StatsContainer>
@@ -250,27 +274,26 @@ function Dashboard() {
           </StatBox>
         </StatsContainer>
         <SocialsBox>
-          <EventsDisplay>
+          <EventConnectionDisplay>
             <p className="descriptor">Upcoming Events</p> 
-          </EventsDisplay>
-          <ConnectionsDisplay>
+          </EventConnectionDisplay>
+          <EventConnectionDisplay>
             <p className="descriptor">New Connections</p> 
-          </ConnectionsDisplay>
+          </EventConnectionDisplay>
         </SocialsBox>
         <NotesBox>
-          <p className="descriptor">Notes</p>
-          <div className="notes-list">
-          {notes.map((note, index) => (
-            <div className="note-item" key={index}>
-              <div className="note-item-header">
-                <p>Date: {new Date().toLocaleDateString()}</p>
-                <p>Title: {note ? note.title : 'No Title'}</p>
-                <button onClick={() => editNote(index)}>Edit Note</button>
+          <NotesHeader>
+            <p className="descriptor">Notes</p>
+            <button onClick={() => setShowNotesPopup(-1)}>New Note</button>
+          </NotesHeader>
+          <NotesList>
+            {notes.map((note, index) => (
+              <div className="note-item" key={index}>
+                <p>{note ? note.title : 'No Title'}</p>
+                <button onClick={() => deleteNote(index)}>del</button>
               </div>
-            </div>
-          ))}
-          </div>
-          <button onClick={() => setShowNotesPopup(-1)}>New Note</button>
+            ))}
+          </NotesList>
           {showNotesPopup !== null && (
             <NotesPopup>
               <input
