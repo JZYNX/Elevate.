@@ -281,7 +281,6 @@ function Calendar() {
                     editable={true}
                     selectMirror={true}
                     dayMaxEventRows={true}
-                    businessHours={true}
                     eventTimeFormat={{
                         hour: 'numeric',
                         minute: '2-digit',
