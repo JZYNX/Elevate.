@@ -4,6 +4,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const userRoutes = require('./routes/users');
 const messageRoute = require('./routes/messageRoute');
+const OnlineUser = require('./models/OnlineUsersModel');
 const socket = require('socket.io');
 
 dotenv.config({ path: require('find-config')('.env') });
@@ -53,25 +54,58 @@ const io = socket(server, {
   },
 });
 
-const onlineUsers = new Map();
+// const onlineUsers = new Map();
 
 io.on("connection", (socket) => {
-  console.log('A user connected with ' + socket.id);
+  // console.log('A user connected with ' + socket.id);
 
-  socket.on("add-user", (userId) => {
-    onlineUsers.set(userId, socket.id);
+  socket.on("add-user", async (userId) => {
+    try {
+      // Try to find a user with the specified userId
+      let user = await OnlineUser.findOne({ userId });
+  
+      if (!user) {
+        // If the user doesn't exist, create a new online user record
+        user = await OnlineUser.create({ userId, socketId: socket.id });
+      } else {
+        // If the user already exists, update their socketId
+        user.socketId = socket.id;
+        await user.save();
+      }
+  
+    } catch (err) {
+      // Handle any errors here
+      console.error('Error adding/updating user:', err);
+    }
   });
+  
+  
 
-  socket.on("send-msg", (data) => {
-    const sendUserSocket = onlineUsers.get(data.to);
-    if (sendUserSocket) {
-      socket.to(sendUserSocket).emit("msg-receive", data.message);
+  socket.on("send-msg", async (data) => {
+    try {
+      // Retrieve the recipient's socket ID from MongoDB
+      const user = await OnlineUser.findOne({ userId: data.to });
+      
+      if (user) {
+        // Send the message to the recipient's socket
+        io.to(user.socketId).emit("msg-receive", data.message);
+      }
+    } catch (err) {
+      // Handle any errors here
+      console.error(err);
     }
   });
 
-  socket.on('disconnect', () => {
-    console.log('A user disconnected');
+  socket.on('disconnect', async () => {
+    try {
+      // Remove the user's online status from MongoDB upon disconnection
+      await OnlineUser.deleteOne({ socketId: socket.id });
+    } catch (err) {
+      // Handle any errors here
+      console.error('Error deleting user:', err);
+    }
   });
+  
 });
 
 
