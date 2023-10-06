@@ -84,11 +84,13 @@ io.on("connection", (socket) => {
   socket.on("send-msg", async (data) => {
     try {
       // Retrieve the recipient's socket ID from MongoDB
-      const user = await OnlineUser.findOne({ userId: data.to });
+      const users = await OnlineUser.find({ userId: data.to });
       
-      if (user) {
+      if (users && users.length > 0){
         // Send the message to the recipient's socket
-        io.to(user.socketId).emit("msg-receive", data.message);
+        users.forEach((user) => {
+          io.to(user.socketId).emit("msg-receive", data.message);
+        });
       }
     } catch (err) {
       // Handle any errors here
