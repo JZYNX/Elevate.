@@ -72,7 +72,7 @@ io.on("connection", (socket) => {
         user.socketId = socket.id;
         await user.save();
       }
-  
+      console.log("the user is " + userId + " " + socket.id);
     } catch (err) {
       // Handle any errors here
       console.error('Error adding/updating user:', err);
