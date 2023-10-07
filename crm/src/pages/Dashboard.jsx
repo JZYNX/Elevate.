@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import Sidebar from '../components/Sidebar';
 import { primaryColor, secondaryColor } from '../utils/Color';
@@ -22,7 +22,7 @@ const BackgroundImage = styled.img`
   overflow: hidden;
   width: 100%;
   height: 100%;
-  object-fit: cover; 
+  object-fit: cover;
   object-position: right;
   z-index: -2; /* Put the image behind other content */
   animation: ${changeColors} 5s infinite linear; /* Apply the animation */
@@ -54,7 +54,6 @@ const StatsContainer = styled.div`
 `;
 const StatBox = styled.div`
   text-align: left;
-  // background-color: #ededed;
   background-color: rgba(0, 0, 0, 0.1);
   border-radius: 1rem;
   padding: 0.5rem;
@@ -64,13 +63,13 @@ const StatBox = styled.div`
   width: 100%;
 
   h2.number {
-    font-size: 36px; 
+    font-size: 36px;
     font-weight: bold;
     margin: 0rem;
   }
   p.descriptor {
     margin: 0;
-    font-size: 18px; 
+    font-size: 18px;
   }
 `;
 // second row of dashboard including events and new connections
@@ -91,7 +90,7 @@ const EventConnectionDisplay = styled.div`
   height: 100%;
   width: 100%;
   p.descriptor {
-    font-size: 1.5rem; /* Adjust the font size as needed */
+    font-size: 1.5rem;
     font-weight: bold;
     margin-top: 0.313rem;
   }
@@ -112,7 +111,7 @@ const NotesHeader = styled.div`
   flex: 0.3;
 
   p.descriptor {
-    font-size: 1.5rem; /* Adjust the font size as needed */
+    font-size: 1.5rem;
     font-weight: bold;
     padding-left: 2rem;
   }
@@ -161,7 +160,7 @@ const NotesList = styled.div`
     }
     button {
       border: none;
-      margin: auto 2rem auto auto; 
+      margin: auto 2rem auto auto;
       background-color: rgba(255, 255, 255, 0);
 
       &:hover {
@@ -170,20 +169,20 @@ const NotesList = styled.div`
     }
   }
   &::-webkit-scrollbar {
-      width: 0.2rem;
-      &-thumb {
-        background-color: ${secondaryColor};
-        width: 0.1rem;
-        border-radius: 1rem;
-      }
+    width: 0.2rem;
+    &-thumb {
+      background-color: ${secondaryColor};
+      width: 0.1rem;
+      border-radius: 1rem;
     }
+  }
 `;
 const NotesPopup = styled.div`
-  position: fixed; /* Change position to fixed */
+  position: fixed;
   top: 0;
   left: 15%;
   width: 85%;
-  height: 100%; 
+  height: 100%;
   background-color: #f0f0f0;
   border: 1px solid #ccc;
   border-radius: 0;
@@ -191,8 +190,8 @@ const NotesPopup = styled.div`
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
-  justify-content: center; 
-  align-items: center; 
+  justify-content: center;
+  align-items: center;
   overflow: hidden;
 
   .button-container {
@@ -201,7 +200,7 @@ const NotesPopup = styled.div`
     width: 100%;
   }
   button {
-    background-color: ${secondaryColor}; /* Use your desired button color */
+    background-color: ${secondaryColor};
     width: 50%;
     color: white;
     border: none;
@@ -216,7 +215,7 @@ const NotesPopup = styled.div`
     margin-right: 1.5rem;
     transition: background-color 0.3s;
     &:hover {
-      background-color: ${primaryColor}; /* Use a darker color for hover effect */
+      background-color: ${primaryColor};
     }
   }
 `;
@@ -228,9 +227,8 @@ const StyledInput = styled.input`
   border-radius: 10px;
   font-size: 18px;
   resize: vertical;
-  width: calc(100% - 4rem); /* Calculate the width with margins */
+  width: calc(100% - 4rem);
 `;
-
 const StyledTextArea = styled.textarea`
   font-family: 'Poppins', sans-serif;
   margin-bottom: 0.5rem;
@@ -239,35 +237,33 @@ const StyledTextArea = styled.textarea`
   border-radius: 10px;
   font-size: 16px;
   resize: vertical;
-  width: calc(100% - 4rem); /* Calculate the width with margins */
+  width: calc(100% - 4rem);
 `;
 
 function Dashboard() {
-
   const [showNotesPopup, setShowNotesPopup] = useState(null);
   const [notes, setNotes] = useState([]);
   const [newTitle, setNewTitle] = useState('');
   const [newNote, setNewNote] = useState('');
-  const [editingNoteIndex, setEditingNoteIndex] = useState(null);
-  const [isEditing, setIsEditing] = useState(false); // New state for tracking edit mode
 
   const handleAddNote = () => {
     if (newTitle && newNote) {
-      if (isEditing) { // Check if we are editing an existing note
+      if (showNotesPopup !== null) {
         const updatedNotes = [...notes];
-        updatedNotes[editingNoteIndex] = {
-          title: newTitle,
-          note: newNote,
-        };
+        if (showNotesPopup >= 0 && showNotesPopup < notes.length) {
+          // Editing an existing note
+          updatedNotes[showNotesPopup] = {
+            title: newTitle,
+            note: newNote,
+          };
+        } else {
+          // Adding a new note
+          updatedNotes.push({ title: newTitle, note: newNote });
+        }
         setNotes(updatedNotes);
         clearNoteInput();
-        setEditingNoteIndex(null);
-        setIsEditing(false); // Exit edit mode
-      } else {
-        setNotes([...notes, { title: newTitle, note: newNote }]);
-        clearNoteInput();
+        setShowNotesPopup(null);
       }
-      setShowNotesPopup(null);
     } else {
       showError("Please include a title and a note.");
     }
@@ -288,53 +284,26 @@ function Dashboard() {
         const updatedNotes = [...notes];
         updatedNotes.splice(index, 1);
         setNotes(updatedNotes);
-        if (editingNoteIndex === index) {
-          clearNoteInput();
-          setEditingNoteIndex(null);
-          setIsEditing(false); // Exit edit mode
-        }
       }
     }
   };
 
   const editNote = (index) => {
-    setEditingNoteIndex(index);
     setShowNotesPopup(index);
     setNewTitle(notes[index].title);
     setNewNote(notes[index].note);
-    setIsEditing(true); // Enter edit mode
-  };
-
-  const updateTitle = (value) => {
-    if (showNotesPopup !== null && showNotesPopup >= 0 && showNotesPopup < notes.length) {
-      const updatedNotes = [...notes];
-      updatedNotes[showNotesPopup].title = value;
-      setNotes(updatedNotes);
-    } else {
-      setNewTitle(value);
-    }
-  };
-  
-  const updateNote = (value) => {
-    if (showNotesPopup !== null && showNotesPopup >= 0 && showNotesPopup < notes.length) {
-      const updatedNotes = [...notes];
-      updatedNotes[showNotesPopup].note = value;
-      setNotes(updatedNotes);
-    } else {
-      setNewNote(value);
-    }
   };
 
   const exitAddNote = () => {
-    if (
-      (isEditing || newTitle || newNote) && // Check if we're editing or have unsaved changes
-      !window.confirm("Are you sure you want to discard the current note? Any unsaved changes will be lost.")
-    ) {
-      return; // User canceled the discard action
+    if (showNotesPopup !== null || newTitle || newNote) {
+      if (window.confirm("Are you sure you want to cancel? Any unsaved changes will be lost.")) {
+        clearNoteInput();
+        setShowNotesPopup(null);
+      }
+    } else {
+      clearNoteInput();
+      setShowNotesPopup(null);
     }
-    clearNoteInput();
-    setShowNotesPopup(null);
-    setIsEditing(false); // Exit edit mode
   };
 
   return (
@@ -361,10 +330,10 @@ function Dashboard() {
         </StatsContainer>
         <SocialsBox>
           <EventConnectionDisplay>
-            <p className="descriptor">Upcoming Events</p> 
+            <p className="descriptor">Upcoming Events</p>
           </EventConnectionDisplay>
           <EventConnectionDisplay>
-            <p className="descriptor">New Connections</p> 
+            <p className="descriptor">New Connections</p>
           </EventConnectionDisplay>
         </SocialsBox>
         <NotesBox>
@@ -375,10 +344,10 @@ function Dashboard() {
           <NotesList>
             {notes.map((note, index) => (
               <div className="note-item" key={index}>
-                <p className='note-title' onClick={()=>editNote(index)}>
+                <p className="note-title" onClick={() => editNote(index)}>
                   {note ? note.title : 'No Title'}
                 </p>
-                <button onClick={() => deleteNote(index)} style={{ fontSize: "8px" }}><DeleteIcon/></button>
+                <button onClick={() => deleteNote(index)} style={{ fontSize: "8px" }}><DeleteIcon /></button>
               </div>
             ))}
           </NotesList>
@@ -387,18 +356,18 @@ function Dashboard() {
               <StyledInput
                 type="text"
                 placeholder="Enter title here"
-                value={showNotesPopup !== null && showNotesPopup >= 0 && showNotesPopup < notes.length ? notes[showNotesPopup].title : newTitle}
-                onChange={(e) => updateTitle(e.target.value)}
+                value={newTitle}
+                onChange={(e) => setNewTitle(e.target.value)}
               />
               <StyledTextArea
-                rows="40"
-                value={showNotesPopup !== null && showNotesPopup >= 0 && showNotesPopup < notes.length ? notes[showNotesPopup].note : newNote}
-                onChange={(e) => updateNote(e.target.value)}
+                rows="10"
+                value={newNote}
+                onChange={(e) => setNewNote(e.target.value)}
                 placeholder="Enter your note here"
               />
               <div className="button-container">
                 <button onClick={handleAddNote}>Save Note</button>
-                <button onClick={exitAddNote}>Discard Note</button>
+                <button onClick={exitAddNote}>Cancel</button>
               </div>
             </NotesPopup>
           )}
