@@ -12,6 +12,7 @@
 
 # Running development build (frontend & backend):
 - Remain in root directory
+- npm install
 - npm run start-dev
 
 # Testing
@@ -22,6 +23,10 @@
 # Testing Pipeline & Framework
 - GitHub CI/CD pipeline through node actions
 - Testing through Jest Framework
+
+# Sample Login details
+- username: Skyrider
+- password: SokStinky69
 
 # React Dependencies/Components
 - React date time picker
