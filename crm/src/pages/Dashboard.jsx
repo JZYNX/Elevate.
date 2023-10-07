@@ -100,7 +100,7 @@ const NotesBox = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
-  max-height: 20rem;
+  max-height: 16rem;
   margin: 2rem 2.25rem;
   background-color: rgba(0, 0, 0, 0.1);
   border-radius: 1rem;
@@ -148,7 +148,7 @@ const NotesList = styled.div`
     margin: 0.5rem 2rem;
     background-color: rgba(255, 255, 255, 0.5);
     border-radius: 1rem;
-    width: 43%;
+    width: 42%;
     padding-left: 2rem;
 
     p.note-title {
@@ -179,7 +179,7 @@ const NotesList = styled.div`
 const NotesPopup = styled.div`
   position: fixed;
   top: 0;
-  left: 15%;
+  left: 16.3%;
   width: 85%;
   height: 100%;
   background-color: #f0f0f0;
