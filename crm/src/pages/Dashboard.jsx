@@ -100,9 +100,8 @@ const NotesBox = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
-  width: 95%;
   max-height: 20rem;
-  margin: 2rem auto;
+  margin: 2rem 2.25rem;
   background-color: rgba(0, 0, 0, 0.1);
   border-radius: 1rem;
 `;
