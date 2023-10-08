@@ -3,10 +3,9 @@ import styled from 'styled-components';
 import {SidebarData} from './SidebarData';
 import bgImg from '../assets/nikuubg.jpg';
 import { useNavigate } from 'react-router-dom';
-import SettingsIcon from '@mui/icons-material/Settings';
-import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
 const SidebarContainer = styled.div`
     height: 100%;
@@ -61,20 +60,6 @@ const ListrowItem = styled.div`
     }
 `;
 
-const SettingsListrowItem = styled(ListrowItem)`
-    svg {
-        font-size: 2rem; 
-        color: #0A0072; 
-        cursor: pointer;
-    }
-`;
-
-const LogoutListrowItem = styled(ListrowItem)`
-    padding-top: 0rem;
-    padding-bottom: 0rem;
-    margin-left: 0;
-    left: 0;
-`;
 
 const IconContainer = styled.div`
     flex: 30%;
@@ -126,7 +111,7 @@ const SubProfileItem = styled.div`
     letter-spacing: 0.01em;
     color: #0A0072;
     font-weight: normal;
-    margin: 0rem 0.5rem 0.4rem 0.5rem;
+    margin: 0rem 0.5rem 0.5rem 0.5rem;
 
     &:hover {
       text-decoration: underline;
@@ -177,7 +162,11 @@ function Sidebar() {
                   <h3 className="sidebar-text">{"Profile"}</h3>
                 </TitleContainer>
                 <DropDownIconContainer>
-                  <ArrowDropDownIcon />
+                  {
+                    showProfileDropDown ? (
+                      <KeyboardArrowUpIcon fontSize='' />
+                    ) : (<KeyboardArrowDownIcon fontSize='' />)
+                  }
                 </DropDownIconContainer>
               </ProfileHeader>
               {showProfileDropDown ? (
