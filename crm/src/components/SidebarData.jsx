@@ -5,25 +5,25 @@ import EventIcon from '@mui/icons-material/Event';
 import MessageIcon from '@mui/icons-material/Message';
 import NotesIcon from '@mui/icons-material/Notes';
 
-export const SidebarData = [
+export const SidebarData = (userName) => [
     {
         title: "Dashboard",
         icon: <DashboardIcon />,
-        link: "/dashboard"
+        link: `/dashboard?username=${userName}`
     },
     {
         title: "Calendar",
         icon: <EventIcon />,
-        link: "/calendar"
+        link: `/calendar?username=${userName}`
     },
     {
         title: "Connections",
         icon: <PeopleIcon />,
-        link: "/connections"
+        link: `/connections?username=${userName}`
     },
     {
         title: "Messages",
         icon: <MessageIcon />,
-        link: "/message"
+        link: `/message?username=${userName}`
     }
 ]

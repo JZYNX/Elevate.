@@ -182,7 +182,7 @@ export default function Contacts({ contacts, changeChat }) {
         </div> */}
         <div className="username">
             <h2 
-              onClick={() => handleNavigation('/dashboard')}
+              onClick={() => handleNavigation(`/dashboard?username=${currentUserName}`)}
               style={{ cursor: 'pointer' }}
               >
                 &lt;&lt;dashboard</h2>

@@ -122,7 +122,7 @@ const SubProfileItem = styled.div`
  * Sidebar component for the application.
  * Renders a sidebar with a title and a list of navigation items.
  */
-function Sidebar() {
+function Sidebar({userName}) {
     const navigate = useNavigate();
     const [showProfileDropDown, setShowProfileDropDown] = useState(false);
     const [isProfileViewMode, setIsProfileViewMode] = useState(true); 
@@ -142,7 +142,7 @@ function Sidebar() {
           <SidebarTitle>
             <h2
               className="sidebar-title"
-              onClick={() => handleNavigation('/dashboard')}
+              onClick={() => handleNavigation(`/dashboard?username=${userName}`)}
               style={{ cursor: 'pointer' }}
             >
               <strong>elevate.</strong>
@@ -150,7 +150,7 @@ function Sidebar() {
           </SidebarTitle>
           <SidebarList>
             <ProfileContainer
-              expanded={showProfileDropDown}
+              expanded={showProfileDropDown ? "true" : undefined}
             >
               <ProfileHeader
                 onClick={() => {
@@ -173,12 +173,12 @@ function Sidebar() {
                 <SubProfileContainer>
                   <SubProfileItem 
                     className='view-profile'
-                    onClick={() => handleNavigation('/profile')}
+                    onClick={() => handleNavigation(`/profile?username=${userName}`)}
                     >View Profile
                   </SubProfileItem>
                   <SubProfileItem 
                     className='edit-profile'
-                    onClick={() => handleNavigation('/profile')} 
+                    onClick={() => handleNavigation(`/profile?username=${userName}`)} 
                     >Edit Profile
                   </SubProfileItem>
                   <SubProfileItem 
@@ -189,7 +189,7 @@ function Sidebar() {
                 </SubProfileContainer>
               ) : null}
             </ProfileContainer>
-            {SidebarData.map((val, key) => (
+            {SidebarData(userName).map((val, key) => (
               <React.Fragment key={key}>
                 <ListrowItem 
                   onClick={() => {

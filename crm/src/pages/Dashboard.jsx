@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
 import Sidebar from '../components/Sidebar';
 import { primaryColor, secondaryColor } from '../utils/Color';
@@ -245,6 +245,13 @@ function Dashboard() {
   const [notes, setNotes] = useState([]);
   const [newTitle, setNewTitle] = useState('');
   const [newNote, setNewNote] = useState('');
+  const [userName, setUserName] = useState('');
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const storedUsername = urlParams.get('username');
+    setUserName(storedUsername);
+  }, []);
 
   const handleAddNote = () => {
     if (newTitle && newNote) {
@@ -311,7 +318,7 @@ function Dashboard() {
       <BackgroundImage src={bgImg} alt="bgImg" />
       <ToastContainer position="bottom-right" autoClose={3000} hideProgressBar />
       <SidebarColumn>
-        <Sidebar />
+        <Sidebar userName = {userName} />
       </SidebarColumn>
       <DashboardInfo>
         <StatsContainer>

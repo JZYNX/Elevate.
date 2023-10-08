@@ -254,7 +254,7 @@ function Calendar() {
         <CalendarContainer>
             <ToastContainer position="bottom-right" autoClose={3000} hideProgressBar />
             <SidebarColumn>
-                <Sidebar />
+                <Sidebar userName={storedUsername}/>
             </SidebarColumn>
             <FullCalendarContainer>
                 <FullCalendar

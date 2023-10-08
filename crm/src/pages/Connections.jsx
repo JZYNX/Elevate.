@@ -26,10 +26,13 @@ const SidebarColumn = styled.div`
 
 
 function Connections() {
-    return (
+  const urlParams = new URLSearchParams(window.location.search);
+  const storedUsername = urlParams.get('username');
+
+  return (
         <ConnectionsContainer>
             <SidebarColumn>
-                <Sidebar/>
+                <Sidebar userName={storedUsername}/>
             </SidebarColumn>
             <h1>Connections</h1>
         </ConnectionsContainer>

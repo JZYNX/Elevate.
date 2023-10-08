@@ -277,7 +277,7 @@ function Profile() {
   return (
     <ProfileContainer>
       <SidebarColumn>
-        <Sidebar />
+        <Sidebar userName = {storedUsername}/>
       </SidebarColumn>
         <BackgroundImage src={bgImg} alt="bgImg" />
       <ProfileInfoContainer>
