@@ -138,6 +138,7 @@ const NotesHeader = styled.div`
 `;
 const NotesList = styled.div`
   display: flex;
+  justify-content: space-between;
   flex-direction: row;
   flex-wrap: wrap;
   width: 100%;
@@ -145,10 +146,10 @@ const NotesList = styled.div`
 
   .note-item {
     display: flex;
-    margin: 0.5rem 2rem;
     background-color: rgba(255, 255, 255, 0.5);
     border-radius: 1rem;
-    width: 42%;
+    width: 44rem;
+    margin: 0.5rem 1rem;
     padding-left: 2rem;
 
     p.note-title {
