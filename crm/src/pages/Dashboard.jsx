@@ -77,8 +77,7 @@ const SocialsBox = styled.div`
   display: flex;
   flex: 1;
   width: 95%;
-  margin: auto;
-  margin-top: 2rem;
+  margin: 2rem auto 0rem;
   flex-direction: row;
 `;
 const EventConnectionDisplay = styled.div`
@@ -86,7 +85,7 @@ const EventConnectionDisplay = styled.div`
   background-color: rgba(0, 0, 0, 0.1);
   border-radius: 1rem;
   padding: 0.5rem 0.5rem 0.5rem 2rem;
-  margin: 0 0.25rem;
+  margin: 0rem 0.25rem;
   height: 100%;
   width: 100%;
   p.descriptor {
@@ -101,7 +100,8 @@ const NotesBox = styled.div`
   flex-direction: column;
   flex: 1;
   max-height: 16rem;
-  margin: 2rem 2.25rem;
+  width: 95%;
+  margin: 2rem auto;
   background-color: rgba(0, 0, 0, 0.1);
   border-radius: 1rem;
 `;
@@ -179,7 +179,7 @@ const NotesList = styled.div`
 const NotesPopup = styled.div`
   position: fixed;
   top: 0;
-  left: 16.3%;
+  right: 0;
   width: 85%;
   height: 100%;
   background-color: #f0f0f0;
