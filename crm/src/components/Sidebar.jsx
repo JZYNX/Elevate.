@@ -105,7 +105,7 @@ const ProfileContainer = styled(ListrowItem)`
   align-items: normal;
   flex-direction: column;
   justify-content: center;
-  height: ${props => (props.expanded ? '19vh' : '6.5vh')};
+  height: ${props => (props.expanded ? '17vh' : '6.5vh')};
 `
 
 const ProfileHeader = styled.div`
