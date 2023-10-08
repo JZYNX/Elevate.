@@ -54,7 +54,7 @@ const StatsContainer = styled.div`
 `;
 const StatBox = styled.div`
   text-align: left;
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(255, 255, 255, 0.2);
   border-radius: 1rem;
   padding: 0.5rem;
   padding-left: 2rem;
@@ -82,7 +82,7 @@ const SocialsBox = styled.div`
 `;
 const EventConnectionDisplay = styled.div`
   flex: 1;
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(255, 255, 255, 0.2);
   border-radius: 1rem;
   padding: 0.5rem 0.5rem 0.5rem 2rem;
   margin: 0rem 0.25rem;
@@ -102,7 +102,7 @@ const NotesBox = styled.div`
   max-height: 16rem;
   width: 95%;
   margin: 2rem auto;
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(255, 255, 255, 0.2);
   border-radius: 1rem;
 `;
 const NotesHeader = styled.div`
