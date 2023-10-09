@@ -6,6 +6,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import bgImg from '../assets/nikuubg.jpg';
 import 'react-toastify/dist/ReactToastify.css';
 import DeleteIcon from '@mui/icons-material/Delete';
+import SearchBar from '../components/SearchBar';
 
 const changeColors = keyframes`
   0%, 100% {
@@ -315,6 +316,7 @@ function Dashboard() {
 
   return (
     <DashboardContainer>
+      <SearchBar />
       <BackgroundImage src={bgImg} alt="bgImg" />
       <ToastContainer position="bottom-right" autoClose={3000} hideProgressBar />
       <SidebarColumn>
