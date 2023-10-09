@@ -46,7 +46,7 @@ const Container = styled.div`
   background-position: right;
   // background-color: #131324;
   .container {
-    background-color: rgb(0, 0, 0, 0.3);
+    background-color: rgb(0, 0, 0, 0.2);
     height: 100vh;
     width: 100vw;
     display: grid;
