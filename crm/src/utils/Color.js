@@ -7,4 +7,4 @@ export const secondaryColor = '#5e43b0'
 // Calendar colors
 export const defaultEventColor = '#ff9daa'
 export const bgColor = '#e9fffc'
-export const textColor = 'black'
+export const textColor = 'white'

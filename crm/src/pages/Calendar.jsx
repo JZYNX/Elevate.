@@ -273,8 +273,8 @@ function Calendar() {
                     dateClick={handleDateClick}
                     eventClick={handleEventClick}
                     select={HandleDateDrag}
-                    eventBackgroundColor={secondaryColor}
-                    eventBorderColor={defaultEventColor}
+                    eventBackgroundColor={primaryColor}
+                    eventBorderColor={secondaryColor}
                     eventTextColor={textColor}
                     eventDisplay={'block'}
                     selectable={true}
