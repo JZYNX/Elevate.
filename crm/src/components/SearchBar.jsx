@@ -4,7 +4,7 @@ import ReactSearchBox from "react-search-box";
 import SearchIcon from '@mui/icons-material/Search';
 
 const SearchBoxContainer = styled.div`
-    top: 0;
+    top: 1rem;
     right: 2.75rem;
     position: absolute;
     z-index: 999;
@@ -42,10 +42,11 @@ export default class SearchBar extends Component {
                 value="Doe"
                 data={this.data}
                 callback={(record) => console.log(record)}
-                inputHeight="2rem"
-                inputBorderColor="hsla(278, 69%, 38%, 0.11)"
+                inputHeight="1.5rem"
+                inputBorderColor="hsla(278, 69%, 38%, 0.01)"
                 inputBackgroundColor="hsla(278, 69%, 38%, 0.11)"
                 leftIcon={<SearchIcon fontSize=""/>}
+                iconBoxSize={"2rem"}
             />
         </SearchBoxContainer>
       

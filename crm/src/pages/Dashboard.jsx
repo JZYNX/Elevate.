@@ -47,7 +47,7 @@ const DashboardInfo = styled.div`
 `;
 // stats row on dashboard
 const StatsContainer = styled.div`
-  padding-top: 2rem;
+  padding-top: 3rem;
   width: 95%;
   margin: 0 auto;
   display: flex;
@@ -78,7 +78,7 @@ const SocialsBox = styled.div`
   display: flex;
   flex: 1;
   width: 95%;
-  margin: 2rem auto 0rem;
+  margin: 1rem auto 0rem;
   flex-direction: row;
 `;
 const EventConnectionDisplay = styled.div`
@@ -102,7 +102,7 @@ const NotesBox = styled.div`
   flex: 1;
   max-height: 16rem;
   width: 95%;
-  margin: 2rem auto;
+  margin: 1rem auto;
   background-color: rgba(255, 255, 255, 0.2);
   border-radius: 1rem;
 `;
