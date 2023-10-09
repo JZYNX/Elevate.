@@ -7,7 +7,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
 import CalendarPopup from '../components/CalendarPopup';
-import { defaultEventColor, primaryColor, secondaryColor, textColor } from "../utils/Color";
+import { defaultEventColor, primaryColor, secondaryColor, buttonColor, textColor } from "../utils/Color";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import "../styles/calendar.css";
@@ -273,8 +273,8 @@ function Calendar() {
                     dateClick={handleDateClick}
                     eventClick={handleEventClick}
                     select={HandleDateDrag}
-                    eventBackgroundColor={primaryColor}
-                    eventBorderColor={secondaryColor}
+                    eventBackgroundColor={buttonColor}
+                    eventBorderColor={buttonColor}
                     eventTextColor={textColor}
                     eventDisplay={'block'}
                     selectable={true}

@@ -45,7 +45,7 @@ export default function SearchBar(props) {
                 inputBorderColor="hsla(278, 69%, 38%, 0.01)"
                 inputBackgroundColor="hsla(278, 69%, 38%, 0.11)"
                 leftIcon={<SearchIcon fontSize=""/>}
-                iconBoxSize={"2rem"}
+                iconBoxSize={"1.75rem"}
             />
         </SearchBoxContainer>
       
