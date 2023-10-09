@@ -40,12 +40,6 @@ const DisplayColumn = styled.div`
 `;
 
 
-
-
-
-
-
-
 function Connections() {
     return (
         <ConnectionsContainer>
