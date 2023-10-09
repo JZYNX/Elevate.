@@ -1,46 +1,45 @@
-import React, { Component } from "react";
+import React from "react";
 import styled from "styled-components";
 import ReactSearchBox from "react-search-box";
 import SearchIcon from '@mui/icons-material/Search';
 
 const SearchBoxContainer = styled.div`
-    top: 1rem;
-    right: 2.75rem;
     position: absolute;
+    top: 1rem;
+    right: 3rem;
     z-index: 999;
 `
 
-export default class SearchBar extends Component {
-  data = [
-    {
-      key: "john",
-      value: "John Doe",
-    },
-    {
-      key: "jane",
-      value: "Jane Doe",
-    },
-    {
-      key: "mary",
-      value: "Mary Phillips",
-    },
-    {
-      key: "robert",
-      value: "Robert",
-    },
-    {
-      key: "karius",
-      value: "Karius",
-    },
-  ];
+export default function SearchBar(props) {
+    const data = [
+        {
+        key: "john",
+        value: "John Doe",
+        },
+        {
+        key: "jane",
+        value: "Jane Doe",
+        },
+        {
+        key: "mary",
+        value: "Mary Phillips",
+        },
+        {
+        key: "robert",
+        value: "Robert",
+        },
+        {
+        key: "karius",
+        value: "Karius",
+        },
+    ];
 
-  render() {
     return (
         <SearchBoxContainer>
             <ReactSearchBox
                 placeholder="Search"
                 value="Doe"
-                data={this.data}
+                data={data}
                 callback={(record) => console.log(record)}
                 inputHeight="1.5rem"
                 inputBorderColor="hsla(278, 69%, 38%, 0.01)"
@@ -51,5 +50,4 @@ export default class SearchBar extends Component {
         </SearchBoxContainer>
       
     );
-  }
 }
