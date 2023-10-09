@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Sidebar from '../components/Sidebar';
+import SearchBar from '../components/SearchBar';
 
 const BackgroundImage = styled.img`
   position: absolute;
@@ -30,13 +31,14 @@ function Connections() {
   const storedUsername = urlParams.get('username');
 
   return (
-        <ConnectionsContainer>
-            <SidebarColumn>
-                <Sidebar userName={storedUsername}/>
-            </SidebarColumn>
-            <h1>Connections</h1>
-        </ConnectionsContainer>
-    )
+    <ConnectionsContainer>
+      <SearchBar />
+      <SidebarColumn>
+          <Sidebar userName={storedUsername}/>
+      </SidebarColumn>
+      <h1>Connections</h1>
+    </ConnectionsContainer>
+  )
 }
 
 export default Connections

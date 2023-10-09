@@ -98,7 +98,7 @@ const ProfileHeader = styled.div`
   align-items: center;
   justify-content: center;
   padding-left: 0.3rem;
-  height: 6.5vh;
+  height: 7vh;
 `
 
 const SubProfileContainer = styled.div`
