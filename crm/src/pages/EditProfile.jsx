@@ -36,6 +36,7 @@ const ProfileInfoContainer = styled.div`
   flex-direction: column;
   height: 100vh;
   width: 100vw;
+  background-color: rgba(255, 255, 255, 0.5);
 `;
 
 const ProfileTitle = styled.div`
@@ -77,7 +78,7 @@ const ProfileColumns = styled.div`
   input {
     width: 70%;
     padding: 5px;
-    border: 1px solid #ddd;
+    border: 1px solid rgba(0, 0, 0, 0.1);
     font-family: 'Poppins', sans-serif;
     border-radius: 5px;
     font-size: 13px;
