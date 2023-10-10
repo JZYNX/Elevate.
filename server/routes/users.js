@@ -46,6 +46,7 @@ const {
     deleteUsersExceptSkyrider,
     getOneUserByUsername,
     getEventCount,
+    getUserEvents,
 } = require('../controllers/userController')
 
 // GET all users
@@ -80,6 +81,10 @@ router.delete('/deleteUsersExceptSkyrider', deleteUsersExceptSkyrider);
 
 //find user and get event count
 router.get('/:username/event-count',getEventCount);
+
+//find user and get user events
+router.get('/:username/userEvents',getUserEvents);
+
 const {
     getAllConnections,
     addConnectionForUser,

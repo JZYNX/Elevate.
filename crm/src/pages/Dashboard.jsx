@@ -81,6 +81,7 @@ const SocialsBox = styled.div`
   width: 95%;
   margin: 1rem auto 0rem;
   flex-direction: row;
+  
 `;
 const EventConnectionDisplay = styled.div`
   flex: 1;
@@ -95,6 +96,8 @@ const EventConnectionDisplay = styled.div`
     font-weight: bold;
     margin-top: 0.313rem;
   }
+  overflow-y: auto; /* Add vertical scrollbar when content overflows */
+  max-height: 550px; /* Set a max height for the list of events */
 `;
 // implement notes display and create pop up notes feature
 const NotesBox = styled.div`
@@ -242,6 +245,23 @@ const StyledTextArea = styled.textarea`
   width: calc(100% - 4rem);
 `;
 
+
+
+
+const EventListContainer = styled.div`
+  max-height:1000px; /* Set a max height for the event list container */
+`;
+
+const DateBox = styled.div`
+  background-color: white;
+  border: 1px solid black;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  width: 100%; /* Make it fill horizontally */
+`;
+
 function Dashboard() {
   const [showNotesPopup, setShowNotesPopup] = useState(null);
   const [notes, setNotes] = useState([]);
@@ -249,6 +269,9 @@ function Dashboard() {
   const [newNote, setNewNote] = useState('');
   const [userName, setUserName] = useState('');
   const [eventCount, setEventCount] = useState(0);
+  const [userEvents, setUserEvents] = useState([]);
+  const [groupedUserEvents, setGroupedUserEvents] = useState([]);
+  const currentDate = new Date(); // Get the current date and time
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -273,7 +296,54 @@ function Dashboard() {
         // Handle error here
       });
   }, [userName]);
+  
 
+  useEffect(() => {
+    // Make an API request to fetch the user events
+    fetch(`/users/${userName}/userEvents`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setUserEvents(data.userEvents);
+        // Group events by start date
+        const eventsByDate = {};
+
+        data.userEvents.forEach((event) => {
+          const eventStartDate = event.start.split('T')[0];
+          const eventStartDateObj = new Date(event.start);
+    
+          // Check if the event is in the future
+          if (eventStartDateObj > currentDate) {
+            if (!eventsByDate[eventStartDate]) {
+              eventsByDate[eventStartDate] = [];
+            }
+            eventsByDate[eventStartDate].push(event);
+          }
+        });
+    
+        // Sort the grouped events by start date
+        const sortedEventLists = Object.values(eventsByDate).sort((a, b) => {
+          const dateA = new Date(a[0].start);
+          const dateB = new Date(b[0].start);
+          return dateA - dateB;
+        });
+    
+        setGroupedUserEvents(sortedEventLists);
+      })
+      
+      .catch((error) => {
+        console.error('Error fetching event count:', error);
+        // Handle error here
+      });
+  }, [userName]);
+
+  
+  
+  
   const handleAddNote = () => {
     if (newTitle && newNote) {
       if (showNotesPopup !== null) {
@@ -360,6 +430,19 @@ function Dashboard() {
         <SocialsBox>
           <EventConnectionDisplay>
             <p className="descriptor">Upcoming Events</p>
+            <ul>
+              {groupedUserEvents.map((eventList, index) => (
+                <EventListContainer key={`list-${index}`}>
+                  <DateBox>{new Date(eventList[0].start).toISOString().split('T')[0]}</DateBox>
+                  {eventList.map((event) => (
+                    <li key={event.id}>
+                      {new Date(event.start).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - {new Date(event.end).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}:{' '}
+                      <span style={{ width: '200px', display: 'inline-block' }}>{event.title}</span>
+                    </li>
+                  ))}
+                </EventListContainer>
+              ))}
+            </ul>
           </EventConnectionDisplay>
           <EventConnectionDisplay>
             <p className="descriptor">New Connections</p>
