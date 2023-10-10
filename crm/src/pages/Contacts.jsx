@@ -103,12 +103,12 @@ export default function Contacts({ contacts, changeChat }) {
     const urlParams = new URLSearchParams(window.location.search);
     const storedUsername = urlParams.get('username');
     setCurrentUserName(storedUsername);
-    console.log(contacts)
+    // console.log(contacts) for testing
   }, []);
 
   const changeCurrentChat = (index, contact) => {
     setCurrentSelected(index);
-    console.log(contact);
+    // console.log(contact); for testing 
     changeChat(contact);
   };
 
@@ -137,8 +137,15 @@ export default function Contacts({ contacts, changeChat }) {
             >
                 <div className="avatar">
                 <img
-                    src={`data:image/svg+xml;base64,${contact.avatarImage}`}
+                    src={contact.userImage}
                     alt=""
+                    style={{
+                      width: '50px',
+                      height: '50px',
+                      borderRadius: '50%',
+                      display: 'block', 
+                      margin: '0 auto', 
+                    }}
                 />
                 </div>
                 <div className="username">

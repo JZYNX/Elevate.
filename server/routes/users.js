@@ -51,6 +51,7 @@ const {
     getAllNotes,
     updateNote,
     deleteNote,
+    addConnection,
 } = require('../controllers/userController')
 
 // GET all users
@@ -100,6 +101,8 @@ router.put('/:username/updateNote', updateNote);
 
 router.delete('/:username/deleteNote', deleteNote);
 
+router.put('/:username/addConnection', addConnection);
+
 const {
     getAllConnections,
     addConnectionForUser,
@@ -107,7 +110,7 @@ const {
 } = require('../controllers/connectionsController');
 
 // GET all connections for a user
-router.get('/connections/getAll', getAllConnections)
+router.get('/connections/:username/getAllConnection', getAllConnections)
 
 // PATCH - add a connection for a user
 router.patch('/connections', addConnectionForUser)

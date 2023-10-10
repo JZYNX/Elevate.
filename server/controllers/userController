@@ -50,11 +50,10 @@ const getOneUserByUsername = async (req, res) => {
   const {username} = req.body
 
   const user = await User.findOne({username})
-
   if (!user) {
       return res.status(404).json({error: "No such user", user})
   }
-
+  console.log("THE USER RETURN" + user.username);
   return res.status(200).json(user)
 }
 
@@ -412,6 +411,27 @@ const deleteNote = async (req, res) => {
 };
 
 
+const addConnection = async (req, res) => {
+  try {
+    const {username} = req.param;
+    const { userAdded } = req.body;
+
+    const user = await User.findOne({username});
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    user.connections.push(userAdded);
+    await user.save();
+    return res.status(201).json({ message: 'user added successfully'});
+  } catch (error){
+      console.error(error);
+      return res.status(500).json({ message: 'Internal server error' })
+  }
+
+};
+
 module.exports = {
     createUser,
     getAllUsers,
@@ -430,4 +450,5 @@ module.exports = {
     getAllNotes,
     updateNote,
     deleteNote,
+    addConnection,
 }
