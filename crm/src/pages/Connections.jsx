@@ -8,6 +8,7 @@ import Select from 'react-select'
 import PhoneIcon from '@mui/icons-material/Phone';
 import EmailIcon from '@mui/icons-material/Email';
 import Email from '../components/Email';
+import AddConnection from '../components/AddConnection';
 
 const BackgroundImage = styled.img`
   position: absolute;
@@ -179,6 +180,7 @@ function Connections() {
     const storedUsername = urlParams.get('username');  
     const [currentSelected, setCurrentSelected] = useState(null);
     const [showEmailPopup, setShowEmailPopup] = useState(false);
+    const [showAddPopup, setShowAddPopup] = useState(false);
 
     const sortOptions = [
       { value: 'last-name', label: 'Last-name' },
@@ -321,6 +323,10 @@ function Connections() {
       setShowEmailPopup(!showEmailPopup);
     }
 
+    const toggleAddModal = () => {
+      setShowAddPopup(!showAddPopup);
+    }
+
     return (
       <ConnectionsContainer>
           <BackgroundImage src={bgImg} alt="bgImg" />
@@ -351,7 +357,10 @@ function Connections() {
                   })}
                 />
                 <AddButtonContainer>
-                  <StyledButton> Add Contact </StyledButton>
+                  <StyledButton onClick={() => {
+                    toggleAddModal()
+                  }}
+                  > Add Contact </StyledButton>
                 </AddButtonContainer>
               </UtilityRowContainer>
 
@@ -398,6 +407,9 @@ function Connections() {
               </Footer>
             {
               showEmailPopup ? <Email onToggle={toggleModal} showEmailPopup={showEmailPopup}/> : null
+            }
+            {
+              showAddPopup ? <AddConnection onToggle={toggleAddModal} showAddPopup = {showAddPopup} /> : null
             }
           </DisplayColumn>
       </ConnectionsContainer>
