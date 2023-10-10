@@ -267,6 +267,7 @@ function Dashboard() {
   const [notes, setNotes] = useState([]);
   const [newTitle, setNewTitle] = useState('');
   const [newNote, setNewNote] = useState('');
+  const [newNoteID, setNewNoteID] = useState('');
   const [userName, setUserName] = useState('');
   const [eventCount, setEventCount] = useState(0);
   const [userEvents, setUserEvents] = useState([]);
@@ -341,25 +342,78 @@ function Dashboard() {
       });
   }, [userName]);
 
+  const fetchUserNotes = async () => {
+    try {
+      const response = await fetch(`/users/${userName}/getNotes`);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      setNotes(data);
+    } catch (error) {
+      console.error('Error fetching user notes:', error);
+    }
+  };
+
+  useEffect(() => {
+    if (userName) {
+      fetchUserNotes();
+    }
+  }, [userName]);
   
-  
-  
-  const handleAddNote = () => {
+  const handleAddNote = async () => {
     if (newTitle && newNote) {
       if (showNotesPopup !== null) {
-        const updatedNotes = [...notes];
+        // const updatedNotes = [...notes];
         if (showNotesPopup >= 0 && showNotesPopup < notes.length) {
           // Editing an existing note
-          updatedNotes[showNotesPopup] = {
-            title: newTitle,
-            note: newNote,
+          const payload = {
+            id: newNoteID,
+            title: newTitle, // The updated title
+            content: newNote, // The updated content
           };
+          try {
+            const response = await fetch(`/users/${userName}/updateNote`, {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify( payload ),
+            });
+          
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          fetchUserNotes();
+          // const data = await response.json();
+          // updatedNotes.push({ title: newTitle, note: newNote });
+          } catch (error) {
+            console.error('Error creating note:', error);
+          }
         } else {
           // Adding a new note
-          updatedNotes.push({ title: newTitle, note: newNote });
+          try {
+            const response = await fetch(`/users/${userName}/notes`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ title: newTitle, content: newNote }),
+            });
+          
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          fetchUserNotes();
+          // const data = await response.json();
+          // updatedNotes.push({ title: newTitle, note: newNote });
+          } catch (error) {
+            console.error('Error creating note:', error);
+          }
         }
-        setNotes(updatedNotes);
+        // setNotes(updatedNotes);
         clearNoteInput();
+
         setShowNotesPopup(null);
       }
     } else {
@@ -376,21 +430,41 @@ function Dashboard() {
     toast.error(message);
   };
 
-  const deleteNote = (index) => {
+  const deleteNote = async (index, id) => {
     if (index >= 0 && index < notes.length) {
       if (window.confirm("Are you sure you want to delete this note?")) {
-        const updatedNotes = [...notes];
-        updatedNotes.splice(index, 1);
-        setNotes(updatedNotes);
+        try{
+          const payload = {
+            id: id,
+          };
+
+          const response = await fetch(`/users/${userName}/deleteNote`, {
+            method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload),
+          });
+
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          fetchUserNotes();
+        } catch (error){
+          console.error('Error deleting note:', error);
+        }
       }
     }
   };
 
-  const editNote = (index) => {
+  const editNote = async (index,id) => {
     setShowNotesPopup(index);
     setNewTitle(notes[index].title);
-    setNewNote(notes[index].note);
+    setNewNote(notes[index].content);
+    setNewNoteID(id);
   };
+  
+  
 
   const exitAddNote = () => {
     if (showNotesPopup !== null || newTitle || newNote) {
@@ -454,15 +528,22 @@ function Dashboard() {
             <button onClick={() => setShowNotesPopup(-1)}>New Note</button>
           </NotesHeader>
           <NotesList>
-            {notes.map((note, index) => (
-              <div className="note-item" key={index}>
-                <p className="note-title" onClick={() => editNote(index)}>
-                  {note ? note.title : 'No Title'}
-                </p>
-                <button onClick={() => deleteNote(index)} style={{ fontSize: "8px" }}><DeleteIcon /></button>
-              </div>
-            ))}
-          </NotesList>
+            {notes && notes.length > 0 ? (
+              notes.map((note, index) => (
+                <div className="note-item" key={index}>
+                  <p className="note-title" onClick={() => editNote(index, note._id)}>
+                    {note ? note.title : 'No Title'}
+                  </p>
+                  <button onClick={() => deleteNote(index,note._id)} style={{ fontSize: "8px" }}>
+                    <DeleteIcon />
+                  </button>
+                </div>
+              ))
+            ) : (
+              <p>No notes available</p>
+            )}
+        </NotesList>
+
           {showNotesPopup !== null && (
             <NotesPopup>
               <StyledInput

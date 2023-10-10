@@ -47,6 +47,10 @@ const {
     getOneUserByUsername,
     getEventCount,
     getUserEvents,
+    makeNote,
+    getAllNotes,
+    updateNote,
+    deleteNote,
 } = require('../controllers/userController')
 
 // GET all users
@@ -84,6 +88,17 @@ router.get('/:username/event-count',getEventCount);
 
 //find user and get user events
 router.get('/:username/userEvents',getUserEvents);
+
+//create note for user
+router.post('/:username/notes', makeNote);
+
+//get all note for user
+router.get('/:username/getNotes', getAllNotes);
+
+router.put('/:username/updateNote', updateNote);
+
+
+router.delete('/:username/deleteNote', deleteNote);
 
 const {
     getAllConnections,

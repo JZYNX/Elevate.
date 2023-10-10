@@ -320,6 +320,98 @@ const getUserEvents = async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 };
+
+const makeNote = async (req,res)=>{
+  try{
+    const {username} = req.params;
+    const { title, content } = req.body;
+    const user = await User.findOne({username});
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    const newNote = { title, content };
+    user.notes.push(newNote);
+    await user.save();
+
+    return res.status(201).json({ message: 'Note created successfully', note: newNote });
+  } catch (error){
+    console.error(error);
+    return res.status(500).json({ message: 'Internal server error' })
+  }
+};
+
+const getAllNotes = async (req,res)=>{
+  try{
+    const {username} = req.params;
+    const user = await User.findOne({username});
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    return res.status(200).json(user.notes);
+
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+}
+
+const updateNote = async (req,res) => {
+  try{
+    const {username} = req.params;
+    const { id, title, content } = req.body;
+    const user = await User.findOne({username});
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    const noteToUpdate = user.notes.find((note) => note.id === id);
+    if (!noteToUpdate) {
+      return res.status(404).json({ message: 'Note not found' });
+    }
+
+    noteToUpdate.title = title;
+    noteToUpdate.content = content;
+
+    await user.save();
+
+    return res.status(200).json({ message: 'Note updated successfully', note: noteToUpdate });
+  } catch (error){
+    console.error(error);
+    return res.status(500).json({ message: 'Internal server error' })
+  }
+}
+
+
+const deleteNote = async (req, res) => {
+  try {
+    const { username } = req.params;
+    const { id } = req.body;
+    const user = await User.findOne({ username });
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Find the index of the note with the specified ID
+    const noteIndex = user.notes.findIndex((note) => note.id === id);
+
+    if (noteIndex === -1) {
+      return res.status(404).json({ message: 'Note not found' });
+    }
+
+    // Remove the note from the user's notes array
+    user.notes.splice(noteIndex, 1);
+
+    await user.save();
+
+    return res.status(200).json({ message: 'Note deleted successfully' });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+
 module.exports = {
     createUser,
     getAllUsers,
@@ -334,4 +426,8 @@ module.exports = {
     getOneUserByUsername,
     getEventCount,
     getUserEvents,
+    makeNote,
+    getAllNotes,
+    updateNote,
+    deleteNote,
 }

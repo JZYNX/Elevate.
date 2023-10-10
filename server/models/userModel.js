@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const Note = require('./noteModel'); // Import the Note schema
 
 // global variables for password length
 global.PASSWORD_MIN_LENGTH = 10;
@@ -78,6 +79,7 @@ const userSchema = new mongoose.Schema({
         type:String,
     },
     events: [eventSchema],
+    notes: [Note.schema],
 }, {timestamps: true}) // Enable timestamps for created and updated dates
 
 module.exports = mongoose.model('User', userSchema)
