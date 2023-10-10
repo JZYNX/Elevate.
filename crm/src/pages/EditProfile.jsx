@@ -17,9 +17,10 @@ const changeColors = keyframes`
     filter: hue-rotate(0deg); /* Start and end with pink (320 degrees) */
   }
   50% {
-    filter: hue-rotate(60deg); /* Transition to purple (240 degrees) */
+    filter: hue-rotate(30deg); /* Transition to purple (240 degrees) */
   }
 `;
+
 const BackgroundImage = styled.img`
   /* Add styles for the background image */
   position: absolute;
@@ -36,7 +37,7 @@ const ProfileInfoContainer = styled.div`
   flex-direction: column;
   height: 100vh;
   width: 100vw;
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: rgba(0, 0, 0, 0.05);
 `;
 
 const ProfileTitle = styled.div`
