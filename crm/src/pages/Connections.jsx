@@ -40,15 +40,20 @@ const DisplayColumn = styled.div`
 
 `;
 
-
 function Connections() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const storedUsername = urlParams.get('username');  
     return (
-        <ConnectionsContainer>
-            <SidebarColumn>
-                <Sidebar/>
-            </SidebarColumn>
-            <h1>Connections</h1>
-        </ConnectionsContainer>
+      <ConnectionsContainer>
+          <SearchBar />
+          <SidebarColumn>
+              <Sidebar userName={storedUsername}/>
+          </SidebarColumn>
+          <DisplayColumn>
+            	<h1>Connections</h1>
+              {/* <div className="title-container"> <DropDownBox/> </div> */}
+          </DisplayColumn>
+      </ConnectionsContainer>
     )
 }
 

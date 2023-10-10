@@ -1,6 +1,5 @@
 import Dropdown from 'react-bootstrap/Dropdown';
-import 'bootstrap/dist/css/bootstrap.css';
-import './styles.css'; 
+import "../styles/dropdown.css"; 
 
 function DropDownBox() {
   return (
