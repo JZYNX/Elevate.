@@ -7,6 +7,7 @@ import { primaryColor, secondaryColor, secondaryLightColor, secondaryMediumColor
 import Select from 'react-select'
 import PhoneIcon from '@mui/icons-material/Phone';
 import EmailIcon from '@mui/icons-material/Email';
+import Email from '../components/Email';
 
 const BackgroundImage = styled.img`
   position: absolute;
@@ -39,7 +40,7 @@ const DisplayColumn = styled.div`
 
 const TitleContainer = styled.h1`
   position: relative;
-  left: 3rem;
+  left: 3.5rem;
   top: 1rem;
 `
 const UtilityRowContainer = styled.div`
@@ -48,7 +49,7 @@ const UtilityRowContainer = styled.div`
   padding-top: 1rem;
 
   .react-select-container {
-    left: 3rem;
+    left: 3.5rem;
     width: 15rem;
     height: 2rem; 
 
@@ -60,7 +61,7 @@ const UtilityRowContainer = styled.div`
 `
 
 const AddButtonContainer = styled.div`
-  margin-right: 3rem;
+  margin-right: 3.5rem;
 `
 
 const StyledButton = styled.button`
@@ -93,10 +94,10 @@ const ConnectionListContainer = styled.div`
 const MiniProfile = styled.div`
   ${'' /* border: 2px dotted blue;   */}
   height: 45%;
-  width: 19.4% ;
+  width: 19% ;
   background-color: white;
   border-radius: 1rem;
-  margin: 0rem 0.3%;
+  margin: 0rem 0.5%;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
 `
@@ -105,7 +106,7 @@ const Footer = styled.div`
   position: relative;
   display: flex;
   justify-content: right;
-  padding-right: 4rem;
+  padding-right: 3.5rem;
   bottom: 1rem;  
   
 `
@@ -177,6 +178,7 @@ function Connections() {
     const urlParams = new URLSearchParams(window.location.search);
     const storedUsername = urlParams.get('username');  
     const [currentSelected, setCurrentSelected] = useState(null);
+    const [showEmailPopup, setShowEmailPopup] = useState(false);
 
     const sortOptions = [
       { value: 'last-name', label: 'Last-name' },
@@ -315,6 +317,10 @@ function Connections() {
       }
     };
 
+    const toggleModal = () => {
+      setShowEmailPopup(!showEmailPopup);
+    }
+
     return (
       <ConnectionsContainer>
           <BackgroundImage src={bgImg} alt="bgImg" />
@@ -370,7 +376,9 @@ function Connections() {
                             <InfoTextContainer>{connection.contactNumber}</InfoTextContainer>
                           </InfoContainer>
                           <InfoContainer>
-                            <IconContainer><EmailIcon /></IconContainer>
+                            <IconContainer onClick={() => {
+                                toggleModal();
+                              }}><EmailIcon /></IconContainer>
                             <InfoTextContainer>{connection.email}</InfoTextContainer>
                           </InfoContainer>
                         </MiniProfile>
@@ -388,6 +396,9 @@ function Connections() {
                   Next Page
                 </StyledButton>
               </Footer>
+            {
+              showEmailPopup ? <Email onToggle={toggleModal} showEmailPopup={showEmailPopup}/> : null
+            }
           </DisplayColumn>
       </ConnectionsContainer>
     )
