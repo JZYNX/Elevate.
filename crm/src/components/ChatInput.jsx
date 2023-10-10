@@ -3,13 +3,15 @@ import { BsEmojiSmileFill } from "react-icons/bs";
 import { IoMdSend } from "react-icons/io";
 import styled from "styled-components";
 import Picker from "emoji-picker-react";
+import { primaryColor, secondaryColor } from "../utils/Color";
 
 const Container = styled.div`
   display: grid;
   align-items: center;
   grid-template-columns: 5% 95%;
-  background-color: rgb(0, 0, 0, 0.4);
+  background-color: rgb(0, 0, 0, 0.3);
   padding: 0 2rem;
+  margin-top: 1rem;
   @media screen and (min-width: 720px) and (max-width: 1080px) {
     padding: 0 1rem;
     gap: 1rem;
@@ -28,9 +30,9 @@ const Container = styled.div`
       }
       .EmojiPickerReact {
         position: absolute;
-        top: -450px;
-        left: 30px;
-        background-color: #080420;
+        top: -30rem;
+        left: -2.1rem;
+        background-color: rgba(0, 0, 0, 0.8);
         box-shadow: 0 5px 10px #9a86f3;
         border-color: #9a86f3;
         .emoji-scroll-wrapper::-webkit-scrollbar {
@@ -88,13 +90,16 @@ const Container = styled.div`
       display: flex;
       justify-content: center;
       align-items: center;
-      background-color: #9a86f3;
+      background-color: ${secondaryColor};
       border: none;
       @media screen and (min-width: 720px) and (max-width: 1080px) {
         padding: 0.3rem 1rem;
         svg {
           font-size: 1rem;
         }
+      }
+      &:hover {
+        cursor: pointer;
       }
       svg {
         font-size: 2rem;

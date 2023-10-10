@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Sidebar from '../components/Sidebar';
+import SearchBar from '../components/SearchBar';
 import DropDownBox from '../components/DropDown';
 
 const BackgroundImage = styled.img`
@@ -46,11 +47,7 @@ function Connections() {
             <SidebarColumn>
                 <Sidebar/>
             </SidebarColumn>
-            <DisplayColumn>
-            	<h1>Connections</h1>
-				<div className="title-container"><DropDownBox/></div>
-				
-            </DisplayColumn>
+            <h1>Connections</h1>
         </ConnectionsContainer>
     )
 }

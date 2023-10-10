@@ -42,7 +42,7 @@
 
 /* Current day styling */
 .fc .fc-daygrid-day.fc-day-today, .fc .fc-timegrid-col.fc-day-today {
-    background-color: #e8f4f8;
+    background-color: #6e17a038;
 }
 
 /* Highlighted day styling */
@@ -73,7 +73,7 @@
 
 /* grey out saturday and sunday for daygridmonth view */
 .fc-dayGridMonth-view .fc-daygrid-body .fc-day-sat, .fc-dayGridMonth-view .fc-daygrid-body .fc-day-sun {
-    background-color: hsla(0,0%,84%,.3);
+    background-color: hsla(278, 69%, 38%, 0.11);
 }
 
 body {

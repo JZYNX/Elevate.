@@ -28,17 +28,12 @@ const Container = styled.div`
   display: grid;
   grid-template-rows: 10% 75% 15%;
   overflow: hidden;
-  background-color: rgb(255, 255, 255, 0.3);
-
-  border-right: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: px px 15px rgba(0, 0, 0, 0.1);
-
   .brand {
     display: flex;
     align-items: center;
     gap: 1rem;
     justify-content: center;
-    margin-top: 4rem;
+    margin-top: 3rem;
     img {
       height: 2rem;
     }
@@ -53,7 +48,7 @@ const Container = styled.div`
     align-items: center;
     overflow: auto;
     gap: 0.8rem;
-    margin-top: 5rem;
+    margin-top: 4rem;
     &::-webkit-scrollbar {
       width: 0.2rem;
       &-thumb {
@@ -160,12 +155,12 @@ export default function Contacts({ contacts, changeChat }) {
                 }`}
                 onClick={() => changeCurrentChat(index, contact)}
             >
-                {/* <div className="avatar"> */}
-                {/* <img
+                <div className="avatar">
+                <img
                     src={`data:image/svg+xml;base64,${contact.avatarImage}`}
                     alt=""
-                /> */}
-                {/* </div> */}
+                />
+                </div>
                 <div className="username">
                 <h3>{contact.username}</h3>
                 </div>
@@ -182,7 +177,7 @@ export default function Contacts({ contacts, changeChat }) {
         </div> */}
         <div className="username">
             <h2 
-              onClick={() => handleNavigation('/dashboard')}
+              onClick={() => handleNavigation(`/dashboard?username=${currentUserName}`)}
               style={{ cursor: 'pointer' }}
               >
                 &lt;&lt;dashboard</h2>

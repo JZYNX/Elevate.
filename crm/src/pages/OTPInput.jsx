@@ -284,7 +284,7 @@ function Login() {
         <div className="app-title">
           {titleMessage.split('').map((letter, index) => {
             return (
-              <TextHover key={index}>
+              <TextHover key={index} shouldAnimate={false}>
                {letter === " " ? '\u00A0' : letter}
 
               </TextHover>

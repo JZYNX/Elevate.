@@ -28,6 +28,7 @@ const BackgroundImage = styled.img`
 `;
 
 const Container = styled.div`
+  background-color: rgba(0, 0, 0, 0.1);
   display: grid;
   grid-template-rows: 10% 80% 10%;
   gap: 0.1rem;
@@ -39,7 +40,7 @@ const Container = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 2rem;
+    padding-left: 4rem;
     .user-details {
       display: flex;
       align-items: center;
@@ -52,13 +53,15 @@ const Container = styled.div`
       .username {
         h3 {
           color: white;
+          font-size: 1.75rem;
         }
       }
     }
   }
   .chat-messages {
-    padding-left:2rem;
     display: flex;
+    padding-left: 4rem;
+    padding-right: 3rem;
     flex-direction: column;
     gap: 0rem;
     overflow: auto;
@@ -72,14 +75,16 @@ const Container = styled.div`
     }
     .message {
       display: flex;
-      align-items: center;
       .content {
         max-width: 40%;
         overflow-wrap: break-word;
-        padding: 1rem;
-        font-size: 1.1rem;
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+        margin: 0.1rem;
+        font-size: 0.9rem;
         border-radius: 1rem;
-        color: #d1d1d1;
+        color: white;
+        line-height: 1.25;
         @media screen and (min-width: 720px) and (max-width: 1080px) {
           max-width: 70%;
         }
@@ -88,13 +93,15 @@ const Container = styled.div`
     .sent {
       justify-content: flex-end;
       .content {
-        background-color: #4f04ff21;
+        background-color: ${secondaryColor};
+        color: white;
       }
     }
-    .recieved {
+    .received {
       justify-content: flex-start;
       .content {
-        background-color: #9900ff20;
+        background-color: white;
+        color: black;
       }
     }
   }
@@ -157,7 +164,7 @@ export default function ChatContainer({ currentChat, currentUser , socket}) {
     // Listen for incoming messages using sockets
     useEffect(() => {
         if (socket.current) {
-          socket.current.on("msg-recieve", (msg) => {
+          socket.current.on("msg-receive", (msg) => {
             setArrivalMessage({ fromSelf: false, message: msg });
           });
         }
@@ -191,10 +198,10 @@ export default function ChatContainer({ currentChat, currentUser , socket}) {
                 messages.map((message) => {
                     return (
                         <div ref={scrollRef} key={uuidv4()}>
-                            <div className={'message ${message.fromSelf ? "sent":"received"}'}>
+                            <div className={`message ${message.fromSelf ? "sent":"received"}`}>
                                 <div className="content">
                                      <p>
-                                        {message.fromSelf ? "sent" : "received"} {message.message}
+                                     {message.message}
                                      </p>
                                 </div>
                             </div>

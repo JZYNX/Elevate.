@@ -46,7 +46,7 @@ const Container = styled.div`
   background-position: right;
   // background-color: #131324;
   .container {
-    background-color: rgb(0, 0, 0, 0.3);
+    background-color: rgb(0, 0, 0, 0.2);
     height: 100vh;
     width: 100vw;
     display: grid;
@@ -110,16 +110,19 @@ function Message(){
     
     // Trigger the data fetching function when the currentUser changes
     fetchData();
-  }, [currentUser]);
+  }, []);
   
   /**
    * Initializes a socket connection and adds the current user to the chat when currentUser changes.
    */
   useEffect(() => {
-    if(currentUser){
-      socket.current=io(host);
-      socket.current.emit("add-user", currentUser._id);
+    async function setSockets(){
+      if(currentUser){
+        socket.current=io(host);
+        socket.current.emit("add-user", currentUser._id);
+      }
     }
+    setSockets();
   }, [currentUser]) 
 
   // Function to handle changing the current chat
