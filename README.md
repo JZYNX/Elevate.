@@ -33,3 +33,5 @@
 - https://www.npmjs.com/package/react-datetime-picker
 - Full calendar API
 - https://fullcalendar.io/docs
+- Search Bar
+- https://www.npmjs.com/package/react-search-box 

@@ -7,11 +7,11 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
 import CalendarPopup from '../components/CalendarPopup';
-import { defaultEventColor, textColor } from "../utils/Color";
+import { defaultEventColor, primaryColor, secondaryColor, buttonColor, textColor } from "../utils/Color";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import "../styles/calendar.css";
-
+import SearchBar from '../components/SearchBar';
 
 const CalendarContainer = styled.div`
     display: flex;
@@ -28,8 +28,7 @@ const SidebarColumn = styled.div`
 
 const FullCalendarContainer = styled.div`
     position: relative;
-    margin-top: 1rem;
-    padding: 2rem;
+    padding: 3rem;
     width: 100%;
     color: black;
 `;
@@ -252,6 +251,7 @@ function Calendar() {
 
     return (
         <CalendarContainer>
+            <SearchBar right="5rem"/>
             <ToastContainer position="bottom-right" autoClose={3000} hideProgressBar />
             <SidebarColumn>
                 <Sidebar userName={storedUsername}/>
@@ -273,8 +273,8 @@ function Calendar() {
                     dateClick={handleDateClick}
                     eventClick={handleEventClick}
                     select={HandleDateDrag}
-                    eventBackgroundColor={defaultEventColor}
-                    eventBorderColor={defaultEventColor}
+                    eventBackgroundColor={buttonColor}
+                    eventBorderColor={buttonColor}
                     eventTextColor={textColor}
                     eventDisplay={'block'}
                     selectable={true}

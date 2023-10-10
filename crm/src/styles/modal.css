@@ -96,7 +96,7 @@ input {
     .btn {
         padding: 10px 20px;
         margin-right: 10px;
-        background-color: #007bff;
+        background-color: #0056b3;
         color: #fff;
         border: none;
         border-radius: 5px;
@@ -104,7 +104,7 @@ input {
         transition: background-color 0.3s ease;
     
         &:hover {
-            background-color: #0056b3;
+            background-color: #2835A2;
         }
     
         &:last-child {

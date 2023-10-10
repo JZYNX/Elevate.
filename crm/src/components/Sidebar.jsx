@@ -90,7 +90,7 @@ const ProfileContainer = styled(ListrowItem)`
   align-items: normal;
   flex-direction: column;
   justify-content: center;
-  height: ${props => (props.expanded ? '17vh' : '6.5vh')};
+  height: ${props => (props.expanded ? '17vh' : '7vh')};
 `
 
 const ProfileHeader = styled.div`
@@ -98,7 +98,7 @@ const ProfileHeader = styled.div`
   align-items: center;
   justify-content: center;
   padding-left: 0.3rem;
-  height: 6.5vh;
+  height: 7vh;
 `
 
 const SubProfileContainer = styled.div`
@@ -124,17 +124,11 @@ const SubProfileItem = styled.div`
  */
 function Sidebar({userName}) {
     const navigate = useNavigate();
-    const [showProfileDropDown, setShowProfileDropDown] = useState(false);
-    const [isProfileViewMode, setIsProfileViewMode] = useState(true); 
+    const [showProfileDropDown, setShowProfileDropDown] = useState(false); 
 
     // Handle navigation to a specific path.
     const handleNavigation = (path) => {
         navigate(path);
-    };
-
-    // Handle toggling between view and edit mode for profile
-    const handleToggleProfileMode = () => {
-      setIsProfileViewMode(!isProfileViewMode);
     };
       
     return (
@@ -178,7 +172,7 @@ function Sidebar({userName}) {
                   </SubProfileItem>
                   <SubProfileItem 
                     className='edit-profile'
-                    onClick={() => handleNavigation(`/profile?username=${userName}`)} 
+                    onClick={() => handleNavigation(`/edit-profile?username=${userName}`)} 
                     >Edit Profile
                   </SubProfileItem>
                   <SubProfileItem 
