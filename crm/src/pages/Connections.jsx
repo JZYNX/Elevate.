@@ -124,7 +124,7 @@ const PersonContainer = styled.div`
     font-family: 'Poppins', sans-serif;
     white-space: nowrap;
     overflow: hidden;
-    padding: 0 0.5rem;
+    padding: 0 1rem;
     text-overflow: ellipsis; 
     max-width: 100%;
   }
@@ -146,7 +146,7 @@ const InfoContainer = styled.div`
   width: 100%;
   height: 10%;
   margin-bottom: 1rem;
-  padding: 0 0.5rem;
+  padding: 0 1rem;
   display: flex;
 `
 
