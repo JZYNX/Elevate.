@@ -248,12 +248,31 @@ function Dashboard() {
   const [newTitle, setNewTitle] = useState('');
   const [newNote, setNewNote] = useState('');
   const [userName, setUserName] = useState('');
+  const [eventCount, setEventCount] = useState(0);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const storedUsername = urlParams.get('username');
     setUserName(storedUsername);
   }, []);
+
+  useEffect(() => {
+    // Make an API request to fetch the event count
+    fetch(`/users/${userName}/event-count`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setEventCount(data.eventCount);
+      })
+      .catch((error) => {
+        console.error('Error fetching event count:', error);
+        // Handle error here
+      });
+  }, [userName]);
 
   const handleAddNote = () => {
     if (newTitle && newNote) {
@@ -330,7 +349,7 @@ function Dashboard() {
             <p className="descriptor">Connections</p>
           </StatBox>
           <StatBox>
-            <h2 className="number">12</h2>
+            <h2 className="number">{eventCount}</h2>
             <p className="descriptor">Upcoming Events</p>
           </StatBox>
           <StatBox>
