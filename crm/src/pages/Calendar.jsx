@@ -27,7 +27,7 @@ const CalendarContainer = styled.div`
     display: flex;
     height: 100vh;
     width: 100vw;
-    background-color:rgba(255, 255, 255, 0.3);
+    background-color:rgba(0, 0, 0, 0.15);
 `;
 
 const SidebarColumn = styled.div`
