@@ -40,6 +40,7 @@
     box-shadow: none;
 }
 
+
 /* Current day styling */
 .fc .fc-daygrid-day.fc-day-today, .fc .fc-timegrid-col.fc-day-today {
     background-color: #6e17a038;

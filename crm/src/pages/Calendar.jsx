@@ -12,6 +12,16 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import "../styles/calendar.css";
 import SearchBar from '../components/SearchBar';
+import bgImg from '../assets/nikuubg.jpg'
+
+const BackgroundImage = styled.img`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: right;
+  z-index: -1;
+`;
 
 const CalendarContainer = styled.div`
     display: flex;
@@ -251,6 +261,7 @@ function Calendar() {
 
     return (
         <CalendarContainer>
+            <BackgroundImage src={bgImg} alt="bgImg" />
             <SearchBar right="5rem"/>
             <ToastContainer position="bottom-right" autoClose={3000} hideProgressBar />
             <SidebarColumn>
