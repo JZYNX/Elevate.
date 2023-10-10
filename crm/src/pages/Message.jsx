@@ -1,37 +1,11 @@
 import React, {useState, useEffect, useRef} from "react";
 import styled, { keyframes } from 'styled-components';
 import bgImg from '../assets/nikuubg.jpg';
-import axios from "axios";
 import Contacts from "./Contacts";
-import Sidebar from '../components/Sidebar';
 import Welcome from "../components/Welcome";
 import ChatContainer from "../components/ChatContainer";
 import {io} from "socket.io-client";
 import {host} from "../utils/APIRoutes"
-
-const changeColors = keyframes`
-  0%, 100% {
-    filter: hue-rotate(0deg); /* Start and end with pink (320 degrees) */
-  }
-  50% {
-    filter: hue-rotate(60deg); /* Transition to purple (240 degrees) */
-  }
-`;
-const BackgroundImage = styled.img`
-  /* Add styles for the background image */
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  object-fit: cover; 
-  object-position: right;
-  z-index: -1; /* Put the image behind other content */
-  animation: ${changeColors} 5s infinite linear; /* Apply the animation */
-`;
-
-const SidebarColumn = styled.div`
-  flex: 1;
-  background-color: #f0f0f0;
-`;
 
 const Container = styled.div`
   height: 100vh;

@@ -30,6 +30,7 @@ export default function Welcome() {
 const Container = styled.div`
   display: flex;
   justify-content: center;
+  background-color: rgba(0, 0, 0, 0.1);
   align-items: center;
   color: white;
   flex-direction: column;

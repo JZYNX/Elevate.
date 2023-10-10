@@ -23,7 +23,7 @@ const changeColors = keyframes`
     filter: hue-rotate(0deg); /* Start and end with pink (320 degrees) */
   }
   50% {
-    filter: hue-rotate(60deg); /* Transition to purple (240 degrees) */
+    filter: hue-rotate(30deg); /* Transition to purple (240 degrees) */
   }
 `;
 const BackgroundImage = styled.img`

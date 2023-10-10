@@ -81,9 +81,9 @@ const StyledButton = styled.button`
   }
 `
 
-const ConnnectionListContainer = styled.div`
+const ConnectionListContainer = styled.div`
   display: flex;
-  height: 80%;
+  height: 75%;
   width: 100%;
   ${'' /* border: 2px dotted red;   */}
   padding: 2rem 3rem;
@@ -121,13 +121,13 @@ const PersonContainer = styled.div`
   div.profile-name {
     margin-top: 0.5rem;
     font-weight: normal;
-    font-size: 24px;
+    font-size: 20px;
     font-family: 'Poppins', sans-serif;
     white-space: nowrap;
     overflow: hidden;
     padding: 0 1rem;
     text-overflow: ellipsis; 
-    max-width: 100%;
+    max-width: 90%;
   }
 `
 
@@ -349,7 +349,7 @@ function Connections() {
                 </AddButtonContainer>
               </UtilityRowContainer>
 
-              <ConnnectionListContainer>
+              <ConnectionListContainer>
                   {
                     profilesToDisplay.map((connection, index) => {
                       return (
@@ -377,7 +377,7 @@ function Connections() {
                       )
                     })
                   }
-              </ConnnectionListContainer>
+              </ConnectionListContainer>
 
               <Footer>
                 <StyledButton onClick={prevPage} disabled={currentPage === 1}>
