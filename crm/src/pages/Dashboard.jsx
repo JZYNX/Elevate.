@@ -1,11 +1,32 @@
-import React, {useState} from 'react';
-import styled from 'styled-components';
+import React, { useState, useEffect } from 'react';
+import styled, { keyframes } from 'styled-components';
 import Sidebar from '../components/Sidebar';
 import { primaryColor, secondaryColor } from '../utils/Color';
 import { toast, ToastContainer } from 'react-toastify';
+import bgImg from '../assets/nikuubg.jpg';
 import 'react-toastify/dist/ReactToastify.css';
 import DeleteIcon from '@mui/icons-material/Delete';
-import Delete from '@mui/icons-material/Delete';
+
+const changeColors = keyframes`
+  0%, 100% {
+    filter: hue-rotate(0deg); /* Start and end with pink (320 degrees) */
+  }
+  50% {
+    filter: hue-rotate(60deg); /* Transition to purple (240 degrees) */
+  }
+`;
+
+const BackgroundImage = styled.img`
+  /* Add styles for the background image */
+  position: absolute;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: right;
+  z-index: -2; /* Put the image behind other content */
+  animation: ${changeColors} 5s infinite linear; /* Apply the animation */
+`;
 
 const DashboardContainer = styled.div`
   display: flex;
@@ -26,14 +47,14 @@ const DashboardInfo = styled.div`
 // stats row on dashboard
 const StatsContainer = styled.div`
   padding-top: 2rem;
-  width: 90%;
+  width: 95%;
   margin: 0 auto;
   display: flex;
   flex-direction: row;
 `;
 const StatBox = styled.div`
   text-align: left;
-  background-color: #ededed;
+  background-color: rgba(255, 255, 255, 0.2);
   border-radius: 1rem;
   padding: 0.5rem;
   padding-left: 2rem;
@@ -42,34 +63,33 @@ const StatBox = styled.div`
   width: 100%;
 
   h2.number {
-    font-size: 36px; 
+    font-size: 36px;
     font-weight: bold;
     margin: 0rem;
   }
   p.descriptor {
     margin: 0;
-    font-size: 18px; 
+    font-size: 18px;
   }
 `;
 // second row of dashboard including events and new connections
 const SocialsBox = styled.div`
   display: flex;
   flex: 1;
-  width: 90%;
-  margin: auto;
-  margin-top: 2rem;
+  width: 95%;
+  margin: 2rem auto 0rem;
   flex-direction: row;
 `;
 const EventConnectionDisplay = styled.div`
   flex: 1;
-  background-color: #ededed;
+  background-color: rgba(255, 255, 255, 0.2);
   border-radius: 1rem;
   padding: 0.5rem 0.5rem 0.5rem 2rem;
-  margin: 0 0.25rem;
+  margin: 0rem 0.25rem;
   height: 100%;
   width: 100%;
   p.descriptor {
-    font-size: 1.5rem; /* Adjust the font size as needed */
+    font-size: 1.5rem;
     font-weight: bold;
     margin-top: 0.313rem;
   }
@@ -79,10 +99,10 @@ const NotesBox = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
-  width: 90%;
-  max-height: 20rem;
+  max-height: 16rem;
+  width: 95%;
   margin: 2rem auto;
-  background-color: #ededed;
+  background-color: rgba(255, 255, 255, 0.2);
   border-radius: 1rem;
 `;
 const NotesHeader = styled.div`
@@ -90,7 +110,7 @@ const NotesHeader = styled.div`
   flex: 0.3;
 
   p.descriptor {
-    font-size: 1.5rem; /* Adjust the font size as needed */
+    font-size: 1.5rem;
     font-weight: bold;
     padding-left: 2rem;
   }
@@ -118,6 +138,7 @@ const NotesHeader = styled.div`
 `;
 const NotesList = styled.div`
   display: flex;
+  justify-content: space-between;
   flex-direction: row;
   flex-wrap: wrap;
   width: 100%;
@@ -125,151 +146,179 @@ const NotesList = styled.div`
 
   .note-item {
     display: flex;
-    margin: 0.5rem 2rem;
-    background-color: white;
+    background-color: rgba(255, 255, 255, 0.5);
     border-radius: 1rem;
-    width: 43%;
+    width: 44rem;
+    margin: 0.5rem 1rem;
     padding-left: 2rem;
 
     p.note-title {
-      font-size: 1rem;
+      font-size: 0.9rem;
+      &:hover {
+        cursor: pointer;
+      }
     }
-
     button {
       border: none;
-      margin: auto 2rem auto auto; 
-      background-color: inherit;
+      margin: auto 2rem auto auto;
+      background-color: rgba(255, 255, 255, 0);
 
       &:hover {
         cursor: pointer;
       }
     }
   }
-
   &::-webkit-scrollbar {
-      width: 0.2rem;
-      &-thumb {
-        background-color: ${secondaryColor};
-        width: 0.1rem;
-        border-radius: 1rem;
-      }
+    width: 0.2rem;
+    &-thumb {
+      background-color: ${secondaryColor};
+      width: 0.1rem;
+      border-radius: 1rem;
     }
+  }
 `;
 const NotesPopup = styled.div`
-  position: absolute;
-  left: 63rem;
-  background-color: #f0f0f0; /* Use the same background color as the sidebar */
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 85%;
+  height: 100%;
+  background-color: #f0f0f0;
   border: 1px solid #ccc;
-  border-radius: 20px;
-  padding: 20px;
+  border-radius: 0;
   z-index: 2;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
 
-  input[type="text"] {
-    margin-bottom: 10px;
-    padding-left: 10px;
-    padding-right: 10px;
-    border: 1px solid #ccc;
-    border-radius: 20px;
-    font-size: 13px;
-    resize: vertical;
-  }
-
-  textarea {
-    font-family: 'Poppins', sans-serif;
-    margin-bottom: 10px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 20px;
-    font-size: 13px;
-    resize: vertical;
-  }
-
-  button {
-    background-color: ${secondaryColor}; /* Use your desired button color */
-    color: white;
-    border: none;
-    border-radius: 20px;
-    padding: 5px 10px;
-    cursor: pointer;
-    font-size: 14px;
-    margin-top: 5px;
-    transition: background-color 0.3s;
-
-    &:hover {
-      background-color: ${primaryColor}; /* Use a darker color for hover effect */
-    }
-  }
   .button-container {
     display: flex;
     justify-content: space-between;
-    padding-left: 50px; 
-    padding-right: 50px;
+    width: 100%;
   }
+  button {
+    background-color: ${secondaryColor};
+    width: 50%;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 1rem 2rem;
+    cursor: pointer;
+    font-size: 16px;
+    font-family: 'Poppins', sans-serif;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    margin-left: 1.5rem;
+    margin-right: 1.5rem;
+    transition: background-color 0.3s;
+    &:hover {
+      background-color: ${primaryColor};
+    }
+  }
+`;
+const StyledInput = styled.input`
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 18px;
+  resize: vertical;
+  width: calc(100% - 4rem);
+`;
+const StyledTextArea = styled.textarea`
+  font-family: 'Poppins', sans-serif;
+  margin-bottom: 0.5rem;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 16px;
+  resize: vertical;
+  width: calc(100% - 4rem);
 `;
 
 function Dashboard() {
-
   const [showNotesPopup, setShowNotesPopup] = useState(null);
   const [notes, setNotes] = useState([]);
   const [newTitle, setNewTitle] = useState('');
   const [newNote, setNewNote] = useState('');
+  const [userName, setUserName] = useState('');
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const storedUsername = urlParams.get('username');
+    setUserName(storedUsername);
+  }, []);
 
   const handleAddNote = () => {
     if (newTitle && newNote) {
-      setNotes([...notes, { title: newTitle, note: newNote }]);
-      setNewTitle('');
-      setNewNote('');
+      if (showNotesPopup !== null) {
+        const updatedNotes = [...notes];
+        if (showNotesPopup >= 0 && showNotesPopup < notes.length) {
+          // Editing an existing note
+          updatedNotes[showNotesPopup] = {
+            title: newTitle,
+            note: newNote,
+          };
+        } else {
+          // Adding a new note
+          updatedNotes.push({ title: newTitle, note: newNote });
+        }
+        setNotes(updatedNotes);
+        clearNoteInput();
+        setShowNotesPopup(null);
+      }
     } else {
-      toast.error("Please include a title and a note.");
-      return;
+      showError("Please include a title and a note.");
     }
-    setShowNotesPopup(null);
   };
-    
-  const editNote = (index) => {
-    setShowNotesPopup(index);
+
+  const clearNoteInput = () => {
+    setNewTitle('');
+    setNewNote('');
+  };
+
+  const showError = (message) => {
+    toast.error(message);
   };
 
   const deleteNote = (index) => {
     if (index >= 0 && index < notes.length) {
-      const updatedNotes = [...notes];
-      updatedNotes.splice(index, 1);
-      setNotes(updatedNotes);
+      if (window.confirm("Are you sure you want to delete this note?")) {
+        const updatedNotes = [...notes];
+        updatedNotes.splice(index, 1);
+        setNotes(updatedNotes);
+      }
     }
   };
 
-  const updateTitle = (value) => {
-    if (showNotesPopup !== null && showNotesPopup >= 0 && showNotesPopup < notes.length) {
-      const updatedNotes = [...notes];
-      updatedNotes[showNotesPopup].title = value;
-      setNotes(updatedNotes);
-    } else {
-      setNewTitle(value);
-    }
-  };
-  
-  const updateNote = (value) => {
-    if (showNotesPopup !== null && showNotesPopup >= 0 && showNotesPopup < notes.length) {
-      const updatedNotes = [...notes];
-      updatedNotes[showNotesPopup].note = value;
-      setNotes(updatedNotes);
-    } else {
-      setNewNote(value);
-    }
+  const editNote = (index) => {
+    setShowNotesPopup(index);
+    setNewTitle(notes[index].title);
+    setNewNote(notes[index].note);
   };
 
   const exitAddNote = () => {
-    setShowNotesPopup(null);
+    if (showNotesPopup !== null || newTitle || newNote) {
+      if (window.confirm("Are you sure you want to cancel? Any unsaved changes will be lost.")) {
+        clearNoteInput();
+        setShowNotesPopup(null);
+      }
+    } else {
+      clearNoteInput();
+      setShowNotesPopup(null);
+    }
   };
 
   return (
     <DashboardContainer>
+      <BackgroundImage src={bgImg} alt="bgImg" />
       <ToastContainer position="bottom-right" autoClose={3000} hideProgressBar />
       <SidebarColumn>
-        <Sidebar />
+        <Sidebar userName = {userName} />
       </SidebarColumn>
       <DashboardInfo>
         <StatsContainer>
@@ -288,10 +337,10 @@ function Dashboard() {
         </StatsContainer>
         <SocialsBox>
           <EventConnectionDisplay>
-            <p className="descriptor">Upcoming Events</p> 
+            <p className="descriptor">Upcoming Events</p>
           </EventConnectionDisplay>
           <EventConnectionDisplay>
-            <p className="descriptor">New Connections</p> 
+            <p className="descriptor">New Connections</p>
           </EventConnectionDisplay>
         </SocialsBox>
         <NotesBox>
@@ -302,29 +351,30 @@ function Dashboard() {
           <NotesList>
             {notes.map((note, index) => (
               <div className="note-item" key={index}>
-                <p className='note-title'>{note ? note.title : 'No Title'}</p>
-                <button onClick={() => deleteNote(index)} style={{ fontSize: "8px" }}><DeleteIcon/></button>
+                <p className="note-title" onClick={() => editNote(index)}>
+                  {note ? note.title : 'No Title'}
+                </p>
+                <button onClick={() => deleteNote(index)} style={{ fontSize: "8px" }}><DeleteIcon /></button>
               </div>
             ))}
           </NotesList>
           {showNotesPopup !== null && (
             <NotesPopup>
-              <input
+              <StyledInput
                 type="text"
                 placeholder="Enter title here"
-                value={showNotesPopup !== null && showNotesPopup >= 0 && showNotesPopup < notes.length ? notes[showNotesPopup].title : newTitle}
-                onChange={(e) => updateTitle(e.target.value)}
+                value={newTitle}
+                onChange={(e) => setNewTitle(e.target.value)}
               />
-              <textarea
-                rows="4"
-                cols="50"
-                value={showNotesPopup !== null && showNotesPopup >= 0 && showNotesPopup < notes.length ? notes[showNotesPopup].note : newNote}
-                onChange={(e) => updateNote(e.target.value)}
+              <StyledTextArea
+                rows="10"
+                value={newNote}
+                onChange={(e) => setNewNote(e.target.value)}
                 placeholder="Enter your note here"
               />
               <div className="button-container">
                 <button onClick={handleAddNote}>Save Note</button>
-                <button onClick={exitAddNote}>Discard Note</button>
+                <button onClick={exitAddNote}>Cancel</button>
               </div>
             </NotesPopup>
           )}
