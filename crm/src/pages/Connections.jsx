@@ -22,6 +22,7 @@ const ConnectionsContainer = styled.div`
   height: 100vh;
   width: 100vw;
   overflow: hidden;
+  background-color: rgba(0, 0, 0, 0.1);
 `;
 
 const SidebarColumn = styled.div`
