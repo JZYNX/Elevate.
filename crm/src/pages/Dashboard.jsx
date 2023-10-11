@@ -231,6 +231,11 @@ const StyledInput = styled.input`
   font-size: 18px;
   resize: vertical;
   width: calc(100% - 4rem);
+
+  &:focus {
+    border: 1px solid black;
+  }
+
 `;
 const StyledTextArea = styled.textarea`
   font-family: 'Poppins', sans-serif;
@@ -241,6 +246,11 @@ const StyledTextArea = styled.textarea`
   font-size: 16px;
   resize: vertical;
   width: calc(100% - 4rem);
+
+  &:focus {
+    border: 1px solid black;
+    outline: none;
+  }
 `;
 
 function Dashboard() {
