@@ -278,26 +278,29 @@ const deleteUsersExceptSkyrider = async (req, res) => {
     }
   };
 
-  //function for getting events count
-const getEventCount = async (req, res) => {
-  try{
+  //function for getting upcoming events count
+  const getEventCount = async (req, res) => {
+    try {
       const { username } = req.params;
-      // console.log("The user is " + username);
-      //find user
-      const user = await User.findOne({username});
-
-      if(!user){
-        return res.status(404).json({ error: 'User not found '  });
+      
+      const user = await User.findOne({ username });
+  
+      if (!user) {
+        return res.status(404).json({ error: 'User not found' });
       }
-
-      const eventCount = user.events.length;
-      // console.log("user found " + eventCount);
+  
+      // Filter events based on the current date and onwards
+      const currentDate = new Date();
+      const filteredEvents = user.events.filter((event) => new Date(event.start) >= currentDate);
+      const eventCount = filteredEvents.length;
+  
       res.status(200).json({ eventCount });
-  } catch (error) {
-    console.error('Error getting user event count:', error);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-};
+    } catch (error) {
+      console.error('Error getting user event count:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  };
+  
 
 //function for getting list of events
 const getUserEvents = async (req, res) => {
