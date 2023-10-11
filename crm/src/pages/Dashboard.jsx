@@ -96,6 +96,10 @@ const EventConnectionDisplay = styled.div`
     font-weight: bold;
     margin-top: 0.313rem;
   }
+`;
+
+const UpcomingEventContentContainer = styled.div`
+  height: 90%;
   overflow-y: auto; /* Add vertical scrollbar when content overflows */
   &::-webkit-scrollbar {
     width: 0.2rem;
@@ -105,7 +109,8 @@ const EventConnectionDisplay = styled.div`
       border-radius: 1rem;
     }
   }
-`;
+`
+
 const EventListContainer = styled.div`
   max-height:1000px; /* Set a max height for the event list container */
 `;
@@ -124,6 +129,7 @@ const NotesBox = styled.div`
   flex-direction: column;
   flex: 1;
   max-height: 16rem;
+  padding: 0.5rem;
   width: 95%;
   margin: 1rem auto;
   background-color: rgba(255, 255, 255, 0.2);
@@ -537,22 +543,24 @@ function Dashboard() {
         </StatsContainer>
         <SocialsBox>
           <EventConnectionDisplay>
-            <p className="descriptor">Upcoming Events</p>
-            <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>
-              {groupedUserEvents.map((eventList, index) => (
-                <EventListContainer key={`list-${index}`}>
-                  <DateBox style={{color:'white', marginTop:'1rem', marginBottom:'0.25rem', fontWeight: 'bold', fontSize: '1rem'}}>{new Date(eventList[0].start).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</DateBox>
-                  {eventList.map((event) => (
-                    <li key={event.id}>
-                      <span style={{fontWeight: 'bold', paddingLeft: '0.25rem', paddingRight: '0.5rem'}}>
-                        {new Date(event.start).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - {new Date(event.end).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} : {' '}
-                      </span>
-                      <span style={{ width: '40%', display: 'inline-block' }}>{event.title}</span>
-                    </li>
-                  ))}
-                </EventListContainer>
-              ))}
-            </ul>
+            <p style={{marginBottom: '.25rem'}} className="descriptor">Upcoming Events</p>
+            <UpcomingEventContentContainer>
+              <ul style={{ listStyleType: 'none', paddingLeft: 0, margin: 0}}>
+                {groupedUserEvents.map((eventList, index) => (
+                  <EventListContainer style={{marginBottom:'0.25rem'}} key={`list-${index}`}>
+                    <DateBox style={{color:'white', marginBottom:'0.25rem', fontWeight: 'bold', fontSize: '1rem'}}>{new Date(eventList[0].start).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</DateBox>
+                    {eventList.map((event) => (
+                      <li key={event.id}>
+                        <span style={{fontWeight: 'bold', paddingLeft: '0.25rem', paddingRight: '0.5rem'}}>
+                          {new Date(event.start).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - {new Date(event.end).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} : {' '}
+                        </span>
+                        <span style={{ width: '40%', display: 'inline-block' }}>{event.title}</span>
+                      </li>
+                    ))}
+                  </EventListContainer>
+                ))}
+              </ul>
+            </UpcomingEventContentContainer>
           </EventConnectionDisplay>
           <EventConnectionDisplay>
             <p className="descriptor">New Connections</p>
