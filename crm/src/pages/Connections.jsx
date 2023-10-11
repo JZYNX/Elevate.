@@ -12,6 +12,9 @@ import AddConnection from '../components/AddConnection';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { toast, ToastContainer } from 'react-toastify';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+
 
 const BackgroundImage = styled.img`
   position: absolute;
@@ -187,6 +190,7 @@ const RemoveContainer = styled.div`
   }
 `
 
+
 function Connections() {
     const urlParams = new URLSearchParams(window.location.search);
     const storedUsername = urlParams.get('username');  
@@ -195,7 +199,9 @@ function Connections() {
     const [showAddPopup, setShowAddPopup] = useState(false);
     const [connections, setConnections] = useState([]);
     const [searchedConnections, setSearchConnections] = useState([]);
-    const [childSearchValue, setChildSearchValue] = useState("");
+    const [sortOption, setSortOption] = useState(null);
+    const [arrowUp, setArrowUp] = useState(true);
+
 
     const sortOptions = [
       { value: 'last-name', label: 'Last-name' },
@@ -316,7 +322,112 @@ function Connections() {
     const resetConnections = () => {
       setSearchConnections(connections);
     };
-  
+    
+    const handleSortLastName = () => {
+      // Set the sort option to "last-name"
+      setSortOption({ value: 'last-name', label: 'Last-name' });
+    
+      const sortedConnections = [...searchedConnections];
+      
+      if (arrowUp) {
+        // Ascending sort
+        sortedConnections.sort((a, b) => a.lastName.localeCompare(b.lastName));
+      } else {
+        // Descending sort
+        sortedConnections.sort((a, b) => b.lastName.localeCompare(a.lastName));
+      }
+    
+      setSearchConnections(sortedConnections);
+    };
+    
+    const handleSortFirstName = () => {
+      // Set the sort option to "first-name"
+      setSortOption({ value: 'first-name', label: 'First-name' });
+    
+      const sortedConnections = [...searchedConnections];
+      
+      if (arrowUp) {
+        // Ascending sort
+        sortedConnections.sort((a, b) => a.firstName.localeCompare(b.firstName));
+      } else {
+        // Descending sort
+        sortedConnections.sort((a, b) => b.firstName.localeCompare(a.firstName));
+      }
+    
+      setSearchConnections(sortedConnections);
+    };
+    
+    const defaultSort = () => {
+      // Set the sort option to null
+      setSortOption(null);
+      
+      const sortedConnections = [...connections];
+      
+      if (arrowUp) {
+        // Keep the existing sort order
+      } else {
+        // Descending sort
+        sortedConnections.reverse();
+      }
+    
+      setSearchConnections(sortedConnections);
+    };
+    
+    const handleMostRecent = () => {
+      // Set the sort option to "recent"
+      setSortOption({ value: 'recent', label: 'Most-Recent' });
+    
+      const sortedConnections = [...connections];
+      
+      if (arrowUp) {
+        // Ascending sort (by default)
+        // No need to modify the order as it's already ascending
+      } else {
+        // Descending sort
+        sortedConnections.reverse();
+      }
+    
+      setSearchConnections(sortedConnections);
+    };
+    
+
+    // const handleUpArrowClick = () => {
+    //   setArrowUp(true);
+    //   console.log("trigger");
+    //   console.log(arrowUp);
+    //   handleArrowSort();
+    // };
+
+    // const handleDownArrowClick = () => {
+    //   setArrowUp(false);
+    //   console.log("trigger");
+    //   console.log("When down : " + arrowUp);
+    //   handleArrowSort();
+    // };
+
+    useEffect(() => {
+      handleArrowSort();
+    }, [arrowUp]);
+
+    const changeArrow = () => {
+      setArrowUp(!arrowUp);
+    }
+
+    const handleArrowSort = () => {
+      if (sortOption && sortOption.value === 'last-name') {
+        handleSortLastName();
+      } 
+      else if (sortOption && sortOption.value === 'first-name') {
+        handleSortFirstName();
+      } 
+      else if (sortOption && sortOption.value === 'recent'){
+        handleMostRecent();
+      }
+      else if(sortOption==null){
+        defaultSort();
+      }
+    }
+
     return (
       <ConnectionsContainer>
           <ToastContainer position="bottom-right" autoClose={3000} hideProgressBar />
@@ -339,6 +450,22 @@ function Connections() {
                   className='react-select-container'
                   classNamePrefix="react-select"
                   placeholder="Sort"
+                  value={sortOption}
+                  onChange={(selectedOption) => {
+                    if (selectedOption && selectedOption.value === 'last-name') {
+                      handleSortLastName();
+                    } 
+                    if (selectedOption && selectedOption.value === 'first-name') {
+                      handleSortFirstName();
+                    } 
+                    if (selectedOption && selectedOption.value === 'recent'){
+                      handleMostRecent();
+                    }
+                    if(selectedOption==null){
+                      defaultSort();
+                    }
+                    
+                  }}
                   theme={(theme) => ({
                     ...theme,
                     borderRadius: 0,
@@ -348,6 +475,14 @@ function Connections() {
                       primary: secondaryColor,
                     },
                   })}
+                />
+                <ArrowUpwardIcon
+                  onClick={changeArrow}
+                  style={{ color: arrowUp ? 'blue' : 'gray', cursor: 'pointer' }}
+                />
+                <ArrowDownwardIcon
+                  onClick={changeArrow}
+                  style={{ color: arrowUp ? 'gray' : 'blue', cursor: 'pointer' }}
                 />
                 <AddButtonContainer>
                   <StyledButton onClick={resetConnections}>Show All Connections</StyledButton>
