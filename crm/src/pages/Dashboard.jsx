@@ -78,10 +78,10 @@ const StatBox = styled.div`
 const SocialsBox = styled.div`
   display: flex;
   flex: 1;
+  height: 30%;
   width: 95%;
   margin: 1rem auto 0rem;
-  flex-direction: row;
-  
+  flex-direction: row;  
 `;
 const EventConnectionDisplay = styled.div`
   flex: 1;
@@ -97,7 +97,26 @@ const EventConnectionDisplay = styled.div`
     margin-top: 0.313rem;
   }
   overflow-y: auto; /* Add vertical scrollbar when content overflows */
-  max-height: 550px; /* Set a max height for the list of events */
+  &::-webkit-scrollbar {
+    width: 0.25rem;
+    &-thumb {
+      background-color: ${secondaryColor};
+      width: 0.1rem;
+      border-radius: 1rem;
+    }
+  }
+`;
+const EventListContainer = styled.div`
+  max-height:1000px; /* Set a max height for the event list container */
+`;
+const DateBox = styled.div`
+  background-color: ${secondaryColor};
+  border-radius: 0.5rem;
+  height: 2.25rem;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  width: 95%; /* Make it fill horizontally */
 `;
 // implement notes display and create pop up notes feature
 const NotesBox = styled.div`
@@ -146,15 +165,16 @@ const NotesList = styled.div`
   justify-content: space-between;
   flex-direction: row;
   flex-wrap: wrap;
-  width: 100%;
+  width: 96%;
+  margin: auto;
   overflow-y: auto;
 
   .note-item {
     display: flex;
     background-color: rgba(255, 255, 255, 0.5);
     border-radius: 1rem;
-    width: 44rem;
-    margin: 0.5rem 1rem;
+    width: 45rem;
+    margin: 0.5rem 1.5rem;
     padding-left: 2rem;
 
     p.note-title {
@@ -243,23 +263,6 @@ const StyledTextArea = styled.textarea`
   font-size: 16px;
   resize: vertical;
   width: calc(100% - 4rem);
-`;
-
-
-
-
-const EventListContainer = styled.div`
-  max-height:1000px; /* Set a max height for the event list container */
-`;
-
-const DateBox = styled.div`
-  background-color: white;
-  border: 1px solid black;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  padding: 0 10px;
-  width: 100%; /* Make it fill horizontally */
 `;
 
 function Dashboard() {
@@ -504,14 +507,16 @@ function Dashboard() {
         <SocialsBox>
           <EventConnectionDisplay>
             <p className="descriptor">Upcoming Events</p>
-            <ul>
+            <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>
               {groupedUserEvents.map((eventList, index) => (
                 <EventListContainer key={`list-${index}`}>
-                  <DateBox>{new Date(eventList[0].start).toISOString().split('T')[0]}</DateBox>
+                  <DateBox style={{color:'white', marginTop:'1rem', marginBottom:'0.25rem', fontWeight: 'bold', fontSize: '1rem'}}>{new Date(eventList[0].start).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</DateBox>
                   {eventList.map((event) => (
                     <li key={event.id}>
-                      {new Date(event.start).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - {new Date(event.end).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}:{' '}
-                      <span style={{ width: '200px', display: 'inline-block' }}>{event.title}</span>
+                      <span style={{fontWeight: 'bold', paddingLeft: '0.25rem', paddingRight: '0.5rem'}}>
+                        {new Date(event.start).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - {new Date(event.end).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} : {' '}
+                      </span>
+                      <span style={{ width: '40%', display: 'inline-block' }}>{event.title}</span>
                     </li>
                   ))}
                 </EventListContainer>
