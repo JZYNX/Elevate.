@@ -205,6 +205,7 @@ const NotesList = styled.div`
   flex-wrap: wrap;
   width: 100%;
   margin: auto;
+  margin-top: 0;
   padding: 0 2rem;
   overflow-y: auto;
 
@@ -216,11 +217,11 @@ const NotesList = styled.div`
     margin: 0.4rem 0rem;
     padding-left: 2rem;
     &:hover {
-      cursor: pointer;
       background-color: rgba(255, 255, 255, 0.7);
     }
 
     p.note-title {
+      cursor: pointer;
       font-size: 0.9rem;
     }
     button {
@@ -673,8 +674,8 @@ function Dashboard() {
           <NotesList>
             {notes && notes.length > 0 ? (
               notes.map((note, index) => (
-                <div className="note-item" key={index} onClick={() => editNote(index, note._id)}>
-                  <p className="note-title">
+                <div className="note-item" key={index}>
+                  <p className="note-title" onClick={() => editNote(index, note._id)}>
                     {note ? note.title : 'No Title'}
                   </p>
                   <button onClick={() => deleteNote(index,note._id)} style={{ fontSize: "8px" }}>
