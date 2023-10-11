@@ -11,8 +11,8 @@ const Post = require('../models/postModel')
  * @returns {Object} - JSON array of user connections.
  */
 const getAllConnections= async (req, res) => {
-    const { username } = req.body;
-
+    const { username } = req.params;
+    // console.log("THE USER NAME IS " + username);
     try {
         // Check if the username exists in the database
         const existingUser = await User.findOne({ username: username });
@@ -21,7 +21,8 @@ const getAllConnections= async (req, res) => {
         }
 
         // Retrieve the connections of the user
-        const connections = await User.find({ _id: { $in: existingUser.connections } });
+        const connections = await User.find({ _id: { $in: existingUser.connections } })
+            .select("username email contactNumber firstName lastName userImage");
         return res.status(200).json(connections);
 
     } catch(err) {
@@ -40,7 +41,7 @@ const getAllConnections= async (req, res) => {
 const addConnectionForUser = async (req, res) => {
     try {
         const { username, newConnection } = req.body;
-
+        console.log("our username "  + username + "the wanted connection is " + newConnection);
         if (username === newConnection) {
             return res.status(400).json({ error: 'cannot add user to their own connection' });
         }

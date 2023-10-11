@@ -65,9 +65,8 @@ function Message(){
         // Parse and set the current user's data
         const loggedInUser = await response.json();
         setCurrentUser(loggedInUser)
-
         // Fetch contacts data using fetch
-        const contactsResponse = await fetch('/users');
+        const contactsResponse = await fetch(`/users/connections/${storedUsername}/getAllConnection`);
         
         if (!contactsResponse.ok) {
           throw new Error('Network response was not ok');
@@ -75,6 +74,7 @@ function Message(){
         
         // Parse and set the contacts data
         const contactsData = await contactsResponse.json();
+        console.log("THE RESPONSE IS " + contactsData);
         setContacts(contactsData);
         
       } catch (error) {

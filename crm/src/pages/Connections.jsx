@@ -10,6 +10,7 @@ import EmailIcon from '@mui/icons-material/Email';
 import Email from '../components/Email';
 import AddConnection from '../components/AddConnection';
 
+
 const BackgroundImage = styled.img`
   position: absolute;
   width: 100%;
@@ -181,119 +182,136 @@ function Connections() {
     const [currentSelected, setCurrentSelected] = useState(null);
     const [showEmailPopup, setShowEmailPopup] = useState(false);
     const [showAddPopup, setShowAddPopup] = useState(false);
-
+    const [connections, setConnections] = useState([]);
     const sortOptions = [
       { value: 'last-name', label: 'Last-name' },
       { value: 'first-name', label: 'First-name' },
       { value: 'recent', label: 'Most-recent' }
     ]
 
-    const connections = [
-      {
-        _id: '1',
-        firstName: 'yifan',
-        lastName: 'yang',
-        userImage: 'uploads\nunu.PNG',
-        contactNumber: '0404040404',
-        email: '120n2d@n092dapwidnaoiwdboawdn09d.com'
-      },
-      {
-        _id: '2',
-        firstName: 'sok',
-        lastName: 'stinky',
-        userImage: 'uploads\nunu.PNG',
-        contactNumber: '0dwaob',
-        email: '120n2d@oidwbadd.com'
-      },
-      {
-        _id: '3',
-        firstName: 'trollinh',
-        lastName: 'stinky',
-        userImage: 'uploads\nunu.PNG',
-        contactNumber: '0dwaob',
-        email: '120n2d@oidwbadd.com'
-      },
-      {
-        _id: '4',
-        firstName: 'will',
-        lastName: 'stinky',
-        userImage: 'uploads\nunu.PNG',
-        contactNumber: '0dwaob',
-        email: '120n2d@oidwbadd.com'
-      },
-      {
-        _id: '5',
-        firstName: 'linh',
-        lastName: 'stinky',
-        userImage: 'uploads\nunu.PNG',
-        contactNumber: '0dwaob',
-        email: '120n2d@oidwbadd.com'
-      },
-      {
-        _id: '6',
-        firstName: 'u',
-        lastName: 'stinky',
-        userImage: 'uploads\nunu.PNG',
-        contactNumber: '0dwaob',
-        email: '120n2d@oidwbadd.com'
-      },
-      {
-        _id: '7',
-        firstName: 'Andrew',
-        lastName: 'Dasbiboadniopo',
-        userImage: 'uploads\nunu.PNG',
-        contactNumber: '0dwaob',
-        email: '120n2d@oidwbadd.com'
-      },
-      {
-        _id: '8',
-        firstName: 'he',
-        lastName: 'stinky',
-        userImage: 'uploads\nunu.PNG',
-        contactNumber: '0dwaob',
-        email: '120n2d@oidwbadd.com'
-      },
-      {
-        _id: '9',
-        firstName: 'she',
-        lastName: 'stinky',
-        userImage: 'uploads\nunu.PNG',
-        contactNumber: '0dwaob',
-        email: '120n2d@oidwbadd.com'
-      },
-      {
-        _id: '10',
-        firstName: 'wo',
-        lastName: 'stinky',
-        userImage: 'uploads\nunu.PNG',
-        contactNumber: '0dwaob',
-        email: '120n2d@oidwbadd.com'
-      },
-      {
-        _id: '11',
-        firstName: 'lack',
-        lastName: 'stinky',
-        userImage: 'uploads\nunu.PNG',
-        contactNumber: '0dwaob',
-        email: '120n2d@oidwbadd.com'
-      },
-      {
-        _id: '12',
-        firstName: 'trollin',
-        lastName: 'stinky',
-        userImage: 'uploads\nunu.PNG',
-        contactNumber: '0dwaob',
-        email: '120n2d@oidwbadd.com'
-      },
-      {        
-        _id: '13',
-        firstName: '2323',
-        lastName: 'stinky',
-        userImage: 'uploads\nunu.PNG',
-        contactNumber: '0dwaob',
-        email: '120n2d@oidwbadd.com'
+    const fetchUserConnections = async () => {
+      try {
+        const response = await fetch(`/users/connections/${storedUsername}/getAllConnection`);
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        setConnections(data);
+      } catch (error) {
+        console.error('Error fetching user notes:', error);
       }
-    ]
+    };
+
+    useEffect(() => {
+      fetchUserConnections();
+    }, [storedUsername]);
+
+    // const connections = [
+    //   {
+    //     _id: '1',
+    //     firstName: 'yifan',
+    //     lastName: 'yang',
+    //     userImage: 'uploads\nunu.PNG',
+    //     contactNumber: '0404040404',
+    //     email: '120n2d@n092dapwidnaoiwdboawdn09d.com'
+    //   },
+    //   {
+    //     _id: '2',
+    //     firstName: 'sok',
+    //     lastName: 'stinky',
+    //     userImage: 'uploads\nunu.PNG',
+    //     contactNumber: '0dwaob',
+    //     email: '120n2d@oidwbadd.com'
+    //   },
+    //   {
+    //     _id: '3',
+    //     firstName: 'trollinh',
+    //     lastName: 'stinky',
+    //     userImage: 'uploads\nunu.PNG',
+    //     contactNumber: '0dwaob',
+    //     email: '120n2d@oidwbadd.com'
+    //   },
+    //   {
+    //     _id: '4',
+    //     firstName: 'will',
+    //     lastName: 'stinky',
+    //     userImage: 'uploads\nunu.PNG',
+    //     contactNumber: '0dwaob',
+    //     email: '120n2d@oidwbadd.com'
+    //   },
+    //   {
+    //     _id: '5',
+    //     firstName: 'linh',
+    //     lastName: 'stinky',
+    //     userImage: 'uploads\nunu.PNG',
+    //     contactNumber: '0dwaob',
+    //     email: '120n2d@oidwbadd.com'
+    //   },
+    //   {
+    //     _id: '6',
+    //     firstName: 'u',
+    //     lastName: 'stinky',
+    //     userImage: 'uploads\nunu.PNG',
+    //     contactNumber: '0dwaob',
+    //     email: '120n2d@oidwbadd.com'
+    //   },
+    //   {
+    //     _id: '7',
+    //     firstName: 'Andrew',
+    //     lastName: 'Dasbiboadniopo',
+    //     userImage: 'uploads\nunu.PNG',
+    //     contactNumber: '0dwaob',
+    //     email: '120n2d@oidwbadd.com'
+    //   },
+    //   {
+    //     _id: '8',
+    //     firstName: 'he',
+    //     lastName: 'stinky',
+    //     userImage: 'uploads\nunu.PNG',
+    //     contactNumber: '0dwaob',
+    //     email: '120n2d@oidwbadd.com'
+    //   },
+    //   {
+    //     _id: '9',
+    //     firstName: 'she',
+    //     lastName: 'stinky',
+    //     userImage: 'uploads\nunu.PNG',
+    //     contactNumber: '0dwaob',
+    //     email: '120n2d@oidwbadd.com'
+    //   },
+    //   {
+    //     _id: '10',
+    //     firstName: 'wo',
+    //     lastName: 'stinky',
+    //     userImage: 'uploads\nunu.PNG',
+    //     contactNumber: '0dwaob',
+    //     email: '120n2d@oidwbadd.com'
+    //   },
+    //   {
+    //     _id: '11',
+    //     firstName: 'lack',
+    //     lastName: 'stinky',
+    //     userImage: 'uploads\nunu.PNG',
+    //     contactNumber: '0dwaob',
+    //     email: '120n2d@oidwbadd.com'
+    //   },
+    //   {
+    //     _id: '12',
+    //     firstName: 'trollin',
+    //     lastName: 'stinky',
+    //     userImage: 'uploads\nunu.PNG',
+    //     contactNumber: '0dwaob',
+    //     email: '120n2d@oidwbadd.com'
+    //   },
+    //   {        
+    //     _id: '13',
+    //     firstName: '2323',
+    //     lastName: 'stinky',
+    //     userImage: 'uploads\nunu.PNG',
+    //     contactNumber: '0dwaob',
+    //     email: '120n2d@oidwbadd.com'
+    //   }
+    // ]
 
     const [currentPage, setCurrentPage] = useState(1);
     const profilesPerPage = 10; 
@@ -376,13 +394,13 @@ function Connections() {
                         >
                           <PersonContainer>
                             {/* Random picture render right now */}
-                            <ProfilePic src={bgImg} alt='profile-img'/>
+                            <ProfilePic src={connection.userImage} alt='profile-img'/>
                             <div className='profile-name'>{connection.firstName} {connection.lastName}</div>
                           </PersonContainer>
                           
                           <InfoContainer>
                             <IconContainer><PhoneIcon /></IconContainer>
-                            <InfoTextContainer>{connection.contactNumber}</InfoTextContainer>
+                            <InfoTextContainer>{connection.contactNumber || 'N/A'}</InfoTextContainer>
                           </InfoContainer>
                           <InfoContainer>
                             <IconContainer onClick={() => {

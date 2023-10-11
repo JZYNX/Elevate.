@@ -78,9 +78,10 @@ const StatBox = styled.div`
 const SocialsBox = styled.div`
   display: flex;
   flex: 1;
+  height: 30%;
   width: 95%;
   margin: 1rem auto 0rem;
-  flex-direction: row;
+  flex-direction: row;  
 `;
 const EventConnectionDisplay = styled.div`
   flex: 1;
@@ -95,6 +96,27 @@ const EventConnectionDisplay = styled.div`
     font-weight: bold;
     margin-top: 0.313rem;
   }
+  overflow-y: auto; /* Add vertical scrollbar when content overflows */
+  &::-webkit-scrollbar {
+    width: 0.25rem;
+    &-thumb {
+      background-color: ${secondaryColor};
+      width: 0.1rem;
+      border-radius: 1rem;
+    }
+  }
+`;
+const EventListContainer = styled.div`
+  max-height:1000px; /* Set a max height for the event list container */
+`;
+const DateBox = styled.div`
+  background-color: ${secondaryColor};
+  border-radius: 0.5rem;
+  height: 2.25rem;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  width: 95%; /* Make it fill horizontally */
 `;
 // implement notes display and create pop up notes feature
 const NotesBox = styled.div`
@@ -143,7 +165,8 @@ const NotesList = styled.div`
   justify-content: space-between;
   flex-direction: row;
   flex-wrap: wrap;
-  width: 100%;
+  width: 96%;
+  margin: auto;
   overflow-y: auto;
 
   .note-item {
@@ -258,7 +281,12 @@ function Dashboard() {
   const [notes, setNotes] = useState([]);
   const [newTitle, setNewTitle] = useState('');
   const [newNote, setNewNote] = useState('');
+  const [newNoteID, setNewNoteID] = useState('');
   const [userName, setUserName] = useState('');
+  const [eventCount, setEventCount] = useState(0);
+  const [userEvents, setUserEvents] = useState([]);
+  const [groupedUserEvents, setGroupedUserEvents] = useState([]);
+  const currentDate = new Date(); // Get the current date and time
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -266,22 +294,140 @@ function Dashboard() {
     setUserName(storedUsername);
   }, []);
 
-  const handleAddNote = () => {
+  useEffect(() => {
+    // Make an API request to fetch the event count
+    fetch(`/users/${userName}/event-count`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setEventCount(data.eventCount);
+      })
+      .catch((error) => {
+        console.error('Error fetching event count:', error);
+        // Handle error here
+      });
+  }, [userName]);
+  
+
+  useEffect(() => {
+    // Make an API request to fetch the user events
+    fetch(`/users/${userName}/userEvents`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setUserEvents(data.userEvents);
+        // Group events by start date
+        const eventsByDate = {};
+
+        data.userEvents.forEach((event) => {
+          const eventStartDate = event.start.split('T')[0];
+          const eventStartDateObj = new Date(event.start);
+    
+          // Check if the event is in the future
+          if (eventStartDateObj > currentDate) {
+            if (!eventsByDate[eventStartDate]) {
+              eventsByDate[eventStartDate] = [];
+            }
+            eventsByDate[eventStartDate].push(event);
+          }
+        });
+    
+        // Sort the grouped events by start date
+        const sortedEventLists = Object.values(eventsByDate).sort((a, b) => {
+          const dateA = new Date(a[0].start);
+          const dateB = new Date(b[0].start);
+          return dateA - dateB;
+        });
+    
+        setGroupedUserEvents(sortedEventLists);
+      })
+      
+      .catch((error) => {
+        console.error('Error fetching event count:', error);
+        // Handle error here
+      });
+  }, [userName]);
+
+  const fetchUserNotes = async () => {
+    try {
+      const response = await fetch(`/users/${userName}/getNotes`);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      setNotes(data);
+    } catch (error) {
+      console.error('Error fetching user notes:', error);
+    }
+  };
+
+  useEffect(() => {
+    if (userName) {
+      fetchUserNotes();
+    }
+  }, [userName]);
+  
+  const handleAddNote = async () => {
     if (newTitle && newNote) {
       if (showNotesPopup !== null) {
-        const updatedNotes = [...notes];
+        // const updatedNotes = [...notes];
         if (showNotesPopup >= 0 && showNotesPopup < notes.length) {
           // Editing an existing note
-          updatedNotes[showNotesPopup] = {
-            title: newTitle,
-            note: newNote,
+          const payload = {
+            id: newNoteID,
+            title: newTitle, // The updated title
+            content: newNote, // The updated content
           };
+          try {
+            const response = await fetch(`/users/${userName}/updateNote`, {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify( payload ),
+            });
+          
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          fetchUserNotes();
+          // const data = await response.json();
+          // updatedNotes.push({ title: newTitle, note: newNote });
+          } catch (error) {
+            console.error('Error creating note:', error);
+          }
         } else {
           // Adding a new note
-          updatedNotes.push({ title: newTitle, note: newNote });
+          try {
+            const response = await fetch(`/users/${userName}/notes`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ title: newTitle, content: newNote }),
+            });
+          
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          fetchUserNotes();
+          // const data = await response.json();
+          // updatedNotes.push({ title: newTitle, note: newNote });
+          } catch (error) {
+            console.error('Error creating note:', error);
+          }
         }
-        setNotes(updatedNotes);
+        // setNotes(updatedNotes);
         clearNoteInput();
+
         setShowNotesPopup(null);
       }
     } else {
@@ -298,21 +444,41 @@ function Dashboard() {
     toast.error(message);
   };
 
-  const deleteNote = (index) => {
+  const deleteNote = async (index, id) => {
     if (index >= 0 && index < notes.length) {
       if (window.confirm("Are you sure you want to delete this note?")) {
-        const updatedNotes = [...notes];
-        updatedNotes.splice(index, 1);
-        setNotes(updatedNotes);
+        try{
+          const payload = {
+            id: id,
+          };
+
+          const response = await fetch(`/users/${userName}/deleteNote`, {
+            method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload),
+          });
+
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          fetchUserNotes();
+        } catch (error){
+          console.error('Error deleting note:', error);
+        }
       }
     }
   };
 
-  const editNote = (index) => {
+  const editNote = async (index,id) => {
     setShowNotesPopup(index);
     setNewTitle(notes[index].title);
-    setNewNote(notes[index].note);
+    setNewNote(notes[index].content);
+    setNewNoteID(id);
   };
+  
+  
 
   const exitAddNote = () => {
     if (showNotesPopup !== null || newTitle || newNote) {
@@ -341,7 +507,7 @@ function Dashboard() {
             <p className="descriptor">Connections</p>
           </StatBox>
           <StatBox>
-            <h2 className="number">12</h2>
+            <h2 className="number">{eventCount}</h2>
             <p className="descriptor">Upcoming Events</p>
           </StatBox>
           <StatBox>
@@ -352,6 +518,21 @@ function Dashboard() {
         <SocialsBox>
           <EventConnectionDisplay>
             <p className="descriptor">Upcoming Events</p>
+            <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>
+              {groupedUserEvents.map((eventList, index) => (
+                <EventListContainer key={`list-${index}`}>
+                  <DateBox style={{color:'white', marginTop:'1rem', marginBottom:'0.25rem', fontWeight: 'bold', fontSize: '1rem'}}>{new Date(eventList[0].start).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</DateBox>
+                  {eventList.map((event) => (
+                    <li key={event.id}>
+                      <span style={{fontWeight: 'bold', paddingLeft: '0.25rem', paddingRight: '0.5rem'}}>
+                        {new Date(event.start).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - {new Date(event.end).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} : {' '}
+                      </span>
+                      <span style={{ width: '40%', display: 'inline-block' }}>{event.title}</span>
+                    </li>
+                  ))}
+                </EventListContainer>
+              ))}
+            </ul>
           </EventConnectionDisplay>
           <EventConnectionDisplay>
             <p className="descriptor">New Connections</p>
@@ -363,15 +544,22 @@ function Dashboard() {
             <button onClick={() => setShowNotesPopup(-1)}>New Note</button>
           </NotesHeader>
           <NotesList>
-            {notes.map((note, index) => (
-              <div className="note-item" key={index}>
-                <p className="note-title" onClick={() => editNote(index)}>
-                  {note ? note.title : 'No Title'}
-                </p>
-                <button onClick={() => deleteNote(index)} style={{ fontSize: "8px" }}><DeleteIcon /></button>
-              </div>
-            ))}
-          </NotesList>
+            {notes && notes.length > 0 ? (
+              notes.map((note, index) => (
+                <div className="note-item" key={index}>
+                  <p className="note-title" onClick={() => editNote(index, note._id)}>
+                    {note ? note.title : 'No Title'}
+                  </p>
+                  <button onClick={() => deleteNote(index,note._id)} style={{ fontSize: "8px" }}>
+                    <DeleteIcon />
+                  </button>
+                </div>
+              ))
+            ) : (
+              <p>No notes available</p>
+            )}
+        </NotesList>
+
           {showNotesPopup !== null && (
             <NotesPopup>
               <StyledInput

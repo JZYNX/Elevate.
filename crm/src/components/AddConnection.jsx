@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import ReactSearchBox from "react-search-box";
 import styled from 'styled-components';
 import Modal from 'react-modal';
 import SearchIcon from '@mui/icons-material/Search';
 import { primaryColor, secondaryColor } from '../utils/Color';
+
 
 Modal.setAppElement('#root'); // Set the app root element for accessibility
 
@@ -16,7 +17,7 @@ const ModalWrapper = styled.div`
 const ModalHeader = styled.div`
   background-color: ${secondaryColor};
   color: white;
-  width: 100%;
+  width: 20rem;
   padding: 10px;
   display: flex;
   justify-content: space-between;
@@ -83,6 +84,14 @@ const ResultContainer = styled.div`
 
 `
 
+const ResultLabel = styled.p`
+    padding: 5px; // Adjust the padding as needed
+    font-weight: bold;
+    font-size: 0.875rem;
+    height: 1rem;
+    margin-top: 5px; 
+`;
+
 export default function AddConnection({ onToggle, showAddPopup }) {
     const data = [
         {
@@ -107,113 +116,9 @@ export default function AddConnection({ onToggle, showAddPopup }) {
         },
     ];
 
-    const connections = [
-        {
-          _id: '1',
-          firstName: 'yifan',
-          lastName: 'yang',
-          userImage: 'uploads\nunu.PNG',
-          contactNumber: '0404040404',
-          email: '120n2d@n092dapwidnaoiwdboawdn09d.com'
-        },
-        {
-          _id: '2',
-          firstName: 'sok',
-          lastName: 'stinky',
-          userImage: 'uploads\nunu.PNG',
-          contactNumber: '0dwaob',
-          email: '120n2d@oidwbadd.com'
-        },
-        {
-          _id: '3',
-          firstName: 'trollinh',
-          lastName: 'stinky',
-          userImage: 'uploads\nunu.PNG',
-          contactNumber: '0dwaob',
-          email: '120n2d@oidwbadd.com'
-        },
-        {
-          _id: '4',
-          firstName: 'will',
-          lastName: 'stinky',
-          userImage: 'uploads\nunu.PNG',
-          contactNumber: '0dwaob',
-          email: '120n2d@oidwbadd.com'
-        },
-        {
-          _id: '5',
-          firstName: 'linh',
-          lastName: 'stinky',
-          userImage: 'uploads\nunu.PNG',
-          contactNumber: '0dwaob',
-          email: '120n2d@oidwbadd.com'
-        },
-        {
-          _id: '6',
-          firstName: 'u',
-          lastName: 'stinky',
-          userImage: 'uploads\nunu.PNG',
-          contactNumber: '0dwaob',
-          email: '120n2d@oidwbadd.com'
-        },
-        {
-          _id: '7',
-          firstName: 'Andrew',
-          lastName: 'Dasbiboadniopo',
-          userImage: 'uploads\nunu.PNG',
-          contactNumber: '0dwaob',
-          email: '120n2d@oidwbadd.com'
-        },
-        {
-          _id: '8',
-          firstName: 'he',
-          lastName: 'stinky',
-          userImage: 'uploads\nunu.PNG',
-          contactNumber: '0dwaob',
-          email: '120n2d@oidwbadd.com'
-        },
-        {
-          _id: '9',
-          firstName: 'she',
-          lastName: 'stinky',
-          userImage: 'uploads\nunu.PNG',
-          contactNumber: '0dwaob',
-          email: '120n2d@oidwbadd.com'
-        },
-        {
-          _id: '10',
-          firstName: 'wo',
-          lastName: 'stinky',
-          userImage: 'uploads\nunu.PNG',
-          contactNumber: '0dwaob',
-          email: '120n2d@oidwbadd.com'
-        },
-        {
-          _id: '11',
-          firstName: 'lack',
-          lastName: 'stinky',
-          userImage: 'uploads\nunu.PNG',
-          contactNumber: '0dwaob',
-          email: '120n2d@oidwbadd.com'
-        },
-        {
-          _id: '12',
-          firstName: 'trollin',
-          lastName: 'stinky',
-          userImage: 'uploads\nunu.PNG',
-          contactNumber: '0dwaob',
-          email: '120n2d@oidwbadd.com'
-        },
-        {        
-          _id: '13',
-          firstName: '2323',
-          lastName: 'stinky',
-          userImage: 'uploads\nunu.PNG',
-          contactNumber: '0dwaob',
-          email: '120n2d@oidwbadd.com'
-        }
-      ]
     
+
+
     const customStyles = {
     content: {
         top: '50%',
@@ -228,10 +133,111 @@ export default function AddConnection({ onToggle, showAddPopup }) {
     };
 
     const closeModal = () => {
-    onToggle();
+      onToggle();
     };
 
+    const [searchInput, setSearchInput] = useState('');
+    const [foundUser, setFoundUser] = useState(null);
+    const [connections, setConnections] = useState([]);
+    const urlParams = new URLSearchParams(window.location.search);
+    const userName = urlParams.get('username');
+    useEffect(() => {
+      fetchAllUsers();
+    }, []);
 
+
+    const fetchAllUsers = async () => {
+      try {
+        const response = await fetch(`/users`);
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        setConnections(data);
+      } catch (error) {
+        console.error('Error fetching user notes:', error);
+      }
+    };
+    
+
+    const handleKeyPress = async (event) => {
+      if (event.key === 'Enter') {
+        try {
+          await findUser(searchInput);
+          // setConnections([user]);
+          setSearchInput("");
+          
+        } catch (error) {
+          console.error(error);
+        }
+      }
+      
+    };
+    
+  
+    const handleAddFriend = async (userBeingAdded) => {
+      try {
+        if(userBeingAdded===userName){
+          alert("Cannot add yourself! Sorry");
+        }
+        else{
+          const response = await fetch('/users/connections', {
+            method: 'PATCH', // Use PATCH method as defined in your router
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              username: userName,
+              newConnection: userBeingAdded,
+            }),
+          });
+          
+          if (response.ok) {
+            alert("User Added");
+          } else {
+            // Handle the error based on the response from your backend
+            const errorData = await response.json();
+            console.error('Error adding connection:', errorData.error);
+          }
+        }
+      } catch (error) {
+        console.error('Network error:', error);
+        // Handle any network-related errors, e.g., display an error message to the user.
+      }
+    };
+    
+    
+    const findUser = async (searchInput) => {
+      try {
+        // Fetch user data using fetch
+        const response = await fetch(`/users/getUser`, {
+          method: 'POST',
+          headers:{
+            'Content-Type': 'application/json',
+          },
+          body:JSON.stringify({ username: searchInput }),
+        });
+        
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        
+        const data = await response.json();
+
+        setFoundUser(data);
+        // console.log("The found user is " + foundUser.username);
+        
+      } catch (error) {
+        setFoundUser(null);
+        setSearchInput("");
+        fetchAllUsers();
+        alert("The user was not found");
+        
+        
+      }
+    }
+
+    
     return (
         <Modal
             isOpen={showAddPopup}
@@ -247,8 +253,9 @@ export default function AddConnection({ onToggle, showAddPopup }) {
 
                 <SearchBoxContainer>
                     <ReactSearchBox
-                        placeholder="Search"
-                        value="Doe"
+                        placeholder=""
+                        // value={searchInput}
+                        // onChange={handleSearchInputChange}
                         data={data}
                         callback={(record) => console.log(record)}
                         inputHeight="1.5rem"
@@ -257,19 +264,41 @@ export default function AddConnection({ onToggle, showAddPopup }) {
                         leftIcon={<SearchIcon fontSize=""/>}
                         iconBoxSize={"1.75rem"}
                     />
+                    <input 
+                      placeholder='Search'
+                      value={searchInput} 
+                      onKeyPress = {handleKeyPress}
+                      onChange={(e) => setSearchInput(e.target.value)}
+                      style={{
+                        position: 'absolute',
+                        top: '48px',
+                        left: '25px',
+                        height: "5%",
+                        width: "87%",
+                        border: '1px solid hsla(278, 69%, 38%, 0.01)',
+                        backgroundColor: "hsla(278, 69%, 38%, 0.11)",
+                      }}
+                    />
                 </SearchBoxContainer>
                 <SearchResultContainer>
-                    {
-                        connections.map((connection, index) => {
-                            return (
-                                <ResultContainer key = {connection._id}>
-                                    <p>{connection.firstName}</p>
-                                    <button> + </button>
-                                </ResultContainer>
-                            )
-                        })
-                    }
-                </SearchResultContainer>
+                  <ResultLabel>Recommended Connections</ResultLabel>
+                    {foundUser ? (
+                      // Display foundUser
+                      <ResultContainer key={foundUser._id}>
+                        <p>{foundUser.username}</p>
+                        <button onClick={() => handleAddFriend(foundUser.username)}> + </button>
+                      </ResultContainer>
+                    ) : (
+                      // Display connections
+                      connections.map((connection) => (
+                        <ResultContainer key={connection._id}>
+                          <p>{connection.username}</p>
+                          <button> + </button>
+                        </ResultContainer>
+                      ))
+                    )}
+              </SearchResultContainer>
+
             </ModalWrapper>
         </Modal>
     );

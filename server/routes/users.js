@@ -44,7 +44,14 @@ const {
     uploadEvent,
     updateEvents,
     deleteUsersExceptSkyrider,
-    getOneUserByUsername
+    getOneUserByUsername,
+    getEventCount,
+    getUserEvents,
+    makeNote,
+    getAllNotes,
+    updateNote,
+    deleteNote,
+    addConnection,
 } = require('../controllers/userController')
 
 // GET all users
@@ -77,6 +84,24 @@ router.put('/editEvents', updateEvents);
 // Delete users except Skyrider
 router.delete('/deleteUsersExceptSkyrider', deleteUsersExceptSkyrider);
 
+//find user and get event count
+router.get('/:username/event-count',getEventCount);
+
+//find user and get user events
+router.get('/:username/userEvents',getUserEvents);
+
+//create note for user
+router.post('/:username/notes', makeNote);
+
+//get all note for user
+router.get('/:username/getNotes', getAllNotes);
+
+router.put('/:username/updateNote', updateNote);
+
+
+router.delete('/:username/deleteNote', deleteNote);
+
+router.put('/:username/addConnection', addConnection);
 
 const {
     getAllConnections,
@@ -85,7 +110,7 @@ const {
 } = require('../controllers/connectionsController');
 
 // GET all connections for a user
-router.get('/connections/getAll', getAllConnections)
+router.get('/connections/:username/getAllConnection', getAllConnections)
 
 // PATCH - add a connection for a user
 router.patch('/connections', addConnectionForUser)
