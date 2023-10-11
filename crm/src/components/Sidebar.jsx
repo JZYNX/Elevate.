@@ -6,6 +6,15 @@ import { useNavigate } from 'react-router-dom';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import avatars from "../assets/Avatar.png";
+
+const Avatars = styled.img`
+  width: 15%;
+  height: 30%;
+  position: absolute;
+  margin-top: 4rem;
+  bottom: 0;
+`
 
 const SidebarContainer = styled.div`
     height: 100%;
@@ -37,6 +46,7 @@ const SidebarList = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    overflow: hidden;
 `;
 
 const ListrowItem = styled.div`
@@ -198,6 +208,7 @@ function Sidebar({userName}) {
               </React.Fragment>
             ))}
           </SidebarList>
+          <Avatars src={avatars} alt=" " />
         </SidebarContainer>
       );
 }
