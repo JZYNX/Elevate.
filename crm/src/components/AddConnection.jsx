@@ -17,7 +17,7 @@ const ModalWrapper = styled.div`
 const ModalHeader = styled.div`
   background-color: ${secondaryColor};
   color: white;
-  width: 100%;
+  width: 20rem;
   padding: 10px;
   display: flex;
   justify-content: space-between;

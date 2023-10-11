@@ -10,6 +10,7 @@ import EmailIcon from '@mui/icons-material/Email';
 import Email from '../components/Email';
 import AddConnection from '../components/AddConnection';
 
+
 const BackgroundImage = styled.img`
   position: absolute;
   width: 100%;
@@ -205,10 +206,6 @@ function Connections() {
       fetchUserConnections();
     }, [storedUsername]);
 
-
-
-
-
     // const connections = [
     //   {
     //     _id: '1',
@@ -403,7 +400,7 @@ function Connections() {
                           
                           <InfoContainer>
                             <IconContainer><PhoneIcon /></IconContainer>
-                            <InfoTextContainer>{connection.contactNumber}</InfoTextContainer>
+                            <InfoTextContainer>{connection.contactNumber || 'N/A'}</InfoTextContainer>
                           </InfoContainer>
                           <InfoContainer>
                             <IconContainer onClick={() => {
