@@ -173,8 +173,8 @@ const NotesList = styled.div`
     display: flex;
     background-color: rgba(255, 255, 255, 0.5);
     border-radius: 1rem;
-    width: 44rem;
-    margin: 0.5rem 2rem;
+    width: 45rem;
+    margin: 0.4rem 0rem;
     padding-left: 2rem;
 
     p.note-title {
