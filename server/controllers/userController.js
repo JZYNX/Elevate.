@@ -432,6 +432,27 @@ const addConnection = async (req, res) => {
 
 };
 
+//function for getting connections count
+const getConnectionCount = async (req, res) => {
+  try{
+      const { username } = req.params;
+      // console.log("The user is " + username);
+      //find user
+      const user = await User.findOne({username});
+
+      if(!user){
+        return res.status(404).json({ error: 'User not found '  });
+      }
+
+      const connectionCount = user.connections.length;
+      // console.log("user found " + eventCount);
+      res.status(200).json({ connectionCount });
+  } catch (error) {
+    console.error('Error getting user connection count:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+  
 module.exports = {
     createUser,
     getAllUsers,
@@ -451,4 +472,5 @@ module.exports = {
     updateNote,
     deleteNote,
     addConnection,
+    getConnectionCount
 }
