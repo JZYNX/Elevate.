@@ -194,6 +194,9 @@ function Connections() {
     const [showEmailPopup, setShowEmailPopup] = useState(false);
     const [showAddPopup, setShowAddPopup] = useState(false);
     const [connections, setConnections] = useState([]);
+    const [searchedConnections, setSearchConnections] = useState([]);
+    const [childSearchValue, setChildSearchValue] = useState("");
+
     const sortOptions = [
       { value: 'last-name', label: 'Last-name' },
       { value: 'first-name', label: 'First-name' },
@@ -207,7 +210,8 @@ function Connections() {
           throw new Error('Network response was not ok');
         }
         const data = await response.json();
-        setConnections(data);
+        await setConnections(data);
+        setSearchConnections(data);
       } catch (error) {
         console.error('Error fetching user notes:', error);
       }
@@ -225,11 +229,11 @@ function Connections() {
     const endIndex = startIndex + profilesPerPage;
   
     // Get the subset of connections to display on the current page
-    const profilesToDisplay = connections.slice(startIndex, endIndex);
+    const profilesToDisplay = searchedConnections.slice(startIndex, endIndex);
   
     // Function to handle next page button click
     const nextPage = () => {
-      if (endIndex < connections.length) {
+      if (endIndex < searchedConnections.length) {
         setCurrentPage(currentPage + 1);
       }
     };
@@ -280,12 +284,46 @@ function Connections() {
     }
 
 
+    const handleEnterKeyPress = async (searchValue) => {
+        // You can do something with the searchValue here
+        if(searchValue!==""){
+          await filterConnections(searchValue);
+        } else {
+          resetConnections();
+        }
+    };
 
+
+    const filterConnections = async (searchValue) => {
+      const lowerSearchInput = searchValue.toLowerCase();
+      console.log(connections);
+      const filteredConnections = connections.filter((connection) => {
+        const { username, firstName, lastName } = connection;
+        return (
+          username.toLowerCase().includes(lowerSearchInput) ||
+          firstName.toLowerCase().includes(lowerSearchInput) ||
+          lastName.toLowerCase().includes(lowerSearchInput)
+        );
+      });
+      // alert(filteredConnections.length);
+      if (filteredConnections.length > 0) {
+        // If substrings are found, update the connections state
+        
+        setSearchConnections(filteredConnections);
+      } 
+    };
+  
+    const resetConnections = () => {
+      setSearchConnections(connections);
+    };
+  
     return (
       <ConnectionsContainer>
           <ToastContainer position="bottom-right" autoClose={3000} hideProgressBar />
           <BackgroundImage src={bgImg} alt="bgImg" />
-          <SearchBar />
+          <SearchBar 
+            onEnterKeyPress={handleEnterKeyPress} 
+          />
           <SidebarColumn>
               <Sidebar userName={storedUsername}/>
           </SidebarColumn>
@@ -312,6 +350,7 @@ function Connections() {
                   })}
                 />
                 <AddButtonContainer>
+                  <StyledButton onClick={resetConnections}>Show All Connections</StyledButton>
                   <StyledButton onClick={() => {
                     toggleAddModal()
                   }}
@@ -372,7 +411,7 @@ function Connections() {
                   Previous Page
                 </StyledButton>
                 
-                <StyledButton onClick={nextPage} disabled={endIndex >= connections.length}>
+                <StyledButton onClick={nextPage} disabled={endIndex >= searchedConnections.length}>
                   Next Page
                 </StyledButton>
               </Footer>
