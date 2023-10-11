@@ -215,12 +215,13 @@ const NotesList = styled.div`
     width: 45rem;
     margin: 0.4rem 0rem;
     padding-left: 2rem;
+    &:hover {
+      cursor: pointer;
+      background-color: rgba(255, 255, 255, 0.7);
+    }
 
     p.note-title {
       font-size: 0.9rem;
-      &:hover {
-        cursor: pointer;
-      }
     }
     button {
       border: none;
@@ -672,8 +673,8 @@ function Dashboard() {
           <NotesList>
             {notes && notes.length > 0 ? (
               notes.map((note, index) => (
-                <div className="note-item" key={index}>
-                  <p className="note-title" onClick={() => editNote(index, note._id)}>
+                <div className="note-item" key={index} onClick={() => editNote(index, note._id)}>
+                  <p className="note-title">
                     {note ? note.title : 'No Title'}
                   </p>
                   <button onClick={() => deleteNote(index,note._id)} style={{ fontSize: "8px" }}>
