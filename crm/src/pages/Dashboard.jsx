@@ -165,8 +165,9 @@ const NotesList = styled.div`
   justify-content: space-between;
   flex-direction: row;
   flex-wrap: wrap;
-  width: 96%;
+  width: 100%;
   margin: auto;
+  padding: 0 2rem;
   overflow-y: auto;
 
   .note-item {
