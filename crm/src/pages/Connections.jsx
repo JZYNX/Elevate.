@@ -11,6 +11,7 @@ import Email from '../components/Email';
 import AddConnection from '../components/AddConnection';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { toast, ToastContainer } from 'react-toastify';
+import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 
 const BackgroundImage = styled.img`
   position: absolute;
@@ -141,7 +142,6 @@ const ProfilePic = styled.img`
   height: 100px;
   border-radius: 50%;
   object-fit: cover;
-  object-position: center;
   // box-shadow: 0 2px 4px rgba(0, 0, 0, 00);
   border: 1px solid rgba(0, 0, 0, 0.5);
   
@@ -177,6 +177,15 @@ const InfoTextContainer = styled.div`
   text-overflow: ellipsis; 
   padding-left: 0.5rem;
 `;
+
+const RemoveContainer = styled.div`
+  position: relative; 
+  left: 50%;
+  transform: translateX(-80%);
+  &:hover {
+    cursor: pointer;
+  }
+`
 
 function Connections() {
     const urlParams = new URLSearchParams(window.location.search);
@@ -287,8 +296,11 @@ function Connections() {
                           className={`contact ${
                             index === currentSelected ? "selected" : ""
                           }`}
-                        >
+                        > 
                           <PersonContainer>
+                            <RemoveContainer onClick={() => {
+                              //DELETE CONNECTION FROM USER
+                            }}><PersonRemoveIcon /></RemoveContainer>
                             {connection.userImage? (
                               <ProfilePic src={connection.userImage} alt='profile-img'/>
                             ):(
