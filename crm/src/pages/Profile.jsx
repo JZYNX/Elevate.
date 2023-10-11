@@ -125,18 +125,19 @@ function Profile() {
           <strong>Email:</strong> {userData.email || ''}
         </UserInfoItem>
         <UserInfoItem>
-          <strong>Contact Number:</strong> {userData.contactNumber || ''}
+          <strong>Contact Number:</strong> {userData.contactNumber ? userData.contactNumber || '' : ''}
         </UserInfoItem>
         <UserInfoItem>
-          <strong>Address:</strong> {userData.address.street || ''}
+          <strong>Address:</strong> {userData.address ? userData.address.street || '' : ''}
         </UserInfoItem>
         <UserInfoItem>
-          <strong>City:</strong> {userData.address.city || ''}
+          <strong>City:</strong> {userData.address ? userData.address.city || '' : ''}
         </UserInfoItem>
         <UserInfoItem>
-          <strong>State:</strong> {userData.address.state || ''}
+          <strong>State:</strong> {userData.address ? userData.address.state || '' : ''}
         </UserInfoItem>
       </UserInfoContainer>
+
     </Container>
   );
 }
