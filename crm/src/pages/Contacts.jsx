@@ -3,6 +3,7 @@ import styled, { keyframes } from 'styled-components';
 import bgImg from '../assets/nikuubg.jpg';
 import { useNavigate } from 'react-router-dom';
 import { primaryColor, secondaryColor } from '../utils/Color';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 const Container = styled.div`
   display: grid;
@@ -47,13 +48,8 @@ const Container = styled.div`
       gap: 1rem;
       align-items: center;
       transition: 0.5s ease-in-out;
-      // .avatar {
-      //   img {
-      //     height: 3rem;
-      //   }
-      // }
       .username {
-        margin-left: 4rem;
+        margin-left: 1rem;
         h3 {
           font-size: 1rem;
           color: white;
@@ -137,17 +133,33 @@ export default function Contacts({ contacts, changeChat }) {
             >
               
                 <div className="avatar">
-                <img
+                  {contact.userImage ? (
+                    <img
                     src={contact.userImage}
-                    alt=""
+                    alt={contact.username}
                     style={{
-                      width: '50px', //please fix - sok
-                      height: '50px',
+                      width: '42px', 
+                      height: '42px',
                       borderRadius: '50%',
                       display: 'block', 
-                      margin: '0 auto', 
+                      margin: '0 0.7rem', 
                     }}
-                />
+                    />
+                  ) : (
+                    <AccountCircleIcon
+                      fontSize="large"
+                      color="primary"
+                      style={{
+                        width: '42px',
+                        height: '42px',
+                        backgroundColor: 'white',
+                        color: '#5e43b0',
+                        borderRadius: '50%',
+                        display: 'block', 
+                        margin: '0 0.7rem', 
+                      }}
+                    />
+                  )}
                 </div>
                 <div className="username">
                 <h3>{contact.username}</h3>
