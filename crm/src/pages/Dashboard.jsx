@@ -140,8 +140,10 @@ const IncomingConnection = styled.div`
     width: 90%;
     font-family: 'Poppins', sans-serif;
     font-size: 1rem;
-    &:hover {
-      cursor: pointer;
+    strong {
+      &:hover {
+        cursor: pointer;
+      }
     }
   }
   button {
@@ -331,6 +333,7 @@ function Dashboard() {
     {username: "William"}, 
     {username: "Sokpairatiddies"}, 
     {username: "Hoggiez"}
+
   ]);  // Sample connection. use []
   const currentDate = new Date(); // Get the current date and time
 
@@ -596,7 +599,7 @@ function Dashboard() {
                     {eventList.map((event) => (
                       <li key={event.id}>
                         <span style={{fontWeight: 'bold', paddingLeft: '0.25rem', paddingRight: '0.5rem'}}>
-                          {new Date(event.start).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - {new Date(event.end).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} : {' '}
+                          {new Date(event.start).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}: {' '}
                         </span>
                         <span style={{ width: '40%', display: 'inline-block' }}>{event.title}</span>
                       </li>
