@@ -194,6 +194,7 @@ const deleteConnectionForUser = async (req, res) => {
 };
 
 
+
 const deletePendingConnectionForUser = async (req, res) => {
     try {
         const { username, connectionToDelete } = req.body;
@@ -253,8 +254,9 @@ const getDatesForUser = async (req, res) => {
 };
 
 
-const dropAllConnections = async (username) => {
+const dropAllConnections = async (req,res) => {
     try {
+      const { username } = req.params;
       // Find the user based on their username
       const currUser = await User.findOne({ username });
   
