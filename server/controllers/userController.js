@@ -81,12 +81,13 @@ const createUser = async (req, res) => {
         const user = await User.create({username, password, email})
         
         // Create a user on an external service 
-        const r = await axios.put(
-          'https://api.chatengine.io/users/',
-          {username:username, secret:username, first_name:username},
-          {headers: {"private-key" : "03afede7-020b-4a77-8c46-6558ae0b88c6"}}
-        )
-        res.status(200).json(r.data)    
+        // const r = await axios.put(
+        //   'https://api.chatengine.io/users/',
+        //   {username:username, secret:username, first_name:username},
+        //   {headers: {"private-key" : "03afede7-020b-4a77-8c46-6558ae0b88c6"}}
+        // )
+        // res.status(200).json(r.data)    
+        res.status(200).json(user);
     } catch (err) {
         res.status(400).json({error: err.message})
     }
