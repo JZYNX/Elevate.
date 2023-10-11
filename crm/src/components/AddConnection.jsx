@@ -149,8 +149,8 @@ export default function AddConnection({ onToggle, showAddPopup }) {
           toast.error("Can't add yourself. xD")
         }
         else{
-          const response = await fetch('/users/connections', {
-            method: 'PATCH', // Use PATCH method as defined in your router
+          const response = await fetch('/users/connections/friendRequest', {
+            method: 'PATCH', 
             headers: {
               'Content-Type': 'application/json',
             },

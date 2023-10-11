@@ -52,7 +52,7 @@ const {
     updateNote,
     deleteNote,
     addConnection,
-    getConnectionCount
+    getConnectionCount,
 } = require('../controllers/userController')
 
 // GET all users
@@ -109,16 +109,28 @@ router.get('/:username/connection-count', getConnectionCount);
 const {
     getAllConnections,
     addConnectionForUser,
-    deleteConnectionForUser
+    deleteConnectionForUser,
+    addPendingConnection,
+    getAllPendingConnections,
+    deletePendingConnectionForUser
 } = require('../controllers/connectionsController');
 
 // GET all connections for a user
 router.get('/connections/:username/getAllConnection', getAllConnections)
 
+// GET all pending connections/friend request of a user
+router.get('/connections/:username/getAllPendingConnections', getAllPendingConnections)
+
 // PATCH - add a connection for a user
 router.patch('/connections', addConnectionForUser)
 
+// PATCH - add pending connection for user
+router.patch('/connections/friendRequest', addPendingConnection);
+
 // DELETE a connection from a user
-router.delete('/connections', deleteConnectionForUser)
+router.delete('/connections/deleteConnection', deleteConnectionForUser)
+
+// DELETE a pending connection for a user
+router.delete('/connections/deleteFriendReq', deletePendingConnectionForUser)
 
 module.exports = router
