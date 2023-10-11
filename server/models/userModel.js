@@ -16,9 +16,18 @@ const validateEmail = (email) => {
 
 // Sub-document schema for the address
 const addressSchema = new mongoose.Schema({
-    street: String,
-    city: String,
-    state: String,
+    street: {
+        type: String,
+        default: ""
+    },
+    city: {
+        type: String,
+        default: ""
+    },
+    state: {
+        type: String,
+        default: ""
+    },
 })
 
 // Sub-document schema for events

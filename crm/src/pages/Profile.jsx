@@ -116,25 +116,25 @@ function Profile() {
 
       <UserInfoContainer>
         <UserInfoItem>
-          <strong>First Name:</strong> {userData.firstName}
+          <strong>First Name:</strong> {userData.firstName || ''}
         </UserInfoItem>
         <UserInfoItem>
-          <strong>Last Name:</strong> {userData.lastName}
+          <strong>Last Name:</strong> {userData.lastName || ''}
         </UserInfoItem>
         <UserInfoItem>
-          <strong>Email:</strong> {userData.email}
+          <strong>Email:</strong> {userData.email || ''}
         </UserInfoItem>
         <UserInfoItem>
-          <strong>Contact Number:</strong> {userData.contactNumber}
+          <strong>Contact Number:</strong> {userData.contactNumber || ''}
         </UserInfoItem>
         <UserInfoItem>
-          <strong>Address:</strong> {userData.address.street}
+          <strong>Address:</strong> {userData.address.street || ''}
         </UserInfoItem>
         <UserInfoItem>
-          <strong>City:</strong> {userData.address.city}
+          <strong>City:</strong> {userData.address.city || ''}
         </UserInfoItem>
         <UserInfoItem>
-          <strong>State:</strong> {userData.address.state}
+          <strong>State:</strong> {userData.address.state || ''}
         </UserInfoItem>
       </UserInfoContainer>
     </Container>

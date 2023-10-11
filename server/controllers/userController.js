@@ -78,7 +78,11 @@ const createUser = async (req, res) => {
     }
 
     try {
-        const user = await User.create({username, password, email})
+        const user = await User.create({username, password, email, address: {
+          street: '',
+          city: '',
+          state: '',
+      },})
         
         // Create a user on an external service 
         // const r = await axios.put(

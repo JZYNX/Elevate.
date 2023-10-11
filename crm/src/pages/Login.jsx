@@ -8,6 +8,7 @@ import fbIcon from '../assets/facebook.png';
 import twitterIcon from '../assets/twitter.png';
 import avatars from "../assets/Avatar.png";
 import { primaryColor, secondaryColor }from '../utils/Color';
+import { toast, ToastContainer } from 'react-toastify';
 
 const LoginContainer = styled.div`
   display: flex; 
@@ -209,7 +210,7 @@ function Login() {
       const profileURL = `/dashboard?username=${username}`;
       window.location.href = profileURL;
     } else {
-      alert('Login failed. Please check your credentials.');
+      toast.error('Login failed. Please check your credentials.');
     }
   };
 
@@ -255,6 +256,7 @@ function Login() {
   // Render the login page
   return (
     <LoginContainer>
+      <ToastContainer position="bottom-right" autoClose={3000} hideProgressBar />
       <BackgroundImage src={bgImg} alt="bgImg" />
       <WelcomeMessage>
         <Avatars src={avatars} alt=" " />
