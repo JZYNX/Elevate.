@@ -10,6 +10,7 @@ import EmailIcon from '@mui/icons-material/Email';
 import Email from '../components/Email';
 import AddConnection from '../components/AddConnection';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { toast, ToastContainer } from 'react-toastify';
 
 const BackgroundImage = styled.img`
   position: absolute;
@@ -241,6 +242,7 @@ function Connections() {
 
     return (
       <ConnectionsContainer>
+          <ToastContainer position="bottom-right" autoClose={3000} hideProgressBar />
           <BackgroundImage src={bgImg} alt="bgImg" />
           <SearchBar />
           <SidebarColumn>

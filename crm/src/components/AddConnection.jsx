@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import Modal from 'react-modal';
 import SearchIcon from '@mui/icons-material/Search';
 import { primaryColor, secondaryColor } from '../utils/Color';
+import { toast } from 'react-toastify';
 
 
 Modal.setAppElement('#root'); // Set the app root element for accessibility
@@ -93,32 +94,6 @@ const ResultLabel = styled.p`
 `;
 
 export default function AddConnection({ onToggle, showAddPopup }) {
-    const data = [
-        {
-        key: "john",
-        value: "John Doe",
-        },
-        {
-        key: "jane",
-        value: "Jane Doe",
-        },
-        {
-        key: "mary",
-        value: "Mary Phillips",
-        },
-        {
-        key: "robert",
-        value: "Robert",
-        },
-        {
-        key: "karius",
-        value: "Karius",
-        },
-    ];
-
-    
-
-
     const customStyles = {
     content: {
         top: '50%',
@@ -136,7 +111,6 @@ export default function AddConnection({ onToggle, showAddPopup }) {
       onToggle();
     };
 
-    const [searchInput, setSearchInput] = useState('');
     const [foundUser, setFoundUser] = useState(null);
     const [connections, setConnections] = useState([]);
     const urlParams = new URLSearchParams(window.location.search);
@@ -153,32 +127,26 @@ export default function AddConnection({ onToggle, showAddPopup }) {
           throw new Error('Network response was not ok');
         }
         const data = await response.json();
-        setConnections(data);
+
+        const modifiedData = data
+        .filter(item => item.username !== userName)
+        .map(item => ({
+          ...item, 
+          key: item.username,
+          value: item.username 
+        }));
+        setConnections(modifiedData);
+
       } catch (error) {
+        toast.error('Error fetching user notes. Please try again later.')
         console.error('Error fetching user notes:', error);
       }
-    };
-    
-
-    const handleKeyPress = async (event) => {
-      if (event.key === 'Enter') {
-        try {
-          await findUser(searchInput);
-          // setConnections([user]);
-          setSearchInput("");
-          
-        } catch (error) {
-          console.error(error);
-        }
-      }
-      
-    };
-    
+    };  
   
     const handleAddFriend = async (userBeingAdded) => {
       try {
         if(userBeingAdded===userName){
-          alert("Cannot add yourself! Sorry");
+          toast.error("Can't add yourself. xD")
         }
         else{
           const response = await fetch('/users/connections', {
@@ -193,10 +161,11 @@ export default function AddConnection({ onToggle, showAddPopup }) {
           });
           
           if (response.ok) {
-            alert("User Added");
+            toast.success(`Sent connection request to ${userBeingAdded}.`)
           } else {
             // Handle the error based on the response from your backend
             const errorData = await response.json();
+            toast.error(`Could not send request to ${userBeingAdded}.`)
             console.error('Error adding connection:', errorData.error);
           }
         }
@@ -229,12 +198,13 @@ export default function AddConnection({ onToggle, showAddPopup }) {
         
       } catch (error) {
         setFoundUser(null);
-        setSearchInput("");
         fetchAllUsers();
         alert("The user was not found");
-        
-        
       }
+    }
+
+    const updateScreenBySearch = async (searchInput) => {
+      findUser(searchInput);
     }
 
     
@@ -245,61 +215,51 @@ export default function AddConnection({ onToggle, showAddPopup }) {
             contentLabel="Email Modal"
             style={customStyles}
         >
-            <ModalWrapper>
-                <ModalHeader>
-                    Add Connections
-                    <CloseButton onClick={closeModal}>X</CloseButton>
-                </ModalHeader>
+          <ModalWrapper>
+              <ModalHeader>
+                  Add Connections
+                  <CloseButton onClick={closeModal}>X</CloseButton>
+              </ModalHeader>
 
-                <SearchBoxContainer>
-                    <ReactSearchBox
-                        placeholder=""
-                        // value={searchInput}
-                        // onChange={handleSearchInputChange}
-                        data={data}
-                        callback={(record) => console.log(record)}
-                        inputHeight="1.5rem"
-                        inputBorderColor="hsla(278, 69%, 38%, 0.01)"
-                        inputBackgroundColor="hsla(278, 69%, 38%, 0.11)"
-                        leftIcon={<SearchIcon fontSize=""/>}
-                        iconBoxSize={"1.75rem"}
-                    />
-                    <input 
-                      placeholder='Search'
-                      value={searchInput} 
-                      onKeyPress = {handleKeyPress}
-                      onChange={(e) => setSearchInput(e.target.value)}
-                      style={{
-                        position: 'absolute',
-                        top: '48px',
-                        left: '25px',
-                        height: "5%",
-                        width: "87%",
-                        border: '1px solid hsla(278, 69%, 38%, 0.01)',
-                        backgroundColor: "hsla(278, 69%, 38%, 0.11)",
+              <SearchBoxContainer>
+                  <ReactSearchBox
+                      placeholder=""
+                      // value={searchInput}
+                      onSelect={(e) => {
+                        console.log(e.item.value);
+                        updateScreenBySearch(e.item.value);
                       }}
-                    />
-                </SearchBoxContainer>
-                <SearchResultContainer>
-                  <ResultLabel>Recommended Connections</ResultLabel>
-                    {foundUser ? (
-                      // Display foundUser
-                      <ResultContainer key={foundUser._id}>
-                        <p>{foundUser.username}</p>
-                        <button onClick={() => handleAddFriend(foundUser.username)}> + </button>
-                      </ResultContainer>
-                    ) : (
-                      // Display connections
-                      connections.map((connection) => (
+                      data={connections}
+                      callback={(record) => console.log(record)}
+                      inputHeight="1.5rem"
+                      inputBorderColor="hsla(278, 69%, 38%, 0.01)"
+                      inputBackgroundColor="hsla(278, 69%, 38%, 0.11)"
+                      leftIcon={<SearchIcon fontSize=""/>}
+                      iconBoxSize={"1.75rem"}
+                  />
+              </SearchBoxContainer>
+              <SearchResultContainer>
+                  {foundUser ? (
+                    // Display foundUser
+                    <ResultContainer key={foundUser._id}>
+                      <p>{foundUser.username}</p>
+                      <button onClick={() => handleAddFriend(foundUser.username)}> + </button>
+                    </ResultContainer>
+                  ) : (
+                    // Display connections
+                    <div>
+                      <ResultLabel>Recommended Connections</ResultLabel>
+                      {connections.map((connection) => (
                         <ResultContainer key={connection._id}>
                           <p>{connection.username}</p>
-                          <button> + </button>
+                          <button onClick={() => handleAddFriend(connection.username)}> + </button>
                         </ResultContainer>
-                      ))
-                    )}
-              </SearchResultContainer>
+                      ))}
+                    </div>
+                  )}
+            </SearchResultContainer>
 
-            </ModalWrapper>
+          </ModalWrapper>
         </Modal>
     );
 }

@@ -8,6 +8,7 @@ import Robot from "../assets/robot.gif";
  */
 export default function Welcome() {
     const [userName, setUserName] = useState("");
+    const [connectionCount, setConnectionCount] = useState(0);
 
     // Retrieve and set the user's name from the URL query parameters
     useEffect(() => {
@@ -16,13 +17,35 @@ export default function Welcome() {
         setUserName(storedUsername);
     }, []);
 
+    useEffect(() => {
+      // Make an API request to fetch the connection count
+      fetch(`/users/${userName}/connection-count`)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then((data) => {
+          setConnectionCount(data.connectionCount);
+        })
+        .catch((error) => {
+          console.error('Error fetching event count:', error);
+          // Handle error here
+        });
+    }, [userName]);
+
   return (
     <Container>
       <img src={Robot} alt="" />
       <h1>
         Welcome, <span>{userName}!</span>
       </h1>
-      <h3>Please select a chat to Start messaging.</h3>
+      {
+        (connectionCount > 0)   
+        ? <h3>Please select a chat to Start messaging.</h3>
+        : <h3>You have no connections to message.</h3>
+      }
     </Container>
   );
 }
