@@ -249,6 +249,38 @@ function Connections() {
       setShowAddPopup(!showAddPopup);
     }
 
+    const handleDeleteFriend = (connection) => {
+    
+      deleteConnection(connection.username);
+    }
+
+    const deleteConnection = async (userToDelete) => {
+      try{
+        
+  
+        const payload = {
+          username: storedUsername,
+          connectionToDelete: userToDelete,
+        };
+  
+        const response = await fetch(`/users/connections/deleteConnection`,{
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload),
+        });
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        fetchUserConnections();
+      } catch (error){
+        console.error('Error deleting friend request:', error);
+      }
+    }
+
+
+
     return (
       <ConnectionsContainer>
           <ToastContainer position="bottom-right" autoClose={3000} hideProgressBar />
@@ -300,6 +332,7 @@ function Connections() {
                           <PersonContainer>
                             <RemoveContainer onClick={() => {
                               //DELETE CONNECTION FROM USER
+                              handleDeleteFriend(connection)
                             }}><PersonRemoveIcon /></RemoveContainer>
                             {connection.userImage? (
                               <ProfilePic src={connection.userImage} alt='profile-img'/>

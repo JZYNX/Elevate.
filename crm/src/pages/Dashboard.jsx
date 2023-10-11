@@ -355,9 +355,8 @@ function Dashboard() {
       });
   }, [userName]);
   
-  useEffect(() => {
-    // Make an API request to fetch the connection count
-    fetch(`/users/${userName}/connection-count`)
+  const fetchUserConnectionCount = async () => {
+    await fetch(`/users/${userName}/connection-count`)
       .then((response) => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
@@ -371,6 +370,13 @@ function Dashboard() {
         console.error('Error fetching event count:', error);
         // Handle error here
       });
+  };
+  
+
+
+  useEffect(() => {
+    // Make an API request to fetch the connection count
+    fetchUserConnectionCount();
   }, [userName]);
 
 
@@ -430,11 +436,28 @@ function Dashboard() {
     }
   };
 
+  const fetchPendingConnections = async () => {
+    try{
+      const response = await fetch(`users/connections/${userName}/getAllPendingConnections`);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      setIncomingConnections(data);
+    } catch (error){
+      console.error('Error fetching user pending connections:', error);
+    }
+  };
+
+
   useEffect(() => {
     if (userName) {
       fetchUserNotes();
+      fetchPendingConnections();
     }
   }, [userName]);
+
+  
   
   const handleAddNote = async () => {
     if (newTitle && newNote) {
@@ -551,12 +574,63 @@ function Dashboard() {
     }
   };
 
-  const acceptInvite = () => {
+  const deletePendingConnection = async (userToDelete) => {
+    try{
+      
 
+      const payload = {
+        username: userName,
+        connectionToDelete: userToDelete,
+      };
+
+      const response = await fetch(`/users/connections/deleteFriendReq`,{
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      fetchPendingConnections();
+    } catch (error){
+      console.error('Error deleting friend request:', error);
+    }
   }
 
-  const rejectInvite = () => {
+  const acceptInvite = async (connection) => {
+    try {
+      const response = await fetch('/users/connections', {
+      method: 'PATCH', 
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        username: userName,
+        newConnection: connection.username,
+      }),
+      });
+    
+      if (response.ok) {
+        toast.success(`Added  ${connection.username}.`)
+        fetchUserConnectionCount();
+        //delete the pending connection
+        deletePendingConnection(connection.username);
+      } else {
+        // Handle the error based on the response from your backend
+        const errorData = await response.json();
+        toast.error(`Could not add  ${connection.username}.`)
+        console.error('Error adding connection:', errorData.error);
+      }
+    } catch (error){
 
+    }
+  }
+
+  const rejectInvite = (connection) => {
+    
+    deletePendingConnection(connection.username);
   }
 
   return (
@@ -627,7 +701,7 @@ function Dashboard() {
                         )}
                       </p>
                       {/* Accept invite */}
-                      <button onClick={() => acceptInvite()} style={{ fontSize: "8px" }}>
+                      <button onClick={() => acceptInvite(connection)} style={{ fontSize: "8px" }}>
                         <CheckCircleIcon 
                           style={{
                             width: '36px',
@@ -639,7 +713,7 @@ function Dashboard() {
                         }}/>
                       </button>
                       {/* Reject invite */}
-                      <button onClick={() => rejectInvite()} style={{ fontSize: "8px" }}>
+                      <button onClick={() => rejectInvite(connection)} style={{ fontSize: "8px" }}>
                         <CancelIcon 
                           style={{
                             width: '36px',

@@ -64,6 +64,12 @@ const userSchema = new mongoose.Schema({
             ref: "User", // Reference to other users
         },
     ],
+    pendingConnections: [
+        {
+            type: mongoose.SchemaTypes.ObjectId,
+            ref: "User", // Reference to other users
+        },
+    ],
     address: addressSchema,
     profilePic: {       // Not using this field for now
         type: mongoose.SchemaTypes.ObjectId,
