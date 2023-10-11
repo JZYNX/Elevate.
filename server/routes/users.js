@@ -52,6 +52,7 @@ const {
     updateNote,
     deleteNote,
     addConnection,
+    getConnectionCount
 } = require('../controllers/userController')
 
 // GET all users
@@ -102,6 +103,8 @@ router.put('/:username/updateNote', updateNote);
 router.delete('/:username/deleteNote', deleteNote);
 
 router.put('/:username/addConnection', addConnection);
+
+router.get('/:username/connection-count', getConnectionCount);
 
 const {
     getAllConnections,

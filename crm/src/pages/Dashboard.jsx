@@ -286,6 +286,7 @@ function Dashboard() {
   const [userName, setUserName] = useState('');
   const [eventCount, setEventCount] = useState(0);
   const [userEvents, setUserEvents] = useState([]);
+  const [connectionCount, setConnectionCount] = useState(0);
   const [groupedUserEvents, setGroupedUserEvents] = useState([]);
   const currentDate = new Date(); // Get the current date and time
 
@@ -313,6 +314,24 @@ function Dashboard() {
       });
   }, [userName]);
   
+  useEffect(() => {
+    // Make an API request to fetch the connection count
+    fetch(`/users/${userName}/connection-count`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setConnectionCount(data.connectionCount);
+      })
+      .catch((error) => {
+        console.error('Error fetching event count:', error);
+        // Handle error here
+      });
+  }, [userName]);
+
 
   useEffect(() => {
     // Make an API request to fetch the user events
@@ -504,7 +523,7 @@ function Dashboard() {
       <DashboardInfo>
         <StatsContainer>
           <StatBox>
-            <h2 className="number">150</h2>
+            <h2 className="number">{connectionCount}</h2>
             <p className="descriptor">Connections</p>
           </StatBox>
           <StatBox>
@@ -512,8 +531,8 @@ function Dashboard() {
             <p className="descriptor">Upcoming Events</p>
           </StatBox>
           <StatBox>
-            <h2 className="number">4</h2>
-            <p className="descriptor">To-do Tasks</p>
+            <h2 className="number">{notes.length}</h2>
+            <p className="descriptor">Notes</p>
           </StatBox>
         </StatsContainer>
         <SocialsBox>
