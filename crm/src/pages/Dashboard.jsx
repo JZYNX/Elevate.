@@ -328,15 +328,7 @@ function Dashboard() {
   const [userEvents, setUserEvents] = useState([]);
   const [connectionCount, setConnectionCount] = useState(0);
   const [groupedUserEvents, setGroupedUserEvents] = useState([]);
-  const [incomingConnections, setIncomingConnections] = useState([
-    {username: "Jason"}, 
-    {username: "Nafdog"}, 
-    {username: "Trollinh"}, 
-    {username: "William"}, 
-    {username: "Sokpairatiddies"}, 
-    {username: "Hoggiez"}
-
-  ]);  // Sample connection. use []
+  const [incomingConnections, setIncomingConnections] = useState([]);  // Sample connection. use []
   const currentDate = new Date(); // Get the current date and time
 
   useEffect(() => {
