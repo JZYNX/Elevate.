@@ -8,6 +8,7 @@ import fbIcon from '../assets/facebook.png';
 import twitterIcon from '../assets/twitter.png';
 import avatars from "../assets/Avatar.png";
 import { primaryColor, secondaryColor }from '../utils/Color';
+import { toast, ToastContainer } from 'react-toastify';
 
 // Styled components for styling the Register page
 const RegisterContainer = styled.div`
@@ -229,10 +230,10 @@ function Register() {
       const matchingEmail = users.find((user) => user.email === email);
 
       if (matchingUser) {
-        alert("Username exists, please use another username.")
+        toast.error("Username exists, please use another username.")
         return true;
       } else if (matchingEmail) {
-        alert("Email exists, please use another Email.")
+        toast.error("Email exists, please use another Email.")
         return true;
       }
       return false;
@@ -253,7 +254,7 @@ function Register() {
    */
   const postUser = async (username, password,email, confirm) => {
     if (password !== confirm) {
-      alert("Passwords do not match!");
+      toast.error("Passwords do not match!");
       return;
     }
 
@@ -268,10 +269,13 @@ function Register() {
 
       if (response.ok) {
         console.log("User created successfully");
-        navigate('/profile');
+        toast.success("User created successfully.");
+        setTimeout(() => {
+          navigate('/');
+        }, 2000)
       } else {
         const errorData = await response.json(); 
-        alert(`Failed to create user: ${errorData.message}`);
+        toast.error(`Failed to create user: ${errorData.message}`);
       }
 
     } catch (error) {
@@ -295,6 +299,7 @@ function Register() {
 
   return (
     <RegisterContainer>
+      <ToastContainer position="bottom-right" autoClose={3000} hideProgressBar />
       <BackgroundImage src={bgImg} alt="bgImg" />
       <WelcomeMessage>
       <Avatars src={avatars} alt=" " />

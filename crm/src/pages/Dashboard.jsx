@@ -140,8 +140,10 @@ const IncomingConnection = styled.div`
     width: 90%;
     font-family: 'Poppins', sans-serif;
     font-size: 1rem;
-    &:hover {
-      cursor: pointer;
+    strong {
+      &:hover {
+        cursor: pointer;
+      }
     }
   }
   button {
@@ -213,12 +215,13 @@ const NotesList = styled.div`
     width: 45rem;
     margin: 0.4rem 0rem;
     padding-left: 2rem;
+    &:hover {
+      cursor: pointer;
+      background-color: rgba(255, 255, 255, 0.7);
+    }
 
     p.note-title {
       font-size: 0.9rem;
-      &:hover {
-        cursor: pointer;
-      }
     }
     button {
       border: none;
@@ -331,6 +334,7 @@ function Dashboard() {
     {username: "William"}, 
     {username: "Sokpairatiddies"}, 
     {username: "Hoggiez"}
+
   ]);  // Sample connection. use []
   const currentDate = new Date(); // Get the current date and time
 
@@ -596,7 +600,7 @@ function Dashboard() {
                     {eventList.map((event) => (
                       <li key={event.id}>
                         <span style={{fontWeight: 'bold', paddingLeft: '0.25rem', paddingRight: '0.5rem'}}>
-                          {new Date(event.start).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - {new Date(event.end).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} : {' '}
+                          {new Date(event.start).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}: {' '}
                         </span>
                         <span style={{ width: '40%', display: 'inline-block' }}>{event.title}</span>
                       </li>
@@ -669,8 +673,8 @@ function Dashboard() {
           <NotesList>
             {notes && notes.length > 0 ? (
               notes.map((note, index) => (
-                <div className="note-item" key={index}>
-                  <p className="note-title" onClick={() => editNote(index, note._id)}>
+                <div className="note-item" key={index} onClick={() => editNote(index, note._id)}>
+                  <p className="note-title">
                     {note ? note.title : 'No Title'}
                   </p>
                   <button onClick={() => deleteNote(index,note._id)} style={{ fontSize: "8px" }}>
