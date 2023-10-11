@@ -125,6 +125,33 @@ const DateBox = styled.div`
   padding: 0 10px;
   width: 95%; /* Make it fill horizontally */
 `;
+
+// incoming connections second row display
+const IncomingConnection = styled.div`
+  display: flex;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 1rem;
+  width: 95%;
+  padding-left: 3rem;
+  padding-right: 3rem;
+
+  p.connection-username {
+    width: 90%;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+  button {
+    border: none; 
+    background-color: rgba(255, 255, 255, 0);
+    &:hover {
+      cursor: pointer;
+    }
+  }
+`
+
 // implement notes display and create pop up notes feature
 const NotesBox = styled.div`
   display: flex;
@@ -285,31 +312,6 @@ const StyledTextArea = styled.textarea`
   }
 `;
 
-const IncomingConnection = styled.div`
-  display: flex;
-  background-color: rgba(255, 255, 255, 0.5);
-  border-radius: 1rem;
-  width: 100%;
-  margin: 0.4rem 0rem;
-  padding-left: 2rem;
-
-  p.connection-username {
-    font-size: 0.9rem;
-    &:hover {
-      cursor: pointer;
-    }
-  }
-  button {
-    border: none;
-    margin: auto 2rem auto auto;
-    background-color: rgba(255, 255, 255, 0);
-
-    &:hover {
-      cursor: pointer;
-    }
-  }
-`
-
 function Dashboard() {
   const [showNotesPopup, setShowNotesPopup] = useState(null);
   const [notes, setNotes] = useState([]);
@@ -321,7 +323,7 @@ function Dashboard() {
   const [userEvents, setUserEvents] = useState([]);
   const [connectionCount, setConnectionCount] = useState(0);
   const [groupedUserEvents, setGroupedUserEvents] = useState([]);
-  const [incomingConnections, setIncomingConnections] = useState([{username: "jason"}]);  // Sample connection. use []
+  const [incomingConnections, setIncomingConnections] = useState([{username: "Jason"}]);  // Sample connection. use []
   const currentDate = new Date(); // Get the current date and time
 
   useEffect(() => {
@@ -577,7 +579,7 @@ function Dashboard() {
         </StatsContainer>
         <SocialsBox>
           <EventConnectionDisplay>
-            <p style={{marginBottom: '.25rem'}} className="descriptor">Upcoming Events</p>
+            <p style={{marginBottom: '0.75rem'}} className="descriptor">Upcoming Events</p>
             <ContentContainer>
               <ul style={{ listStyleType: 'none', paddingLeft: 0, margin: 0}}>
                 {groupedUserEvents.map((eventList, index) => (
@@ -597,7 +599,7 @@ function Dashboard() {
             </ContentContainer>
           </EventConnectionDisplay>
           <EventConnectionDisplay>
-            <p className="descriptor">New Connections</p>
+            <p style={{marginBottom: '0.75rem'}} className="descriptor">New Connections</p>
             <ContentContainer>
               <ul style={{ listStyleType: 'none', paddingLeft: 0, margin: 0}}>
                 {/* INCOMING CONNECTIONS */}
@@ -608,15 +610,37 @@ function Dashboard() {
                       <IncomingConnection>
                       {/* Display username of incoming connection */}
                       <p className="connection-username">
-                        {connection.username ? connection.username : 'Unknown user'}
+                        {connection.username ? (
+                          <span>
+                            <strong>{connection.username}</strong> has sent you a connection request. Accept the invite?
+                          </span>
+                        ) : (
+                          'Unknown user wants to connect with you. Accept the invite?'
+                        )}
                       </p>
                       {/* Accept invite */}
                       <button onClick={() => acceptInvite()} style={{ fontSize: "8px" }}>
-                        <CheckCircleIcon />
+                        <CheckCircleIcon 
+                          style={{
+                            width: '36px',
+                            height: '36px',
+                            backgroundColor: 'transparent',
+                            color: 'green',
+                            borderRadius: '50%',
+                            display: 'block', 
+                        }}/>
                       </button>
                       {/* Reject invite */}
                       <button onClick={() => rejectInvite()} style={{ fontSize: "8px" }}>
-                        <CancelIcon />
+                        <CancelIcon 
+                          style={{
+                            width: '36px',
+                            height: '36px',
+                            backgroundColor: 'transparent',
+                            color: 'red',
+                            borderRadius: '50%',
+                            display: 'block', 
+                        }}/>
                       </button>
                       </IncomingConnection>
                     </li>
