@@ -151,7 +151,7 @@ const NotesList = styled.div`
     background-color: rgba(255, 255, 255, 0.5);
     border-radius: 1rem;
     width: 44rem;
-    margin: 0.5rem 1rem;
+    margin: 0.5rem 2rem;
     padding-left: 2rem;
 
     p.note-title {
@@ -222,9 +222,10 @@ const NotesPopup = styled.div`
   }
 `;
 const StyledInput = styled.input`
+  font-family: 'Poppins', sans-serif;
   margin-top: 1.5rem;
   margin-bottom: 1rem;
-  padding: 10px;
+  padding: 1rem;
   border: 1px solid #ccc;
   border-radius: 10px;
   font-size: 18px;
@@ -234,7 +235,7 @@ const StyledInput = styled.input`
 const StyledTextArea = styled.textarea`
   font-family: 'Poppins', sans-serif;
   margin-bottom: 0.5rem;
-  padding: 10px;
+  padding: 1rem;
   border: 1px solid #ccc;
   border-radius: 10px;
   font-size: 16px;
