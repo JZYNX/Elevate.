@@ -133,7 +133,7 @@ const IncomingConnection = styled.div`
   border-radius: 1rem;
   width: 95%;
   padding-left: 3rem;
-  padding-right: 3rem;
+  padding-right: 2rem;
   margin-bottom: 0.75rem;
 
   p.connection-username {
@@ -619,7 +619,12 @@ function Dashboard() {
                       {/* Display username of incoming connection */}
                       <p className="connection-username">
                         {connection.username ? (
-                          <span> <strong>{connection.username}</strong> wants to connect with you. Accept the invite? </span>
+                          <span>
+                            <strong className={connection.username.length > 12 ? 'truncate-text' : ''}>
+                              {connection.username.length > 10 ? connection.username.slice(0, 10) + '.. ' : connection.username + ' '}
+                            </strong>
+                            wants to connect with you. Accept the invite?
+                          </span>
                         ) : (
                           'Unknown user wants to connect with you. Accept the invite?'
                         )}
