@@ -7,6 +7,8 @@ import bgImg from '../assets/nikuubg.jpg';
 import 'react-toastify/dist/ReactToastify.css';
 import DeleteIcon from '@mui/icons-material/Delete';
 import SearchBar from '../components/SearchBar';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CancelIcon from '@mui/icons-material/Cancel';
 
 const changeColors = keyframes`
   0%, 100% {
@@ -98,7 +100,7 @@ const EventConnectionDisplay = styled.div`
   }
 `;
 
-const UpcomingEventContentContainer = styled.div`
+const ContentContainer = styled.div`
   height: 90%;
   overflow-y: auto; /* Add vertical scrollbar when content overflows */
   &::-webkit-scrollbar {
@@ -283,6 +285,31 @@ const StyledTextArea = styled.textarea`
   }
 `;
 
+const IncomingConnection = styled.div`
+  display: flex;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 1rem;
+  width: 100%;
+  margin: 0.4rem 0rem;
+  padding-left: 2rem;
+
+  p.connection-username {
+    font-size: 0.9rem;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+  button {
+    border: none;
+    margin: auto 2rem auto auto;
+    background-color: rgba(255, 255, 255, 0);
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+`
+
 function Dashboard() {
   const [showNotesPopup, setShowNotesPopup] = useState(null);
   const [notes, setNotes] = useState([]);
@@ -294,6 +321,7 @@ function Dashboard() {
   const [userEvents, setUserEvents] = useState([]);
   const [connectionCount, setConnectionCount] = useState(0);
   const [groupedUserEvents, setGroupedUserEvents] = useState([]);
+  const [incomingConnections, setIncomingConnections] = useState([{username: "jason"}]);  // Sample connection. use []
   const currentDate = new Date(); // Get the current date and time
 
   useEffect(() => {
@@ -503,8 +531,6 @@ function Dashboard() {
     setNewNote(notes[index].content);
     setNewNoteID(id);
   };
-  
-  
 
   const exitAddNote = () => {
     if (showNotesPopup !== null || newTitle || newNote) {
@@ -517,6 +543,14 @@ function Dashboard() {
       setShowNotesPopup(null);
     }
   };
+
+  const acceptInvite = () => {
+
+  }
+
+  const rejectInvite = () => {
+
+  }
 
   return (
     <DashboardContainer>
@@ -544,7 +578,7 @@ function Dashboard() {
         <SocialsBox>
           <EventConnectionDisplay>
             <p style={{marginBottom: '.25rem'}} className="descriptor">Upcoming Events</p>
-            <UpcomingEventContentContainer>
+            <ContentContainer>
               <ul style={{ listStyleType: 'none', paddingLeft: 0, margin: 0}}>
                 {groupedUserEvents.map((eventList, index) => (
                   <EventListContainer style={{marginBottom:'0.25rem'}} key={`list-${index}`}>
@@ -560,10 +594,36 @@ function Dashboard() {
                   </EventListContainer>
                 ))}
               </ul>
-            </UpcomingEventContentContainer>
+            </ContentContainer>
           </EventConnectionDisplay>
           <EventConnectionDisplay>
             <p className="descriptor">New Connections</p>
+            <ContentContainer>
+              <ul style={{ listStyleType: 'none', paddingLeft: 0, margin: 0}}>
+                {/* INCOMING CONNECTIONS */}
+                {
+                  incomingConnections.map((connection, index) => {
+                    return (
+                      <li key={`incoming-${index}`}>
+                      <IncomingConnection>
+                      {/* Display username of incoming connection */}
+                      <p className="connection-username">
+                        {connection.username ? connection.username : 'Unknown user'}
+                      </p>
+                      {/* Accept invite */}
+                      <button onClick={() => acceptInvite()} style={{ fontSize: "8px" }}>
+                        <CheckCircleIcon />
+                      </button>
+                      {/* Reject invite */}
+                      <button onClick={() => rejectInvite()} style={{ fontSize: "8px" }}>
+                        <CancelIcon />
+                      </button>
+                      </IncomingConnection>
+                    </li>
+                    )
+                  })}
+              </ul>
+            </ContentContainer>
           </EventConnectionDisplay>
         </SocialsBox>
         <NotesBox>
