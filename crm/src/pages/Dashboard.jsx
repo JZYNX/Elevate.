@@ -134,6 +134,7 @@ const IncomingConnection = styled.div`
   width: 95%;
   padding-left: 3rem;
   padding-right: 3rem;
+  margin-bottom: 0.75rem;
 
   p.connection-username {
     width: 90%;
@@ -323,7 +324,14 @@ function Dashboard() {
   const [userEvents, setUserEvents] = useState([]);
   const [connectionCount, setConnectionCount] = useState(0);
   const [groupedUserEvents, setGroupedUserEvents] = useState([]);
-  const [incomingConnections, setIncomingConnections] = useState([{username: "Jason"}]);  // Sample connection. use []
+  const [incomingConnections, setIncomingConnections] = useState([
+    {username: "Jason"}, 
+    {username: "Nafdog"}, 
+    {username: "Trollinh"}, 
+    {username: "William"}, 
+    {username: "Sokpairatiddies"}, 
+    {username: "Hoggiez"}
+  ]);  // Sample connection. use []
   const currentDate = new Date(); // Get the current date and time
 
   useEffect(() => {
@@ -611,9 +619,7 @@ function Dashboard() {
                       {/* Display username of incoming connection */}
                       <p className="connection-username">
                         {connection.username ? (
-                          <span>
-                            <strong>{connection.username}</strong> has sent you a connection request. Accept the invite?
-                          </span>
+                          <span> <strong>{connection.username}</strong> wants to connect with you. Accept the invite? </span>
                         ) : (
                           'Unknown user wants to connect with you. Accept the invite?'
                         )}
