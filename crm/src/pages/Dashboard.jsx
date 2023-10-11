@@ -98,7 +98,7 @@ const EventConnectionDisplay = styled.div`
   }
   overflow-y: auto; /* Add vertical scrollbar when content overflows */
   &::-webkit-scrollbar {
-    width: 0.25rem;
+    width: 0.2rem;
     &-thumb {
       background-color: ${secondaryColor};
       width: 0.1rem;
@@ -110,7 +110,7 @@ const EventListContainer = styled.div`
   max-height:1000px; /* Set a max height for the event list container */
 `;
 const DateBox = styled.div`
-  background-color: ${secondaryColor};
+  background-color: rgba(94, 67, 176, 0.9);
   border-radius: 0.5rem;
   height: 2.25rem;
   display: flex;
