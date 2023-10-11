@@ -5,15 +5,6 @@ const Note = require('./noteModel'); // Import the Note schema
 global.PASSWORD_MIN_LENGTH = 10;
 global.PASSWORD_MAX_LENGTH = 30;
 
-// Function to validate email format
-const validateEmail = (email) => {
-    return String(email)
-      .toLowerCase()
-      .match(
-        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-      );
-  };
-
 // Sub-document schema for the address
 const addressSchema = new mongoose.Schema({
     street: {
@@ -59,10 +50,10 @@ const userSchema = new mongoose.Schema({
     email: {
         type: String, 
         required: true,
-        validate: {
-            validator: validateEmail, // Use the validateEmail function for validation
-            message: 'Invalid email address',
-        },
+        // validate: {
+        //     validator: validateEmail, // Use the validateEmail function for validation
+        //     message: 'Invalid email address',
+        // },
     },
     contactNumber:{
         type: String, 

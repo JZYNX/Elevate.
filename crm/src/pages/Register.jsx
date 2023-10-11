@@ -202,9 +202,24 @@ function Register() {
   const navigate = useNavigate();
   const titleMessage = " elevate.";
 
+  // Function to validate email format
+  const validateEmail = (email) => {
+      return String(email)
+        .toLowerCase()
+        .match(
+          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        );
+    };
+
   // Handles the registration process when the registration button is clicked.
   const handleRegister = async () => {
     const { username, password, email, confirm } = credentials;
+
+    if (!validateEmail(email)){
+      toast.error("Please enter a valid email.");
+      return;
+    }
+
     if (!await userExists(username,email)) {
       postUser(username, password, email, confirm);
     }
@@ -330,7 +345,7 @@ function Register() {
         />
         <input
           className="user-email"
-          type="text"
+          type="email"
           placeholder="Email"
           value={credentials.email}
           onChange={(e) => setCredentials({ ...credentials, email: e.target.value })}
@@ -338,7 +353,7 @@ function Register() {
         <input
           className='password-input'
           type='password'
-          placeholder="Password"
+          placeholder="Password (min 10 characters)"
           value={credentials.password}
           onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
           onKeyPress={handleKeyPress}
