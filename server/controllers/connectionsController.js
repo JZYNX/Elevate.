@@ -71,7 +71,9 @@ const addConnectionForUser = async (req, res) => {
         // Find the user based on their username
         const currUser = await User.findOne({ username });
         const newConnUser = await User.findOne({ username: newConnection });
-
+        const currentDate = new Date();
+        currUser.connectionDates.push({ storingConnectionId: newConnUser._id, date: currentDate });
+        newConnUser.connectionDates.push({ storingConnectionId: currUser._id, date: currentDate });
         if (!currUser || !newConnUser) {
             return res.status(400).json({ error: 'a user is not found' });
         }
@@ -163,7 +165,21 @@ const deleteConnectionForUser = async (req, res) => {
         // Remove the connectionUser from both user's connections array
         currUser.connections.splice(connectionIndex, 1);
         connectionUser.connections.splice(currentUserIndex,1);
+        
+        const currUserConnectionDateIndex = currUser.connectionDates.findIndex(
+            (entry) => entry.storingConnectionId === connectionUser._id.toString()
+        );
+        const connectionUserConnectionDateIndex = connectionUser.connectionDates.findIndex(
+            (entry) => entry.storingConnectionId === currUser._id.toString()
+        );
 
+        if (currUserConnectionDateIndex !== -1) {
+            currUser.connectionDates.splice(currUserConnectionDateIndex, 1);
+        }
+
+        if (connectionUserConnectionDateIndex !== -1) {
+            connectionUser.connectionDates.splice(connectionUserConnectionDateIndex, 1);
+        }
 
         // Save the user document with the updated connections
         await currUser.save();
@@ -211,6 +227,57 @@ const deletePendingConnectionForUser = async (req, res) => {
     }
 };
 
+const getDatesForUser = async (req, res) => {
+    try {
+        // Extract the username from the request parameters
+        const { username } = req.params;
+        
+        // Find the user based on their username
+        const user = await User.findOne({ username });
+
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        // Extract dates from the user's connectionDates array
+        const dates = user.connectionDates;
+       
+        // console.log("THE DATES ARE: " + dates);
+        
+        // Send the dates as a JSON response
+        return res.status(200).json( dates );
+    } catch (error) {
+        console.error('Error fetching dates for user:', error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
+
+const dropAllConnections = async (username) => {
+    try {
+      // Find the user based on their username
+      const currUser = await User.findOne({ username });
+  
+      if (!currUser) {
+        return { success: false, error: 'User not found' };
+      }
+  
+      // Clear the connections array
+      currUser.connections = [];
+      
+      // Clear the connectionDates array
+      currUser.connectionDates = [];
+  
+      // Save the updated user document
+      await currUser.save();
+  
+      return { success: true, message: 'All connections dropped successfully' };
+    } catch (error) {
+      console.error('Error dropping all connections:', error);
+      return { success: false, error: 'Internal server error' };
+    }
+  };
+  
 
 module.exports = {
     getAllConnections,
@@ -218,5 +285,7 @@ module.exports = {
     deleteConnectionForUser,
     addPendingConnection,
     getAllPendingConnections,
-    deletePendingConnectionForUser
+    deletePendingConnectionForUser,
+    getDatesForUser,
+    dropAllConnections,
 }

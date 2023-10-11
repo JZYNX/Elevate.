@@ -112,7 +112,9 @@ const {
     deleteConnectionForUser,
     addPendingConnection,
     getAllPendingConnections,
-    deletePendingConnectionForUser
+    deletePendingConnectionForUser,
+    getDatesForUser,
+    dropAllConnections,
 } = require('../controllers/connectionsController');
 
 // GET all connections for a user
@@ -132,5 +134,9 @@ router.delete('/connections/deleteConnection', deleteConnectionForUser)
 
 // DELETE a pending connection for a user
 router.delete('/connections/deleteFriendReq', deletePendingConnectionForUser)
+
+router.get('/connections/:username/getAllDates', getDatesForUser)
+
+router.delete('/connections/:username/deleteAllConnections', dropAllConnections);
 
 module.exports = router

@@ -201,7 +201,7 @@ function Connections() {
     const [searchedConnections, setSearchConnections] = useState([]);
     const [sortOption, setSortOption] = useState(null);
     const [arrowUp, setArrowUp] = useState(true);
-
+    const [userDates, setUserDates] = useState([]);
 
     const sortOptions = [
       { value: 'last-name', label: 'Last-name' },
@@ -218,6 +218,9 @@ function Connections() {
         const data = await response.json();
         await setConnections(data);
         setSearchConnections(data);
+        const dates = await fetchUserDates(storedUsername);
+        setUserDates(dates);
+        // console.log("THe dates is " + userDates);
       } catch (error) {
         console.error('Error fetching user notes:', error);
       }
@@ -374,20 +377,43 @@ function Connections() {
     };
     
     const handleMostRecent = () => {
-      // Set the sort option to "recent"
       setSortOption({ value: 'recent', label: 'Most-Recent' });
+      if (userDates.length > 0) {
+        // Declare sortedConnections before using it
+        const sortedConnections = [...searchedConnections].sort((a, b) => {
+          const dateA = userDates.find((date) => date.storingConnectionId === a._id);
+          const dateB = userDates.find((date) => date.storingConnectionId === b._id);
     
-      const sortedConnections = [...connections];
-      
-      if (arrowUp) {
-        // Ascending sort (by default)
-        // No need to modify the order as it's already ascending
-      } else {
-        // Descending sort
-        sortedConnections.reverse();
+          if (dateA && dateB) {
+            // Sort in ascending order if arrowUp is true, descending if false
+            const sortOrder = arrowUp ? 1 : -1;
+            return sortOrder * (new Date(dateA.date) - new Date(dateB.date));
+          } else if (dateA) {
+            return -1;
+          } else if (dateB) {
+            return 1;
+          }
+          return 0;
+        });
+    
+        setSearchConnections(sortedConnections);
       }
+    };
     
-      setSearchConnections(sortedConnections);
+    
+    
+    const fetchUserDates = async (username) => {
+      try {
+        const response = await fetch(`/users/connections/${username}/getAllDates`);
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        return data;
+      } catch (error) {
+        console.error('Error fetching user dates:', error);
+        return [];
+      }
     };
     
 

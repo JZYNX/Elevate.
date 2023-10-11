@@ -64,6 +64,12 @@ const userSchema = new mongoose.Schema({
             ref: "User", // Reference to other users
         },
     ],
+    connectionDates:[
+        {
+            storingConnectionId:String,
+            date:Date,
+        }
+    ],
     pendingConnections: [
         {
             type: mongoose.SchemaTypes.ObjectId,
