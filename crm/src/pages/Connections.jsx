@@ -119,12 +119,11 @@ const Footer = styled.div`
 `
 
 const PersonContainer = styled.div`
-  height: 60%;
+  height: 70%;
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 1rem;
 
   div.profile-name {
     margin-top: 0.5rem;
