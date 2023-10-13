@@ -260,6 +260,12 @@ const NotesPopup = styled.div`
   align-items: center;
   overflow: hidden;
 
+  div.note-headers {
+    position: relative;
+    margin-right: auto;
+    padding-left: 2rem;
+  }
+
   .button-container {
     display: flex;
     justify-content: space-between;
@@ -287,7 +293,6 @@ const NotesPopup = styled.div`
 `;
 const StyledInput = styled.input`
   font-family: 'Poppins', sans-serif;
-  margin-top: 1.5rem;
   margin-bottom: 1rem;
   padding: 1rem;
   border: 1px solid #ccc;
@@ -756,12 +761,14 @@ function Dashboard() {
 
           {showNotesPopup !== null && (
             <NotesPopup>
+              <div className='note-headers'>Title: </div>
               <StyledInput
                 type="text"
                 placeholder="Enter title here"
                 value={newTitle}
                 onChange={(e) => setNewTitle(e.target.value)}
               />
+              <div className='note-headers'>Note: </div>
               <StyledTextArea
                 rows="10"
                 value={newNote}
