@@ -337,15 +337,21 @@ function Connections() {
 
 
     const filterConnections = async (searchValue) => {
+      console.log(searchValue);
       const lowerSearchInput = searchValue.toLowerCase();
+      console.log(lowerSearchInput);
       console.log(connections);
       const filteredConnections = connections.filter((connection) => {
         const { username, firstName, lastName } = connection;
-        return (
-          username.toLowerCase().includes(lowerSearchInput) ||
-          firstName.toLowerCase().includes(lowerSearchInput) ||
-          lastName.toLowerCase().includes(lowerSearchInput)
-        );
+        if (username && firstName && lastName) {
+          return (
+            username.toLowerCase().includes(lowerSearchInput) ||
+            firstName.toLowerCase().includes(lowerSearchInput) ||
+            lastName.toLowerCase().includes(lowerSearchInput)
+          );
+        } else {
+          return 
+        }        
       });
       // alert(filteredConnections.length);
       if (filteredConnections.length > 0) {
