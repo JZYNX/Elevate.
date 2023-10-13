@@ -597,7 +597,7 @@ function Connections() {
 
             <Footer>
               <ConnectionsCountContainer>
-                Showing <strong>{connections.length > 0 ? startIndex + 1 : 0}</strong>-<strong>{connections.length < endIndex ? connections.length : endIndex}</strong> from <strong>{connections.length}</strong> results
+                Showing <strong>{searchedConnections.length > 0 ? startIndex + 1 : 0}</strong>-<strong>{searchedConnections.length < endIndex ? searchedConnections.length : endIndex}</strong> from <strong>{searchedConnections.length}</strong> results
               </ConnectionsCountContainer>
               <StyledArrowButton onClick={prevPage} disabled={currentPage === 1}>
                 <KeyboardArrowLeftIcon className='arrow-icon'/>
