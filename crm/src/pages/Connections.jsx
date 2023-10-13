@@ -14,7 +14,8 @@ import { toast, ToastContainer } from 'react-toastify';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
-
+import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 
 const BackgroundImage = styled.img`
   position: absolute;
@@ -67,6 +68,20 @@ const UtilityRowContainer = styled.div`
   }
 `
 
+const SortOrderContainer = styled.div`
+  display: flex;
+  background-color: ${secondaryLightColor};
+  border-radius: 2rem;
+  margin-right: auto;
+  margin-left: 5rem;
+  padding: 0 .5rem;
+
+  .arrow-icon {
+    display: flex;
+    margin: auto 0.5rem;
+  }
+`
+
 const AddButtonContainer = styled.div`
   margin-right: 3.5rem;
 `
@@ -86,6 +101,20 @@ const StyledButton = styled.button`
 
   &:hover {
     background-color: ${primaryColor}; 
+  }
+`
+
+const StyledArrowButton = styled(StyledButton)`
+  width: 4rem;
+  height: 2rem;
+  padding: 0;
+
+  .arrow-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
   }
 `
 
@@ -115,7 +144,11 @@ const Footer = styled.div`
   justify-content: right;
   padding-right: 3.5rem;
   bottom: 1rem;  
-  
+`
+
+const ConnectionsCountContainer = styled.div`
+  position: relative;
+  margin: auto 0.5rem;
 `
 
 const PersonContainer = styled.div`
@@ -184,6 +217,7 @@ const RemoveContainer = styled.div`
   position: relative; 
   left: 50%;
   transform: translateX(-80%);
+  color: black;
   &:hover {
     cursor: pointer;
   }
@@ -414,21 +448,6 @@ function Connections() {
         return [];
       }
     };
-    
-
-    // const handleUpArrowClick = () => {
-    //   setArrowUp(true);
-    //   console.log("trigger");
-    //   console.log(arrowUp);
-    //   handleArrowSort();
-    // };
-
-    // const handleDownArrowClick = () => {
-    //   setArrowUp(false);
-    //   console.log("trigger");
-    //   console.log("When down : " + arrowUp);
-    //   handleArrowSort();
-    // };
 
     useEffect(() => {
       handleArrowSort();
@@ -464,124 +483,131 @@ function Connections() {
               <Sidebar userName={storedUsername}/>
           </SidebarColumn>
           <DisplayColumn>
-            	<TitleContainer>
-                Connections
-              </TitleContainer>
+            <TitleContainer>
+              Connections
+            </TitleContainer>
 
-              <UtilityRowContainer>
-                <Select 
-                  options={sortOptions} 
-                  isClearable={true}
-                  className='react-select-container'
-                  classNamePrefix="react-select"
-                  placeholder="Sort"
-                  value={sortOption}
-                  onChange={(selectedOption) => {
-                    if (selectedOption && selectedOption.value === 'last-name') {
-                      handleSortLastName();
-                    } 
-                    if (selectedOption && selectedOption.value === 'first-name') {
-                      handleSortFirstName();
-                    } 
-                    if (selectedOption && selectedOption.value === 'recent'){
-                      handleMostRecent();
-                    }
-                    if(selectedOption==null){
-                      defaultSort();
-                    }
-                    
-                  }}
-                  theme={(theme) => ({
-                    ...theme,
-                    borderRadius: 0,
-                    colors: {
-                      ...theme.colors,
-                      primary25: '#b6e1f6',
-                      primary: secondaryColor,
-                    },
-                  })}
-                />
+            <UtilityRowContainer>
+              <Select 
+                options={sortOptions} 
+                isClearable={true}
+                className='react-select-container'
+                classNamePrefix="react-select"
+                placeholder="Sort"
+                value={sortOption}
+                onChange={(selectedOption) => {
+                  if (selectedOption && selectedOption.value === 'last-name') {
+                    handleSortLastName();
+                  } 
+                  if (selectedOption && selectedOption.value === 'first-name') {
+                    handleSortFirstName();
+                  } 
+                  if (selectedOption && selectedOption.value === 'recent'){
+                    handleMostRecent();
+                  }
+                  if(selectedOption==null){
+                    defaultSort();
+                  }
+                  
+                }}
+                theme={(theme) => ({
+                  ...theme,
+                  borderRadius: 0,
+                  colors: {
+                    ...theme.colors,
+                    primary25: '#b6e1f6',
+                    primary: secondaryColor,
+                  },
+                })}
+              />
+              <SortOrderContainer>
                 <ArrowUpwardIcon
+                  className='arrow-icon'
                   onClick={changeArrow}
-                  style={{ color: arrowUp ? 'blue' : 'gray', cursor: 'pointer' }}
+                  style={{ color: arrowUp ? secondaryColor : 'lightgray', cursor: 'pointer' }}
                 />
                 <ArrowDownwardIcon
+                  className='arrow-icon'
                   onClick={changeArrow}
-                  style={{ color: arrowUp ? 'gray' : 'blue', cursor: 'pointer' }}
+                  style={{ color: arrowUp ? 'lightgray' : secondaryColor, cursor: 'pointer' }}
                 />
-                <AddButtonContainer>
-                  <StyledButton onClick={resetConnections}>Show All Connections</StyledButton>
-                  <StyledButton onClick={() => {
-                    toggleAddModal()
-                  }}
-                  > Add Contact </StyledButton>
-                </AddButtonContainer>
-              </UtilityRowContainer>
+              </SortOrderContainer>
+              <AddButtonContainer>
+                <StyledButton onClick={resetConnections}>Show All Connections</StyledButton>
+                <StyledButton onClick={() => {
+                  toggleAddModal()
+                }}
+                > Add Contact </StyledButton>
+              </AddButtonContainer>
+            </UtilityRowContainer>
 
-              <ConnectionListContainer>
-                  {
-                    profilesToDisplay.map((connection, index) => {
-                      return (
-                        <MiniProfile
-                          key = {connection._id}
-                          className={`contact ${
-                            index === currentSelected ? "selected" : ""
-                          }`}
-                        > 
-                          <PersonContainer>
-                            <RemoveContainer onClick={() => {
-                              //DELETE CONNECTION FROM USER
-                              handleDeleteFriend(connection)
-                            }}><PersonRemoveIcon /></RemoveContainer>
-                            {connection.userImage? (
-                              <ProfilePic src={connection.userImage} alt='profile-img'/>
-                            ):(
-                              <AccountCircleIcon
-                                fontSize="large"
-                                style={{
-                                  width: '100px',
-                                  height: '100px',
-                                  backgroundColor: 'white',
-                                  color: '#5e43b0',
-                                  display: 'block', 
-                                  margin: '0 0.7rem', 
-                                }}
-                              />
-                            )}
-                            <div className='profile-name'>{connection.firstName} {connection.lastName}</div>
-                          </PersonContainer>
-                          <InfoContainer>
-                            <IconContainer><PhoneIcon /></IconContainer>
-                            <InfoTextContainer>{connection.contactNumber || 'N/A'}</InfoTextContainer>
-                          </InfoContainer>
-                          <InfoContainer>
-                            <IconContainer onClick={() => {
-                                toggleModal();
-                              }}><EmailIcon /></IconContainer>
-                            <InfoTextContainer>{connection.email}</InfoTextContainer>
-                          </InfoContainer>
-                        </MiniProfile>
-                      )
-                    })
-                  }
-              </ConnectionListContainer>
+            <ConnectionListContainer>
+                {
+                  profilesToDisplay.map((connection, index) => {
+                    return (
+                      <MiniProfile
+                        key = {connection._id}
+                        className={`contact ${
+                          index === currentSelected ? "selected" : ""
+                        }`}
+                      > 
+                        <PersonContainer>
+                          <RemoveContainer onClick={() => {
+                            //DELETE CONNECTION FROM USER
+                            handleDeleteFriend(connection)
+                          }}><PersonRemoveIcon /></RemoveContainer>
+                          {connection.userImage? (
+                            <ProfilePic src={connection.userImage} alt='profile-img'/>
+                          ):(
+                            <AccountCircleIcon
+                              fontSize="large"
+                              style={{
+                                width: '100px',
+                                height: '100px',
+                                backgroundColor: 'white',
+                                color: '#5e43b0',
+                                display: 'block', 
+                                margin: '0 0.7rem', 
+                              }}
+                            />
+                          )}
+                          <div className='profile-name'>{connection.firstName} {connection.lastName}</div>
+                        </PersonContainer>
+                        <InfoContainer>
+                          <IconContainer><PhoneIcon /></IconContainer>
+                          <InfoTextContainer>{connection.contactNumber || 'N/A'}</InfoTextContainer>
+                        </InfoContainer>
+                        <InfoContainer>
+                          <IconContainer onClick={() => {
+                              toggleModal();
+                            }}><EmailIcon /></IconContainer>
+                          <InfoTextContainer>{connection.email}</InfoTextContainer>
+                        </InfoContainer>
+                      </MiniProfile>
+                    )
+                  })
+                }
+            </ConnectionListContainer>
 
-              <Footer>
-                <StyledButton onClick={prevPage} disabled={currentPage === 1}>
-                  Previous Page
-                </StyledButton>
-                
-                <StyledButton onClick={nextPage} disabled={endIndex >= searchedConnections.length}>
-                  Next Page
-                </StyledButton>
-              </Footer>
-            {
-              showEmailPopup ? <Email onToggle={toggleModal} showEmailPopup={showEmailPopup}/> : null
-            }
-            {
-              showAddPopup ? <AddConnection onToggle={toggleAddModal} showAddPopup = {showAddPopup} /> : null
-            }
-          </DisplayColumn>
+            <Footer>
+              <ConnectionsCountContainer>
+                Showing <strong>{connections.length > 0 ? startIndex + 1 : 0}</strong>-<strong>{connections.length < endIndex ? connections.length : endIndex}</strong> from <strong>{connections.length}</strong> results
+              </ConnectionsCountContainer>
+              <StyledArrowButton onClick={prevPage} disabled={currentPage === 1}>
+                <KeyboardArrowLeftIcon className='arrow-icon'/>
+              </StyledArrowButton>
+              
+              <StyledArrowButton onClick={nextPage} disabled={endIndex >= searchedConnections.length}>
+                <KeyboardArrowRightIcon className='arrow-icon'/>
+              </StyledArrowButton>
+            </Footer>
+          {
+            showEmailPopup ? <Email onToggle={toggleModal} showEmailPopup={showEmailPopup}/> : null
+          }
+          {
+            showAddPopup ? <AddConnection onToggle={toggleAddModal} showAddPopup = {showAddPopup} /> : null
+          }
+        </DisplayColumn>
       </ConnectionsContainer>
     )
 }
