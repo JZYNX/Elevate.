@@ -5,16 +5,12 @@ import styled, { keyframes } from 'styled-components';
 import bgImg from '../assets/nikuubg.jpg';
 import googleIcon from '../assets/google.png';
 import fbIcon from '../assets/facebook.png';
-import twitterIcon from '../assets/twitter.png';
 import linkedinIcon from '../assets/linkedin.png';
 import avatars from "../assets/Avatar.png";
 import { primaryColor, secondaryColor }from '../utils/Color';
 import { toast, ToastContainer } from 'react-toastify';
 import { GoogleLogin } from 'react-google-login';
 import { gapi } from "gapi-script";
-import { useLinkedIn } from 'react-linkedin-login-oauth2';
-import linkedin from 'react-linkedin-login-oauth2/assets/linkedin.png';
-
 
 const LoginContainer = styled.div`
   display: flex; 
@@ -250,20 +246,7 @@ function Login() {
       navigate(`/dashboard?username=${response.profileObj.googleId}`);
     }
   };
-
-  const { linkedInLogin } = useLinkedIn({
-    clientId: 'your-client-id',
-    redirectUri: 'http://localhost:3000/linkedin',
-    onSuccess: (code) => {
-      // Change from `data.code` to `code`
-      console.log(code);
-    },
-    // Change from `onFailure` to `onError`
-    onError: (error) => {
-      console.log(error);
-    },
-  });
-
+  
     /**
    * Checks if a user with the given username or email already exists.
    * 
