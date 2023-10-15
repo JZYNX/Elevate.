@@ -11,6 +11,8 @@ import { primaryColor, secondaryColor }from '../utils/Color';
 import { toast, ToastContainer } from 'react-toastify';
 import { GoogleLogin } from 'react-google-login';
 import { gapi } from "gapi-script";
+import { useLinkedIn } from 'react-linkedin-login-oauth2';
+import linkedin from 'react-linkedin-login-oauth2/assets/linkedin.png';
 
 const LoginContainer = styled.div`
   display: flex; 
@@ -246,7 +248,7 @@ function Login() {
       navigate(`/dashboard?username=${response.profileObj.googleId}`);
     }
   };
-  
+
     /**
    * Checks if a user with the given username or email already exists.
    * 
@@ -310,6 +312,19 @@ function Login() {
     console.error('Google login failed', error);
     // Handle the failure, show an error message, or perform other actions.
   };
+
+  const { linkedInLogin } = useLinkedIn({
+    clientId: 'Linkedin API is temporarily unavailable. Please try again later.',
+    redirectUri: 'http://localhost:3000/linkedin',
+    onSuccess: (code) => {
+      // Change from `data.code` to `code`
+      console.log(code);
+    },
+    // Change from `onFailure` to `onError`
+    onError: (error) => {
+      console.log(error);
+    },
+  });
 
   // Render the login page
   return (
@@ -378,11 +393,7 @@ function Login() {
             <Icon src={fbIcon} alt="Facebook" />
           </IconOnlyButton>
           <IconOnlyButton>
-            <Icon src={linkedinIcon} alt="Linkedin" 
-              onClick={() => toast.error(
-                "Linkedin login is temporarily unavailable."
-              )
-            }/>
+            <Icon src={linkedinIcon} alt="Linkedin" onClick = {linkedInLogin}/>
           </IconOnlyButton>
         </OtherLoginOptions>
       </LoginForm>
