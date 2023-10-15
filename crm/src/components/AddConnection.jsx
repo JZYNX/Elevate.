@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactSearchBox from "react-search-box";
 import styled from 'styled-components';
 import Modal from 'react-modal';

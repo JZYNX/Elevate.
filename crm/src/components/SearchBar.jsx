@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import ReactSearchBox from "react-search-box";
 import SearchIcon from '@mui/icons-material/Search';

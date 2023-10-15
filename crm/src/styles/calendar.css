@@ -40,10 +40,14 @@
     box-shadow: none;
 }
 
+/* grey out saturday and sunday for daygridmonth view */
+.fc-dayGridMonth-view .fc-daygrid-body .fc-day-sat, .fc-dayGridMonth-view .fc-daygrid-body .fc-day-sun {
+    background-color: hsla(278, 69%, 38%, 0.11);
+}
 
 /* Current day styling */
 .fc .fc-daygrid-day.fc-day-today, .fc .fc-timegrid-col.fc-day-today {
-    background-color: #6e17a038;
+    background-color: hsla(278, 69%, 38%, 0.3);
 }
 
 /* Highlighted day styling */
@@ -70,11 +74,6 @@
 /* Handle on hover */
 .fc .fc-scroller-liquid-absolute::-webkit-scrollbar-thumb:hover {
     background-color: #555; /* Scrollbar thumb color on hover */
-}
-
-/* grey out saturday and sunday for daygridmonth view */
-.fc-dayGridMonth-view .fc-daygrid-body .fc-day-sat, .fc-dayGridMonth-view .fc-daygrid-body .fc-day-sun {
-    background-color: hsla(278, 69%, 38%, 0.11);
 }
 
 body {
