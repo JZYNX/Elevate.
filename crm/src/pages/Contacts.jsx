@@ -49,7 +49,7 @@ const Container = styled.div`
       align-items: center;
       transition: 0.5s ease-in-out;
       .username {
-        margin-left: 1rem;
+        margin-left: 0rem;
         h3 {
           font-size: 1rem;
           color: white;
@@ -131,7 +131,6 @@ export default function Contacts({ contacts, changeChat }) {
                 }`}
                 onClick={() => changeCurrentChat(index, contact)}
             >
-              
                 <div className="avatar">
                   {contact.userImage ? (
                     <img
@@ -162,19 +161,15 @@ export default function Contacts({ contacts, changeChat }) {
                   )}
                 </div>
                 <div className="username">
-                <h3>{contact.username}</h3>
+                  <h3>
+                    {contact.username.length > 12 ? contact.username.slice(0, 12) + '...' : contact.username}
+                  </h3>
                 </div>
             </div>
             );
         })}
         </div>
         <div className="current-user">
-        {/* <div className="avatar">
-            <img
-            src={`data:image/svg+xml;base64,${currentUserImage}`} //please fix 
-            alt="avatar"
-            />
-        </div> */}
         <div className="username">
             <h2 
               onClick={() => handleNavigation(`/dashboard?username=${currentUserName}`)}
