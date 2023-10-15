@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import TextHover from '../utils/TextHover';
 import styled, { keyframes } from 'styled-components';
@@ -9,6 +9,8 @@ import twitterIcon from '../assets/twitter.png';
 import avatars from "../assets/Avatar.png";
 import { primaryColor, secondaryColor }from '../utils/Color';
 import { toast, ToastContainer } from 'react-toastify';
+import { GoogleLogin } from 'react-google-login';
+import { gapi } from "gapi-script";
 
 const LoginContainer = styled.div`
   display: flex; 
@@ -199,7 +201,7 @@ function Login() {
   const navigate = useNavigate();
   const titleMessage = " elevate.";
   const expirationDate = new Date();
-  expirationDate.setDate(expirationDate.getDate() + 7); // 7 days from now
+  expirationDate.setDate(expirationDate.getDate() + 7); // 7 days from now=
 
   // Function to handle user login
   const handleLogin = async () => {
@@ -214,33 +216,6 @@ function Login() {
     }
   };
 
-  // Function to check if a user exists
-  const userExists = async (username, password) => {
-    try{
-      // Make a request to fetch user data (replace with actual API endpoint)
-      const response = await fetch('/users');
-      
-      if (!response.ok) {
-        throw new Error("failed to fetch users");
-      }
-
-      const users = await response.json();
-
-      // Find a user with matching username and password
-      const matchingUser = users.find((user) => user.username === username && user.password === password);
-
-      if (matchingUser) {
-        console.log("MATCHED");
-        return true;
-      }
-      return false;
-
-    } catch (err) {
-      console.error("Error checking if user exists", err);
-      return false;
-    }
-  };
-
    // Function to handle Enter key press for login
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
@@ -251,6 +226,89 @@ function Login() {
   // Function to handle navigation to other pages
   const handleNavigation = (path) => {
     navigate(path);
+  };
+
+  const handleGoogleLoginSuccess = async (response) => {
+    const { tokenId } = response;
+    // Send this tokenId to your server for validation, or handle the user login as needed.
+    // You can navigate to the dashboard or perform other actions here.
+    console.log(response);
+    gapi.load("client:auth2", () => {
+      gapi.client.init({
+        clientId: "718066585548-9c25n26k4ci4do8f3mh45stub0s4de0u.apps.googleusercontent.com",
+        plugin_name: "chat",
+      });
+    });
+    if (await userExists(response.profileObj.googleId, "123123123123")){
+      navigate(`/dashboard?username=${response.profileObj.googleId}`);
+    } else {
+      postUser(response.profileObj.googleId, "123123123123", response.profileObj.email)
+      navigate(`/dashboard?username=${response.profileObj.googleId}`);
+    }
+  };
+
+    /**
+   * Checks if a user with the given username or email already exists.
+   * 
+   * @param {string} username - The username to check.
+   * @param {string} email - The email to check.
+   * @returns {boolean} True if a matching username or email is found, false otherwise.
+   */
+    const userExists = async (username,email) => {
+      try{
+        const response = await fetch('/users');
+        
+        if (!response.ok) {
+          throw new Error("failed to fetch users");
+        }
+  
+        const users = await response.json();
+        const matchingUser = users.find((user) => user.username === username );
+        const matchingEmail = users.find((user) => user.email === email);
+  
+        if (matchingUser) {
+          toast.error("Username exists, please use another username.")
+          return true;
+        } else if (matchingEmail) {
+          toast.error("Email exists, please use another Email.")
+          return true;
+        }
+        return false;
+  
+      } catch (err) {
+        console.error("Error checking if user exists", err);
+        return false;
+      }
+    };
+
+  const postUser = async (username, password, email) => {
+    try {
+      const response = await fetch('/users', {
+        method: 'POST', 
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password, email }),
+      });
+
+      if (response.ok) {
+        console.log("User created successfully");
+        toast.success("User created successfully.");
+      } else {
+        const errorData = await response.json(); 
+        toast.error(`Failed to create user: ${errorData.message}`);
+      }
+
+    } catch (error) {
+      console.error("Error creating user", error);
+      alert("Error creating user. Please try again.");
+    }
+  }
+
+  
+  const handleGoogleLoginFailure = (error) => {
+    console.error('Google login failed', error);
+    // Handle the failure, show an error message, or perform other actions.
   };
 
   // Render the login page
@@ -305,9 +363,17 @@ function Login() {
           <hr className="separator-line" />
         </div>
         <OtherLoginOptions>
-          <IconOnlyButton>
-            <Icon src={googleIcon} alt="Google" />
-          </IconOnlyButton>
+          <GoogleLogin
+            clientId="718066585548-9c25n26k4ci4do8f3mh45stub0s4de0u.apps.googleusercontent.com"
+            buttonText="Login with Google"
+            onSuccess={handleGoogleLoginSuccess}
+            onFailure={handleGoogleLoginFailure}
+            render={renderProps => (
+              <IconOnlyButton>
+                <Icon src={googleIcon} alt="Google" onClick={renderProps.onClick}/>
+              </IconOnlyButton>
+            )}
+          />
           <IconOnlyButton>
             <Icon src={fbIcon} alt="Facebook" />
           </IconOnlyButton>
