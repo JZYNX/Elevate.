@@ -286,7 +286,7 @@ function Register() {
         console.log("User created successfully");
         toast.success("User created successfully.");
         setTimeout(() => {
-          navigate('/');
+          navigate(`/dashboard?username=${username}`);
         }, 2000)
       } else {
         const errorData = await response.json(); 
