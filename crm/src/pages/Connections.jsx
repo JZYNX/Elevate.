@@ -548,51 +548,55 @@ function Connections() {
             </UtilityRowContainer>
 
             <ConnectionListContainer>
-                {
-                  profilesToDisplay.map((connection, index) => {
-                    return (
-                      <MiniProfile
-                        key = {connection._id}
-                        className={`contact ${
-                          index === currentSelected ? "selected" : ""
-                        }`}
-                      > 
-                        <PersonContainer>
-                          <RemoveContainer onClick={() => {
-                            //DELETE CONNECTION FROM USER
-                            handleDeleteFriend(connection)
-                          }}><PersonRemoveIcon /></RemoveContainer>
-                          {connection.userImage? (
-                            <ProfilePic src={connection.userImage} alt='profile-img'/>
-                          ):(
-                            <AccountCircleIcon
-                              fontSize="large"
-                              style={{
-                                width: '100px',
-                                height: '100px',
-                                backgroundColor: 'white',
-                                color: '#5e43b0',
-                                display: 'block', 
-                                margin: '0 0.7rem', 
-                              }}
-                            />
-                          )}
-                          <div className='profile-name'>{connection.firstName} {connection.lastName}</div>
-                        </PersonContainer>
-                        <InfoContainer>
-                          <IconContainer><PhoneIcon /></IconContainer>
-                          <InfoTextContainer>{connection.contactNumber || 'N/A'}</InfoTextContainer>
-                        </InfoContainer>
-                        <InfoContainer>
-                          <IconContainer onClick={() => {
-                              toggleModal();
-                            }}><EmailIcon /></IconContainer>
-                          <InfoTextContainer>{connection.email}</InfoTextContainer>
-                        </InfoContainer>
-                      </MiniProfile>
-                    )
-                  })
-                }
+                {profilesToDisplay && profilesToDisplay.length > 0 ? (
+                    profilesToDisplay.map((connection, index) => {
+                      return (
+                        <MiniProfile
+                          key = {connection._id}
+                          className={`contact ${
+                            index === currentSelected ? "selected" : ""
+                          }`}
+                        > 
+                          <PersonContainer>
+                            <RemoveContainer onClick={() => {
+                              //DELETE CONNECTION FROM USER
+                              handleDeleteFriend(connection)
+                            }}><PersonRemoveIcon /></RemoveContainer>
+                            {connection.userImage? (
+                              <ProfilePic src={connection.userImage} alt='profile-img'/>
+                            ):(
+                              <AccountCircleIcon
+                                fontSize="large"
+                                style={{
+                                  width: '100px',
+                                  height: '100px',
+                                  backgroundColor: 'white',
+                                  color: '#5e43b0',
+                                  display: 'block', 
+                                  margin: '0 0.7rem', 
+                                }}
+                              />
+                            )}
+                            <div className='profile-name'>{connection.firstName} {connection.lastName}</div>
+                          </PersonContainer>
+                          <InfoContainer>
+                            <IconContainer><PhoneIcon /></IconContainer>
+                            <InfoTextContainer>{connection.contactNumber || 'N/A'}</InfoTextContainer>
+                          </InfoContainer>
+                          <InfoContainer>
+                            <IconContainer onClick={() => {
+                                toggleModal();
+                              }}><EmailIcon /></IconContainer>
+                            <InfoTextContainer>{connection.email}</InfoTextContainer>
+                          </InfoContainer>
+                        </MiniProfile>
+                      )
+                    })
+                ):(
+                  <div>
+                    <p style={{fontSize:"1rem", marginTop: "3rem", marginLeft: "1.25rem"}}>You don't have any connections yet. Click <strong>'Add Contact'</strong> to add your first connection!</p>
+                  </div>
+                )}
             </ConnectionListContainer>
 
             <Footer>
