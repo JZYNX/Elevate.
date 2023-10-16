@@ -665,75 +665,86 @@ function Dashboard() {
           <EventConnectionDisplay>
             <p style={{marginBottom: '0.75rem'}} className="descriptor">Upcoming Events</p>
             <ContentContainer>
-              <ul style={{ listStyleType: 'none', paddingLeft: 0, margin: 0}}>
-                {groupedUserEvents.map((eventList, index) => (
-                  <EventListContainer style={{marginBottom:'0.25rem'}} key={`list-${index}`}>
-                    <DateBox style={{color:'white', marginBottom:'0.25rem', fontWeight: 'bold', fontSize: '1rem'}}>{new Date(eventList[0].start).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</DateBox>
-                    {eventList.map((event) => (
-                      <li key={event.id}>
-                        <span style={{fontWeight: 'bold', paddingLeft: '0.25rem', paddingRight: '0.5rem'}}>
-                          {new Date(event.start).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}: {' '}
-                        </span>
-                        <span style={{ width: '40%', display: 'inline-block' }}>{event.title}</span>
-                      </li>
-                    ))}
-                  </EventListContainer>
-                ))}
-              </ul>
+              {groupedUserEvents && groupedUserEvents.length > 0 ? (
+                <ul style={{ listStyleType: 'none', paddingLeft: 0, margin: 0}}>
+                  {groupedUserEvents.map((eventList, index) => (
+                    <EventListContainer style={{marginBottom:'0.25rem'}} key={`list-${index}`}>
+                      <DateBox style={{color:'white', marginBottom:'0.25rem', fontWeight: 'bold', fontSize: '1rem'}}>{new Date(eventList[0].start).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</DateBox>
+                      {eventList.map((event) => (
+                        <li key={event.id}>
+                          <span style={{fontWeight: 'bold', paddingLeft: '0.25rem', paddingRight: '0.5rem'}}>
+                            {new Date(event.start).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}: {' '}
+                          </span>
+                          <span style={{ width: '40%', display: 'inline-block' }}>{event.title}</span>
+                        </li>
+                      ))}
+                    </EventListContainer>
+                  ))}
+                </ul>
+              ) : (
+                <div>
+                  <p style={{fontSize:"1rem", marginTop: "10rem", marginLeft: "6rem"}}>No upcoming events. Go to Calendar to add your first event!</p>
+                </div>
+              )}
             </ContentContainer>
           </EventConnectionDisplay>
           <EventConnectionDisplay>
             <p style={{marginBottom: '0.75rem'}} className="descriptor">New Connections</p>
             <ContentContainer>
-              <ul style={{ listStyleType: 'none', paddingLeft: 0, margin: 0}}>
-                {/* INCOMING CONNECTIONS */}
-                {
-                  incomingConnections.map((connection, index) => {
-                    return (
-                      <li key={`incoming-${index}`}>
-                      <IncomingConnection>
-                      {/* Display username of incoming connection */}
-                      <p className="connection-username">
-                        {connection.username ? (
-                          <span>
-                            <strong className={connection.username.length > 12 ? 'truncate-text' : ''}>
-                              {connection.username.length > 10 ? connection.username.slice(0, 10) + '.. ' : connection.username + ' '}
-                            </strong>
-                            wants to connect with you. Accept the invite?
-                          </span>
-                        ) : (
-                          'Unknown user wants to connect with you. Accept the invite?'
-                        )}
-                      </p>
-                      {/* Accept invite */}
-                      <button onClick={() => acceptInvite(connection)} style={{ fontSize: "8px" }}>
-                        <CheckCircleIcon 
-                          style={{
-                            width: '36px',
-                            height: '36px',
-                            backgroundColor: 'transparent',
-                            color: 'green',
-                            borderRadius: '50%',
-                            display: 'block', 
-                        }}/>
-                      </button>
-                      {/* Reject invite */}
-                      <button onClick={() => rejectInvite(connection)} style={{ fontSize: "8px" }}>
-                        <CancelIcon 
-                          style={{
-                            width: '36px',
-                            height: '36px',
-                            backgroundColor: 'transparent',
-                            color: 'red',
-                            borderRadius: '50%',
-                            display: 'block', 
-                        }}/>
-                      </button>
-                      </IncomingConnection>
-                    </li>
-                    )
-                  })}
-              </ul>
+              {incomingConnections && incomingConnections.length.length > 0 ? (
+                <ul style={{ listStyleType: 'none', paddingLeft: 0, margin: 0}}>
+                  {
+                    incomingConnections.map((connection, index) => {
+                      return (
+                        <li key={`incoming-${index}`}>
+                        <IncomingConnection>
+                        {/* Display username of incoming connection */}
+                        <p className="connection-username">
+                          {connection.username ? (
+                            <span>
+                              <strong className={connection.username.length > 12 ? 'truncate-text' : ''}>
+                                {connection.username.length > 10 ? connection.username.slice(0, 10) + '.. ' : connection.username + ' '}
+                              </strong>
+                              wants to connect with you. Accept the invite?
+                            </span>
+                          ) : (
+                            'Unknown user wants to connect with you. Accept the invite?'
+                          )}
+                        </p>
+                        {/* Accept invite */}
+                        <button onClick={() => acceptInvite(connection)} style={{ fontSize: "8px" }}>
+                          <CheckCircleIcon 
+                            style={{
+                              width: '36px',
+                              height: '36px',
+                              backgroundColor: 'transparent',
+                              color: 'green',
+                              borderRadius: '50%',
+                              display: 'block', 
+                          }}/>
+                        </button>
+                        {/* Reject invite */}
+                        <button onClick={() => rejectInvite(connection)} style={{ fontSize: "8px" }}>
+                          <CancelIcon 
+                            style={{
+                              width: '36px',
+                              height: '36px',
+                              backgroundColor: 'transparent',
+                              color: 'red',
+                              borderRadius: '50%',
+                              display: 'block', 
+                          }}/>
+                        </button>
+                        </IncomingConnection>
+                      </li>
+                      )
+                    })}
+                </ul>
+              ) : (
+                <div>
+                  <p style={{fontSize:"1rem", marginTop: "10rem", marginLeft: "8rem"}}>You don't have any incoming connection requests!</p>
+                </div>
+              )}
             </ContentContainer>
           </EventConnectionDisplay>
         </SocialsBox>
@@ -755,7 +766,9 @@ function Dashboard() {
                 </div>
               ))
             ) : (
-              <p>No notes available</p>
+              <div>
+                <p style={{fontSize:"1rem", marginLeft: "36rem", marginTop: "2rem"}}>Click <strong>'Add Note'</strong> to create your first note! </p>
+              </div>
             )}
         </NotesList>
 
