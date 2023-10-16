@@ -121,8 +121,8 @@ const SubProfileItem = styled.div`
     letter-spacing: 0.01em;
     color: #0A0072;
     font-weight: normal;
-    margin: 0rem 0.5rem 0.5rem 0.5rem;
-
+    margin: 0rem 0.5rem 1rem 0.5rem;
+    margin-top: 0.5rem;
     &:hover {
       text-decoration: underline;
     }
@@ -175,11 +175,6 @@ function Sidebar({userName}) {
               </ProfileHeader>
               {showProfileDropDown ? (
                 <SubProfileContainer>
-                  <SubProfileItem 
-                    className='view-profile'
-                    onClick={() => handleNavigation(`/profile?username=${userName}`)}
-                    >View Profile
-                  </SubProfileItem>
                   <SubProfileItem 
                     className='edit-profile'
                     onClick={() => handleNavigation(`/edit-profile?username=${userName}`)} 

@@ -7,7 +7,6 @@ import Register from "./pages/Register"
 import Calendar from "./pages/Calendar"
 import Connections from "./pages/Connections"
 import EditProfile from "./pages/EditProfile"
-import Profile from "./pages/Profile"
 import Forget from "./pages/Forget"
 import OTPInput from "./pages/OTPInput"
 import Reset from "./pages/Reset"
@@ -22,7 +21,6 @@ export default function App() {
       <Route path = "/calendar" element = {<Calendar />} />
       <Route path = "/connections" element = {<Connections />} />
       <Route path = "/edit-profile" element = {<EditProfile />} />
-      <Route path = "/profile" element = {<Profile />} />
       <Route path = "/forget" element = {<Forget />} />
       <Route path = "/sendOTP" element = {<OTPInput />} />
       <Route path = "/reset" element = {<Reset />} />

@@ -109,6 +109,7 @@ const ProfilePicContainer = styled.div`
   border-radius: 50%; 
   border: 1px solid #ddd;
   overflow: hidden;
+  margin-bottom: 2rem;
 `;
 
 const ProfilePicImage = styled.img`
@@ -146,7 +147,7 @@ const ButtonGroup = styled.div`
 
 const ProfileButton = styled.button`
   width: 100%;
-  margin-top: 8px;
+  margin-top: 1rem;
   margin-bottom: 8px;
   background-color: ${secondaryColor};
   padding-top: 0.3rem;
@@ -382,7 +383,6 @@ function EditProfile() {
               ) : null}
               {isEditMode ? (
                 <>
-                  <ProfileButton>Change Password</ProfileButton>
                   <ProfileButton onClick={handleSaveChanges}>
                     Save Changes
                   </ProfileButton>
