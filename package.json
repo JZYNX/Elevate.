@@ -6,7 +6,7 @@
   },
   "scripts": {
     "test": "jest",
-    "start-dev": "concurrently \"npm run install:server\" \"npm run install:client --force\" \"npm run server\" \"npm run client\"",
+    "start-dev": "npm install && concurrently \"npm run install:server\" \"npm run install:client --force\" \"npm run server\" \"npm run client\"",
     "install:server": "cd server && npm install",
     "install:client": "cd crm && npm install",
     "server": "cd server && npm run devStart",
