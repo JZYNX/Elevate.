@@ -177,7 +177,7 @@ export default function ChatContainer({ currentChat, currentUser , socket}) {
       
     // Scroll to the latest message when the message list changes
     useEffect(() => {
-        scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+        scrollRef.current?.scrollIntoView({ behavior: "instant" });
     }, [messages]);
 
     // Render the chat container
