@@ -7,6 +7,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import avatars from "../assets/Avatar.png";
+import { primaryColor, secondaryColor } from '../utils/Color';
 
 const Avatars = styled.img`
   width: 15%;
