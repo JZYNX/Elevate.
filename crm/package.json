@@ -35,7 +35,8 @@
     "uuid": "^9.0.1"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "serve -s build",
+    "prestart": "npm install -g server",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
