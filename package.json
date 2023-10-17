@@ -5,18 +5,10 @@
   },
   "scripts": {
     "test": "jest",
-    "build": "npm run build:client && npm run build:server && npm run postbuild:client && npm run postbuild:server",
-    "build:client": "cd crm && npm run build",
-    "build:server": "cd server && npm run build",
-    "postbuild:client": "xcopy /s /e /i /h crm/build build",
-    "postbuild:server": "xcopy /s /e /i /h server/build build",
     "start-dev": "npm install && concurrently \"npm run install:server\" \"npm run install:client --force\" \"npm run server\" \"npm run client\"",
-    "start-prod": "npm run install:server && npm run install:client --force && npm run server && npm run client",
-    "prod": "npm run prod-server && npm run client",
     "install:server": "cd server && npm install",
     "install:client": "cd crm && npm install",
     "server": "cd server && npm run devStart",
-    "prod-server": "cd server && npm run prodStart",
     "client": "cd crm && npm start"
   },
   "dependencies": {

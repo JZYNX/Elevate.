@@ -21,13 +21,14 @@ jobs:
           node-version: "18.13.0"
         
       - name: Install
-        run:
+        run:  | 
+          cd crm
           npm ci
           npm run build
       
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: build
+          folder: crm/build
           branch: gh-pages
 
