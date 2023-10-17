@@ -23,7 +23,7 @@ jobs:
       - name: Install
         run:  | 
           cd crm
-          npm ci
+          npm ci --force
           npm run build
       
       - name: Deploy
