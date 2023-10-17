@@ -3,7 +3,7 @@ services:
     type: web
     buildCommand: cd server && npm install
     startCommand: cd server && npm run prod-server
-    env:
+    envVars:
       - key: NODE_ENV
         value: v18.13.0
 
@@ -11,14 +11,8 @@ services:
     type: web
     buildCommand: cd crm && npm install --force
     startCommand: cd crm && npm start
-    env:
+    envVars:
       - key: NODE_ENV
         value: v18.13.0
 
 buildCommand: npm install
-
-routes:
-  - path: /api
-    service: server
-  - path: /
-    service: client
