@@ -15,4 +15,3 @@ services:
       - key: NODE_ENV
         value: v18.13.0
 
-buildCommand: npm install
