@@ -5,7 +5,7 @@ services:
     startCommand: cd server && npm run prod-server
     env:
       - key: NODE_ENV
-        value: production
+        value: v18.13.0
 
   - name: client
     type: web
@@ -13,7 +13,7 @@ services:
     startCommand: cd crm && npm start
     env:
       - key: NODE_ENV
-        value: production
+        value: v18.13.0
 
 buildCommand: npm install
 
