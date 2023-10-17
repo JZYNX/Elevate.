@@ -1,6 +1,7 @@
 services:
   - name: server
     type: web
+    runtime: node
     buildCommand: cd server && npm install
     startCommand: cd server && npm run prod-server
     envVars:
@@ -9,6 +10,7 @@ services:
 
   - name: client
     type: web
+    runtime: node
     buildCommand: cd crm && npm install --force
     startCommand: cd crm && npm start
     envVars:
