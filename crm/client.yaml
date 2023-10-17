@@ -1,5 +1,4 @@
 runtime: nodejs18
-env: flex
 service: default
 handlers:
   - url: /

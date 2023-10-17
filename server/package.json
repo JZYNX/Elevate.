@@ -16,12 +16,12 @@
     "socket.io": "^4.7.2"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "serve -s build",
+    "prestart": "npm install -g serve",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "devStart": "nodemon server.js",
-    "prodStart": "node server.js"
   },
   "eslintConfig": {
     "extends": [
