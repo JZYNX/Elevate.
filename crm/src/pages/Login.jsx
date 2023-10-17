@@ -208,14 +208,19 @@ function Login() {
   // Function to handle user login
   const handleLogin = async () => {
     const { username, password } = credentials;
-    if (await userExists(username, password)) {
-      // document.cookie = `username=${username}; expires=${expirationDate.toUTCString()}; path=/`;
-      // navigate('/profile');
-      const profileURL = `/dashboard?username=${username}`;
-      window.location.href = profileURL;
-    } else {
-      toast.error('Login failed. Please check your credentials.');
-    }
+    userExists(username, password)
+    .then((userExists) => {
+      if (userExists) {
+        const profileURL = `/dashboard?username=${username}`;
+        window.location.href = profileURL;
+      } else {
+        toast.error('Login failed. Please check your credentials.');
+      }
+    })
+    .catch((error) => {
+      console.error('An error occurred:', error);
+      toast.error('Login failed due to an error. Please try again later.');
+    });
   };
 
    // Function to handle Enter key press for login
