@@ -7,10 +7,11 @@
     "test": "jest",
     "start-dev": "npm install && concurrently \"npm run install:server\" \"npm run install:client --force\" \"npm run server\" \"npm run client\"",
     "start-prod": "npm run install:server && npm run install:client --force && npm run server && npm run client",
-    "prod": "npm run server && npm run client",
+    "prod": "npm run prod-server && npm run client",
     "install:server": "cd server && npm install",
     "install:client": "cd crm && npm install",
     "server": "cd server && npm run devStart",
+    "prod-server": "cd server && npm run prodStart",
     "client": "cd crm && npm start"
   },
   "dependencies": {
