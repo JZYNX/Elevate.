@@ -1,5 +1,6 @@
 services:
   - name: server
+    type: web
     buildCommand: cd server && npm install
     startCommand: cd server && npm run prod-server
     env:
@@ -7,6 +8,7 @@ services:
         value: production
 
   - name: client
+    type: web
     buildCommand: cd crm && npm install --force
     startCommand: cd crm && npm start
     env:
