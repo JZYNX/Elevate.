@@ -1,4 +1,4 @@
-runtime: node
+runtime: nodejs18
 service: default
 handlers:
     # Serve all static files with urls ending with a file extension
