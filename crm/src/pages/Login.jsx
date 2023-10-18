@@ -271,15 +271,10 @@ function Login() {
   
         const users = await response.json();
         const matchingUser = users.find((user) => user.username === username );
-        const matchingEmail = users.find((user) => user.email === email);
   
         if (matchingUser) {
-          toast.error("Username exists, please use another username.")
           return true;
-        } else if (matchingEmail) {
-          toast.error("Email exists, please use another Email.")
-          return true;
-        }
+        } 
         return false;
   
       } catch (err) {
