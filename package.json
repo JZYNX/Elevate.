@@ -9,7 +9,7 @@
     "install:server": "cd server && npm install",
     "install:client": "cd crm && npm install",
     "server": "cd server && npm run devStart",
-    "client": "cd crm && npm start"
+    "client": "cd crm && npm run local"
   },
   "dependencies": {
     "axios": "^1.5.1",

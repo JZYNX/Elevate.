@@ -9,7 +9,6 @@ import linkedinIcon from '../assets/linkedin.png';
 import avatars from "../assets/Avatar.png";
 import { primaryColor, secondaryColor }from '../utils/Color';
 import { toast, ToastContainer } from 'react-toastify';
-import { GoogleLogin } from 'react-google-login';
 import { gapi } from "gapi-script";
 import { useLinkedIn } from 'react-linkedin-login-oauth2';
 import linkedin from 'react-linkedin-login-oauth2/assets/linkedin.png';
@@ -208,6 +207,7 @@ function Login() {
   // Function to handle user login
   const handleLogin = async () => {
     const { username, password } = credentials;
+    console.log(process.env.PORT);
     userExists(username, password)
     .then((userExists) => {
       if (userExists) {
@@ -383,7 +383,7 @@ function Login() {
           <hr className="separator-line" />
         </div>
         <OtherLoginOptions>
-          <GoogleLogin
+          {/* <GoogleLogin
             clientId="718066585548-9c25n26k4ci4do8f3mh45stub0s4de0u.apps.googleusercontent.com"
             buttonText="Login with Google"
             onSuccess={handleGoogleLoginSuccess}
@@ -393,7 +393,10 @@ function Login() {
                 <Icon src={googleIcon} alt="Google" onClick={renderProps.onClick}/>
               </IconOnlyButton>
             )}
-          />
+          /> */}
+          <IconOnlyButton>
+              <Icon src={googleIcon} alt="Google"/>
+            </IconOnlyButton>
           <IconOnlyButton>
             <Icon src={fbIcon} alt="Facebook" />
           </IconOnlyButton>

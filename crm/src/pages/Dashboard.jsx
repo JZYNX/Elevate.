@@ -683,7 +683,7 @@ function Dashboard() {
                 </ul>
               ) : (
                 <div>
-                  <p style={{fontSize:"1rem", marginTop: "10rem", marginLeft: "6rem"}}>No upcoming events. Go to Calendar to add your first event!</p>
+                  <p style={{fontSize:"1rem", position: "relative" }}>No upcoming events. Go to Calendar to add your first event!</p>
                 </div>
               )}
             </ContentContainer>
@@ -742,7 +742,7 @@ function Dashboard() {
                 </ul>
               ) : (
                 <div>
-                  <p style={{fontSize:"1rem", marginTop: "10rem", marginLeft: "8rem"}}>You don't have any incoming connection requests!</p>
+                  <p style={{fontSize:"1rem", position: "relative" }}>You don't have any incoming connection requests!</p>
                 </div>
               )}
             </ContentContainer>
@@ -767,7 +767,7 @@ function Dashboard() {
               ))
             ) : (
               <div>
-                <p style={{fontSize:"1rem", marginLeft: "36rem", marginTop: "2rem"}}>Click <strong>'Add Note'</strong> to create your first note! </p>
+                <p style={{fontSize:"1rem", position: "relative" }}>Click <strong>'Add Note'</strong> to create your first note! </p>
               </div>
             )}
         </NotesList>

@@ -1,0 +1,7 @@
+runtime: nodejs18
+service: backend
+
+handlers:
+- url: /.*
+  script: auto
+  secure: always   
