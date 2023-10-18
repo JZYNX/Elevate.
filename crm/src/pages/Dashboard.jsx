@@ -638,9 +638,16 @@ function Dashboard() {
     deletePendingConnection(connection.username);
   }
 
+  const handleEnterKeyPress = async (searchValue) => {
+    // You can do something with the searchValue here
+    // Not yet implemented
+};
+
   return (
     <DashboardContainer>
-      <SearchBar />
+      <SearchBar 
+        onEnterKeyPress={handleEnterKeyPress} 
+      />
       <BackgroundImage src={bgImg} alt="bgImg" />
       <ToastContainer position="bottom-right" autoClose={3000} hideProgressBar />
       <SidebarColumn>

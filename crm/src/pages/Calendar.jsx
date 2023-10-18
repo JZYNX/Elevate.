@@ -262,7 +262,6 @@ function Calendar() {
     return (
         <CalendarContainer>
             <BackgroundImage src={bgImg} alt="bgImg" />
-            <SearchBar right="5rem"/>
             <ToastContainer position="bottom-right" autoClose={3000} hideProgressBar />
             <SidebarColumn>
                 <Sidebar userName={storedUsername}/>
