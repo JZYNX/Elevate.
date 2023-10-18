@@ -442,7 +442,7 @@ function Dashboard() {
 
   const fetchPendingConnections = async () => {
     try{
-      const response = await fetch(`users/connections/${userName}/getAllPendingConnections`);
+      const response = await fetch(`/users/connections/${userName}/getAllPendingConnections`);
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }

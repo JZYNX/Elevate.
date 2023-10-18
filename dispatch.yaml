@@ -2,3 +2,6 @@ dispatch:
 # Send all api traffic to the backend service.
   - url: "*/users*"
     service: backend
+
+  - url: "*/api/messages*"
+    service: backend
