@@ -404,7 +404,7 @@ function Dashboard() {
         // Handle error here
       });
   }, [userName]);
-  
+
   const fetchUserConnectionCount = async () => {
     await fetch(`/users/${userName}/connection-count`)
       .then((response) => {
@@ -426,6 +426,7 @@ function Dashboard() {
     // Make an API request to fetch the connection count
     fetchUserConnectionCount();
   }, [userName]);
+
 
   const fetchUserNotes = async () => {
     try {
@@ -697,7 +698,7 @@ function Dashboard() {
           <EventConnectionDisplay>
             <p style={{marginBottom: '0.75rem'}} className="descriptor">New Connections</p>
             <ContentContainer>
-              {incomingConnections && incomingConnections.length.length > 0 ? (
+              {incomingConnections && incomingConnections.length > 0 ? (
                 <ul style={{ listStyleType: 'none', paddingLeft: 0, margin: 0}}>
                   {
                     incomingConnections.map((connection, index) => {
