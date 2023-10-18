@@ -1,2 +1,2 @@
 runtime: nodejs18
-service: server
+service: api
