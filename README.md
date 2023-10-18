@@ -29,9 +29,10 @@
 - password: SokStinky69
 
 # Continuous Deployment
-- deployed using Render
-- https://render.com/
+- deployed using Google Cloud (App Engine)
+- https://cloud.google.com/?hl=en
 - Node version for build: v18.13.0
+- Implemented using Microservices and Dispatch files (API)
 
 # React Dependencies/Components
 - React date time picker
