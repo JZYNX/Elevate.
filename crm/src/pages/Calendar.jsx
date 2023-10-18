@@ -7,11 +7,10 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
 import CalendarPopup from '../components/CalendarPopup';
-import { defaultEventColor, primaryColor, secondaryColor, buttonColor, textColor } from "../utils/Color";
+import { buttonColor, textColor } from "../utils/Color";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import "../styles/calendar.css";
-import SearchBar from '../components/SearchBar';
 import bgImg from '../assets/nikuubg.jpg'
 
 const BackgroundImage = styled.img`

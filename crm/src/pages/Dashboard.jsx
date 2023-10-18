@@ -359,32 +359,8 @@ function Dashboard() {
         // Handle error here
       });
   }, [userName]);
+
   
-  const fetchUserConnectionCount = async () => {
-    await fetch(`/users/${userName}/connection-count`)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setConnectionCount(data.connectionCount);
-      })
-      .catch((error) => {
-        console.error('Error fetching event count:', error);
-        // Handle error here
-      });
-  };
-  
-
-
-  useEffect(() => {
-    // Make an API request to fetch the connection count
-    fetchUserConnectionCount();
-  }, [userName]);
-
-
   useEffect(() => {
     // Make an API request to fetch the user events
     fetch(`/users/${userName}/userEvents`)
@@ -396,6 +372,7 @@ function Dashboard() {
       })
       .then((data) => {
         setUserEvents(data.userEvents);
+        console.log(userEvents);
         // Group events by start date
         const eventsByDate = {};
 
@@ -426,6 +403,28 @@ function Dashboard() {
         console.error('Error fetching event count:', error);
         // Handle error here
       });
+  }, [userName]);
+  
+  const fetchUserConnectionCount = async () => {
+    await fetch(`/users/${userName}/connection-count`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setConnectionCount(data.connectionCount);
+      })
+      .catch((error) => {
+        console.error('Error fetching event count:', error);
+        // Handle error here
+      });
+  };
+
+  useEffect(() => {
+    // Make an API request to fetch the connection count
+    fetchUserConnectionCount();
   }, [userName]);
 
   const fetchUserNotes = async () => {
