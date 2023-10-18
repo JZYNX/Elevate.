@@ -1,5 +1,4 @@
 dispatch:
-  - url: "*/users/*"
-    service: api
-  - url: "*/api/*"
-    service: api
+# Send all api traffic to the backend service.
+  - url: "*/users*"
+    service: backend

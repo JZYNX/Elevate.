@@ -207,6 +207,7 @@ function Login() {
   // Function to handle user login
   const handleLogin = async () => {
     const { username, password } = credentials;
+    console.log(process.env.PORT);
     userExists(username, password)
     .then((userExists) => {
       if (userExists) {

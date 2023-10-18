@@ -8,9 +8,3 @@ handlers:
   - url: /(.*)
     static_files: build/\1
     upload: build/(.*)
-
-dispatch:
-  - url: "*/users/*"
-    service: api
-  - url: "*/api/*"
-    service: api
