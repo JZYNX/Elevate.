@@ -328,6 +328,23 @@ const getUserEvents = async (req, res) => {
   }
 };
 
+// function for getting user-email
+const getUserEmail = async (req, res) => {
+  try {
+    const { username } = req.params;
+    const user = await User.findOne({username});
+
+    if (!user){
+      return res.status(404).json({ error: 'User not found '  }); 
+    }
+    const userEmail = user.email;
+    res.status(200).json({ userEmail })
+  } catch (error) {
+    console.error('Error getting user email: ', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+}
+
 const makeNote = async (req,res)=>{
   try{
     const {username} = req.params;
@@ -475,6 +492,7 @@ module.exports = {
     getOneUserByUsername,
     getEventCount,
     getUserEvents,
+    getUserEmail,
     makeNote,
     getAllNotes,
     updateNote,

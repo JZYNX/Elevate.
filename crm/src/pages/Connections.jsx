@@ -233,12 +233,15 @@ function Connections() {
     const storedUsername = urlParams.get('username');  
     const [currentSelected, setCurrentSelected] = useState(null);
     const [showEmailPopup, setShowEmailPopup] = useState(false);
+    const [userEmail, setUserEmail] = useState(null);
     const [showAddPopup, setShowAddPopup] = useState(false);
     const [connections, setConnections] = useState([]);
     const [searchedConnections, setSearchConnections] = useState([]);
     const [sortOption, setSortOption] = useState(null);
     const [arrowUp, setArrowUp] = useState(true);
     const [userDates, setUserDates] = useState([]);
+    const [recipientEmail, setRecipientEmail] = useState(null);
+    const [recipientName, setRecipientName] = useState(null);
 
     const sortOptions = [
       { value: 'last-name', label: 'Last-name' },
@@ -263,7 +266,21 @@ function Connections() {
       }
     };
 
+    const fetchUserEmail = async () => {
+      try {
+        const response = await fetch(`/users/${storedUsername}/getEmail`);
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        setUserEmail(data.userEmail);
+      } catch (error) {
+        console.error('Error fetching user email:', error);
+      }
+    }
+
     useEffect(() => {
+      fetchUserEmail();
       fetchUserConnections();
     }, [storedUsername]);
 
@@ -443,8 +460,6 @@ function Connections() {
       }
     };
     
-    
-    
     const fetchUserDates = async (username) => {
       try {
         const response = await fetch(`/users/connections/${username}/getAllDates`);
@@ -589,7 +604,9 @@ function Connections() {
                           </InfoContainer>
                           <InfoContainer>
                             <IconContainer onClick={() => {
-                                toggleModal();
+                                toggleModal(); 
+                                setRecipientEmail(connection.email);
+                                setRecipientName(connection.firstName);
                               }}><EmailIcon /></IconContainer>
                             <InfoTextContainer>{connection.email}</InfoTextContainer>
                           </InfoContainer>
@@ -616,7 +633,7 @@ function Connections() {
               </StyledArrowButton>
             </Footer>
           {
-            showEmailPopup ? <Email onToggle={toggleModal} showEmailPopup={showEmailPopup}/> : null
+            showEmailPopup ? <Email onToggle={toggleModal} showEmailPopup={showEmailPopup} userEmail={userEmail} recipientEmail={recipientEmail} recipientName={recipientName} currUser={storedUsername}/> : null
           }
           {
             showAddPopup ? <AddConnection onToggle={toggleAddModal} showAddPopup = {showAddPopup} /> : null

@@ -47,6 +47,7 @@ const {
     getOneUserByUsername,
     getEventCount,
     getUserEvents,
+    getUserEmail,
     makeNote,
     getAllNotes,
     updateNote,
@@ -90,6 +91,9 @@ router.get('/:username/event-count',getEventCount);
 
 //find user and get user events
 router.get('/:username/userEvents',getUserEvents);
+
+//find user and get user email
+router.get('/:username/getEmail', getUserEmail);
 
 //create note for user
 router.post('/:username/notes', makeNote);

@@ -1,8 +1,9 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import emailjs from '@emailjs/browser';
 import styled from 'styled-components';
 import Modal from 'react-modal';
 import { secondaryColor } from '../utils/Color';
+import { toast } from 'react-toastify';
 
 Modal.setAppElement('#root'); // Set the app root element for accessibility
 
@@ -36,7 +37,7 @@ const CloseButton = styled.button`
 
 const StyledForm = styled.form`
   width: 100%;
-  max-width: 500px;
+  max-width: 600px;
   display: flex;
   flex-direction: column;
   background-color: white;
@@ -59,14 +60,14 @@ const Input = styled.input`
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  font-size: 16px;
+  font-size: 14px;
 `;
 
 const Textarea = styled.textarea`
   width: 100%;
   height: 150px;
-  min-width: 458px;
-  max-width: 458px;
+  min-width: 560px;
+  max-width: 560px;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -90,8 +91,9 @@ const SubmitButton = styled.button`
     }
 `;
 
-export default function Email({ onToggle, showEmailPopup }) {
+export default function Email({ onToggle, showEmailPopup, userEmail, recipientEmail, recipientName, currUser }) {
   const form = useRef();
+  const [message, setMessage] = useState("");
 
   const customStyles = {
     content: {
@@ -112,16 +114,20 @@ export default function Email({ onToggle, showEmailPopup }) {
 
   const sendEmail = (e) => {
     e.preventDefault();
+    console.log(currUser);
 
-    emailjs
-      .sendForm('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', form.current, 'YOUR_USER_ID') // Replace with your actual IDs
-      .then((result) => {
+    emailjs.send("service_ngmfx3r","template_51jgncq",{
+      from_name: currUser || "Elevate User",
+      to_name: recipientName || "",
+      message: message || `Email was not delivered properly. Please reach out to ${currUser}.`,
+      reply_to: userEmail || "",
+      }, "m0UYha0uoe8x8bWWK").then((result) => {
         console.log(result.text);
-        closeModal(); // Close the modal after sending the email
+        toast.success("Email sent successfully.");
+        closeModal(); 
+      }).catch((error) => {
+        console.error(error.text)
       })
-      .catch((error) => {
-        console.error(error.text);
-      });
   };
 
   return (
@@ -130,7 +136,7 @@ export default function Email({ onToggle, showEmailPopup }) {
       onRequestClose={closeModal}
       contentLabel="Email Modal"
       style={customStyles}
-    >
+    > 
       <ModalWrapper>
         <ModalHeader>
           Email Form
@@ -139,15 +145,15 @@ export default function Email({ onToggle, showEmailPopup }) {
         <StyledForm ref={form} onSubmit={sendEmail}>
           <FormField>
             <Label>From:</Label>
-            <Input type="text" name="user_name" placeholder="Your Name" required />
+            <Input type="text" name="user_email" placeholder= "User Email" value = {userEmail || ""} required />
           </FormField>
           <FormField>
             <Label>To:</Label>
-            <Input type="email" name="destination_email" placeholder="Recipient Email" required />
+            <Input type="email" name="destination_email" placeholder="Recipient Email" value = {recipientEmail || ""} required />
           </FormField>
           <FormField>
             <Label>Message:</Label>
-            <Textarea name="message" placeholder="Your Message" required />
+            <Textarea name="message" placeholder="Your Message" value = {message} onChange={(e) => {setMessage(e.target.value)}}required />
           </FormField>
           <SubmitButton type="submit">Send</SubmitButton>
         </StyledForm>
