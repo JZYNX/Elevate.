@@ -1,5 +1,5 @@
 const request = require('supertest');
-const app = require('../server/Server');
+const app = require('../server/server');
 const User = require('../server/models/userModel'); 
 require('dotenv').config({ path: require('find-config')('.env') })
 
