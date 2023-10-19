@@ -68,13 +68,9 @@ const getOneUserByUsername = async (req, res) => {
 const createUser = async (req, res) => {
     const {username, password, email} = req.body
 
-    // check if password contains a specific substring  
-    const substring = "sok";
-    const lowercasePassword = password.toLowerCase();
-    const lowercaseSubstring = substring.toLowerCase();
-
-    if (lowercasePassword.includes(lowercaseSubstring)) {
-        return res.status(400).json({ message: "Password contains " + substring})
+    //check password length is ok
+    if (password.length < global.PASSWORD_MIN_LENGTH || password.length > global.PASSWORD_MAX_LENGTH) {
+      return res.status(400).json({ message: "please make sure the password is between " + global.PASSWORD_MIN_LENGTH + " and " + global.PASSWORD_MAX_LENGTH + " characters!"})
     }
 
     try {
@@ -106,6 +102,7 @@ const createUser = async (req, res) => {
  */
 const userExists = async (req, res) => {
   const { username, password } = req.body;
+  console.log("user: "+ username + "password: " + password);
 
   try {
     // Check if the user exists in the database
@@ -113,6 +110,11 @@ const userExists = async (req, res) => {
 
     if (!user) {
       return res.status(401).json({ message: 'User not found' });
+    }
+
+    // Check whether the given password matches the actual password
+    if (user.password !== password) {
+      return res.status(401).json({ message: "Incorrect password"});
     }
 
     // Authentication is successful

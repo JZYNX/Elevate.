@@ -3,48 +3,70 @@ const app = require('../server/Server');
 const User = require('../server/models/userModel'); 
 require('dotenv').config({ path: require('find-config')('.env') })
 
-// Create a test user
-const testUser = {
+const validTestUser = {
   username: 'testuser',
   password: 'testpassword123',
   email: 'test@testing.com'
 };
 
+const nonexistentUser = {
+  username: 'nonexistentuser',
+  password: 'randompassword123',
+  email: 'nontest@testing.com'
+}
+
+// Create a validTestUser in the database
 beforeAll(async () => {
-  await User.create(testUser);
+  await User.create(validTestUser);
 });
 
 afterAll(async () => {
   await app.close();
-  await User.deleteOne({ username: testUser.username });
+  await User.deleteOne({ username: validTestUser.username });
 });
 
 describe('User Authentication', () => {
-  it('should allow a registered user to log in', async () => {
-    // Create a test user in the database (if needed)
-
-    // Send a POST request to the login endpoint with the test user's credentials
+  it('should return 200 response for existing user', async () => {
+    // Send a POST request to the user endpoint with the test user's credentials
     const response = await request(app) 
       .post('/users/userExists') 
       .send({
-        username: testUser.username,
-        password: testUser.password,
+        username: validTestUser.username,
+        password: validTestUser.password,
       });
 
-    // Expect a 200 OK response indicating successful login
     expect(response.status).toBe(200);
   });
 
-  it('should reject login for an invalid user', async () => {
-    // Send a POST request to the login endpoint with invalid credentials
+  it('should return 401 response for nonexisting user', async () => {
+    // Send a POST request to the user endpoint with invalid credentials
     const response = await request(app) 
       .post('/users/userExists') 
       .send({
-        username: 'nonexistentuser',
-        password: 'invalidpassword',
+        username: nonexistentUser.username,
+        password: nonexistentUser.password,
       });
 
-    // Expect a 401 Unauthorized or other relevant status code
     expect(response.status).toBe(401);
   });
+
+  it ('should return 401 response for existing user with incorrect password', async () => {
+    // Send a POST request to the user endpoint with incorrect password
+    const response = await request(app)
+      .post('/users/userExists')
+      .send({
+        username: validTestUser.username,
+        password: nonexistentUser.password,
+      });
+    
+    expect(response.status).toBe(401);
+  });
+
+  it ('should get all users in the database', async () => {
+    // Send a GET request to the user endpoint
+    const response = await request(app).get('/users');
+    
+    expect(response.status).toBe(200);
+  });
+
 });
