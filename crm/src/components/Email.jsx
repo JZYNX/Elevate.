@@ -119,6 +119,7 @@ export default function Email({ onToggle, showEmailPopup, userEmail, recipientEm
     emailjs.send("service_ngmfx3r","template_51jgncq",{
       from_name: currUser || "Elevate User",
       to_name: recipientName || "",
+      to_email: recipientEmail || "",
       message: message || `Email was not delivered properly. Please reach out to ${currUser}.`,
       reply_to: userEmail || "",
       }, "m0UYha0uoe8x8bWWK").then((result) => {
