@@ -7,7 +7,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
 import CalendarPopup from '../components/CalendarPopup';
-import { buttonColor, textColor } from "../utils/Color";
+import { buttonColor, secondaryColor, textColor } from "../utils/Color";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import "../styles/calendar.css";
@@ -26,7 +26,8 @@ const CalendarContainer = styled.div`
     display: flex;
     height: 100vh;
     width: 100vw;
-    background-color:rgba(0, 0, 0, 0.15);
+    // background-color:rgba(0, 0, 0, 0.15);
+    background-color:rgba(255, 255, 255, 1);
 `;
 
 const SidebarColumn = styled.div`
@@ -260,7 +261,7 @@ function Calendar() {
 
     return (
         <CalendarContainer>
-            <BackgroundImage src={bgImg} alt="bgImg" />
+            {/* <BackgroundImage src={bgImg} alt="bgImg" /> */}
             <ToastContainer position="bottom-right" autoClose={3000} hideProgressBar />
             <SidebarColumn>
                 <Sidebar userName={storedUsername}/>
