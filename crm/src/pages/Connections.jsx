@@ -31,7 +31,8 @@ const ConnectionsContainer = styled.div`
   height: 100vh;
   width: 100vw;
   overflow: hidden;
-  background-color: rgba(0, 0, 0, 0.1);
+  // background-color: rgba(0, 0, 0, 0.1);
+  background-color: white;
 `;
 
 const SidebarColumn = styled.div`
@@ -134,7 +135,10 @@ const MiniProfile = styled.div`
   background-color: white;
   border-radius: 1rem;
   margin: 0rem 0.5%;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  // box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.8);
+  -webkit-box-shadow:0 0 20px rgba(0,0,0,0.2); 
+  -moz-box-shadow: 0 0 20px rgba(0,0,0,0.2); 
+  box-shadow: 0 0 10px 2px rgba(0,0,0,0.2);
 
 `
 
@@ -481,7 +485,7 @@ function Connections() {
     return (
       <ConnectionsContainer>
           <ToastContainer position="bottom-right" autoClose={3000} hideProgressBar />
-          <BackgroundImage src={bgImg} alt="bgImg" />
+          {/* <BackgroundImage src={bgImg} alt="bgImg" /> */}
           <SearchBar 
             onEnterKeyPress={handleEnterKeyPress} 
           />
@@ -530,16 +534,16 @@ function Connections() {
                 <ArrowUpwardIcon
                   className='arrow-icon'
                   onClick={changeArrow}
-                  style={{ color: arrowUp ? secondaryColor : 'lightgray', cursor: 'pointer' }}
+                  style={{ color: arrowUp ? secondaryColor : 'white', cursor: 'pointer' }}
                 />
                 <ArrowDownwardIcon
                   className='arrow-icon'
                   onClick={changeArrow}
-                  style={{ color: arrowUp ? 'lightgray' : secondaryColor, cursor: 'pointer' }}
+                  style={{ color: arrowUp ? 'white' : secondaryColor, cursor: 'pointer' }}
                 />
               </SortOrderContainer>
               <AddButtonContainer>
-                <StyledButton onClick={resetConnections}>Show All Connections</StyledButton>
+                <StyledButton onClick={resetConnections} style={{marginRight: "1rem"}}>Show All Connections</StyledButton>
                 <StyledButton onClick={() => {
                   toggleAddModal()
                 }}

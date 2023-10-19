@@ -282,7 +282,7 @@ function EditProfile() {
       <SidebarColumn>
         <Sidebar userName = {storedUsername}/>
       </SidebarColumn>
-        <BackgroundImage src={bgImg} alt="bgImg" />
+        {/* <BackgroundImage src={bgImg} alt="bgImg" /> */}
       <ProfileInfoContainer>
         <ProfileTitle>
           <h2 className="profile-header">Profile</h2>
