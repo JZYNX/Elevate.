@@ -270,10 +270,7 @@ function Login() {
         }
   
         const users = await response.json();
-        const matchingUser = users.find((user) => {
-          user.username === username &&
-          user.password === password 
-        });
+        const matchingUser = users.find((user) => user.username === username && user.password === password);
   
         if (matchingUser) {
           return true;
