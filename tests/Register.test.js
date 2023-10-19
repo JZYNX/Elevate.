@@ -1,5 +1,5 @@
 const request = require('supertest');
-const app = require('../server/Server');
+const app = require('../server/server');
 const User = require('../server/models/userModel'); 
 const { USERNAME_EXISTS_MESSAGE, EMAIL_EXISTS_MESSAGE, PASSWORD_LENGTH_MESSAGE, INVALID_EMAIL_MESSAGE } = require('../server/controllers/userController');
 require('dotenv').config({ path: require('find-config')('.env') })
