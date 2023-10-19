@@ -18,6 +18,10 @@ const RegisterContainer = styled.div`
   justify-content: center;
   align-items: center;
   overflow: hidden;
+
+  @media (max-width: 1000px) {
+    flex-direction: column;
+  }
 `;
 
 const changeColors = keyframes`
@@ -53,6 +57,12 @@ const WelcomeMessage = styled.div`
     position: absolute;
     top: 5rem;
     left: 9rem;
+
+    @media (max-width: 1000px) {
+      position: fixed;
+      top: 1rem;
+      left: 0rem;
+    }
   }
 `;
 
@@ -62,6 +72,10 @@ const Avatars = styled.img`
   position: relative;
   right: 0rem;
   top: 12rem;
+
+  @media (max-width: 1000px) {
+    display: none
+  }
 `
 
 const RegisterForm = styled.div`
@@ -76,6 +90,12 @@ const RegisterForm = styled.div`
   color: #333;
   border-radius: 40px;
   margin-right: 3rem;
+
+  @media (max-width: 1000px) {
+    margin: 10rem 10rem 5rem 10rem;
+    width: 30rem;
+    height: 60rem;
+  }
 
   h2.login-header {
     font-size: 22px;
