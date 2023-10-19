@@ -202,63 +202,13 @@ function Register() {
   const navigate = useNavigate();
   const titleMessage = " elevate.";
 
-  // Function to validate email format
-  const validateEmail = (email) => {
-      return String(email)
-        .toLowerCase()
-        .match(
-          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-        );
-    };
-
   // Handles the registration process when the registration button is clicked.
   const handleRegister = async () => {
     const { username, password, email, confirm } = credentials;
 
-    if (!validateEmail(email)){
-      toast.error("Please enter a valid email.");
-      return;
-    }
-
-    if (!await userExists(username,email)) {
-      postUser(username, password, email, confirm);
-    }
+    postUser(username, password, email, confirm);
   };
-
-  /**
-   * Checks if a user with the given username or email already exists.
-   * 
-   * @param {string} username - The username to check.
-   * @param {string} email - The email to check.
-   * @returns {boolean} True if a matching username or email is found, false otherwise.
-   */
-  const userExists = async (username,email) => {
-    try{
-      const response = await fetch('/users');
-      
-      if (!response.ok) {
-        throw new Error("failed to fetch users");
-      }
-
-      const users = await response.json();
-      const matchingUser = users.find((user) => user.username === username );
-      const matchingEmail = users.find((user) => user.email === email);
-
-      if (matchingUser) {
-        toast.error("Username exists, please use another username.")
-        return true;
-      } else if (matchingEmail) {
-        toast.error("Email exists, please use another Email.")
-        return true;
-      }
-      return false;
-
-    } catch (err) {
-      console.error("Error checking if user exists", err);
-      return false;
-    }
-  };
-
+  
   /**
    * Sends a POST request to create a new user account.
    * 
