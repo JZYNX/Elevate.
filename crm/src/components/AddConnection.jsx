@@ -111,7 +111,8 @@ export default function AddConnection({ onToggle, showAddPopup }) {
       onToggle();
     };
 
-    const [foundUser, setFoundUser] = useState(null);
+    const [searchInput, setSearchInput] = useState(''); 
+    const [foundUsers, setFoundUsers] = useState([]);
     const [connections, setConnections] = useState([]);
     const urlParams = new URLSearchParams(window.location.search);
     const userName = urlParams.get('username');
@@ -136,6 +137,7 @@ export default function AddConnection({ onToggle, showAddPopup }) {
           value: item.username 
         }));
         setConnections(modifiedData);
+        setFoundUsers(modifiedData);
 
       } catch (error) {
         toast.error('Error fetching user notes. Please try again later.')
@@ -174,40 +176,39 @@ export default function AddConnection({ onToggle, showAddPopup }) {
         // Handle any network-related errors, e.g., display an error message to the user.
       }
     };
-    
-    
-    const findUser = async (searchInput) => {
-      try {
-        // Fetch user data using fetch
-        const response = await fetch(`/users/getUser`, {
-          method: 'POST',
-          headers:{
-            'Content-Type': 'application/json',
-          },
-          body:JSON.stringify({ username: searchInput }),
-        });
-        
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        
-        const data = await response.json();
 
-        setFoundUser(data);
-        // console.log("The found user is " + foundUser.username);
-        
-      } catch (error) {
-        setFoundUser(null);
-        fetchAllUsers();
-        alert("The user was not found");
+    const updateScreenBySearch = async (searchValue) => {
+      if(searchValue!==""){
+        await filterConnections(searchValue);
+      } else {
+        setFoundUsers(connections);
       }
-    }
-
-    const updateScreenBySearch = async (searchInput) => {
-      findUser(searchInput);
-    }
+    };
 
     
+    const handleInputChange = (e) => {
+      const inputText = e;
+      setSearchInput(inputText); 
+      updateScreenBySearch(inputText);
+    };
+
+    const filterConnections = async (searchValue) => {
+      const lowerSearchInput = searchValue.toLowerCase();
+      const filteredConnections = connections.filter((connection) => {
+        const { username, firstName, lastName } = connection;
+        if (username && firstName && lastName) {
+          return (
+            username.toLowerCase().includes(lowerSearchInput)
+          );
+        } else {
+          return 
+        }        
+      });
+      if (filteredConnections.length > 0) {
+        setFoundUsers(filteredConnections);
+      } 
+    };
+
     return (
         <Modal
             isOpen={showAddPopup}
@@ -225,11 +226,12 @@ export default function AddConnection({ onToggle, showAddPopup }) {
                   <ReactSearchBox
                       placeholder=""
                       // value={searchInput}
-                      onSelect={(e) => {
-                        console.log(e.item.value);
-                        updateScreenBySearch(e.item.value);
-                      }}
-                      data={connections}
+                      onChange={handleInputChange}
+                      // data={connections}
+                      // onSelect={(e) => {
+                      //   console.log(e.item.value);
+                      //   updateScreenBySearch(e.item.value);
+                      // }}
                       callback={(record) => console.log(record)}
                       inputHeight="1.5rem"
                       inputBorderColor="hsla(278, 69%, 38%, 0.01)"
@@ -239,25 +241,13 @@ export default function AddConnection({ onToggle, showAddPopup }) {
                   />
               </SearchBoxContainer>
               <SearchResultContainer>
-                  {foundUser ? (
-                    // Display foundUser
-                    <ResultContainer key={foundUser._id}>
-                      <p>{foundUser.username}</p>
-                      <button onClick={() => handleAddFriend(foundUser.username)}> + </button>
-                    </ResultContainer>
-                  ) : (
-                    // Display connections
-                    <div>
-                      <ResultLabel>Recommended Connections</ResultLabel>
-                      {connections.map((connection) => (
-                        <ResultContainer key={connection._id}>
-                          <p>{connection.username}</p>
-                          <button onClick={() => handleAddFriend(connection.username)}> + </button>
-                        </ResultContainer>
-                      ))}
-                    </div>
-                  )}
-            </SearchResultContainer>
+                {foundUsers.map((user) => (
+                  <ResultContainer key={user._id}>
+                    <p>{user.username}</p>
+                    <button onClick={() => handleAddFriend(user.username)}> + </button>
+                  </ResultContainer>
+                ))}
+              </SearchResultContainer>
 
           </ModalWrapper>
         </Modal>
