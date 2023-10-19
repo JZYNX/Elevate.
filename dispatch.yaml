@@ -5,3 +5,7 @@ dispatch:
 
   - url: "*/api/messages*"
     service: backend
+
+# Route socket connection
+  - url: "*/socket.io*"
+    service: backend
