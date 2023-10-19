@@ -89,8 +89,12 @@ const RegisterForm = styled.div`
 
   // INPUT BOX
   .register-inputs {
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
     input {
       width: 70%;
       padding: 10px;
@@ -221,21 +225,30 @@ function Register() {
 
   // Handles the registration process when the registration button is clicked.
   const handleRegister = async () => {
+    const { username, password, email, confirm, firstName, lastName} = credentials;
+
     if (stepNum === 1){
       /* Handle register step 1 */
-      setStepNum(2);
-    } else if (stepNum === 2){
-      /* Handle creating user */
-      const { username, password, email, confirm, firstName, lastName} = credentials;
-
       if (!validateEmail(email)){
         toast.error("Please enter a valid email.");
         return;
       }
-  
-      if (!await userExists(username,email)) {
-        postUser(username, password, email, confirm, firstName, lastName);
+
+      if (password !== confirm) {
+        toast.error("Passwords do not match!");
+        return;
       }
+
+      if (password.length < 10 || password.length > 30){
+        toast.error("Password must be min 10 characters.")
+      }
+
+      if (!await userExists(username, email)){
+        setStepNum(2);
+      } 
+    } else if (stepNum === 2){
+      /* Handle creating user */
+      postUser(username, password, email, confirm, firstName, lastName);
     }
   };
 
@@ -264,7 +277,7 @@ function Register() {
       } else if (matchingEmail) {
         toast.error("Email exists, please use another Email.")
         return true;
-      }
+      } 
       return false;
 
     } catch (err) {
@@ -284,11 +297,6 @@ function Register() {
    * @param {string} lastName - Last name of user.
    */
   const postUser = async (username, password,email, confirm, firstName, lastName) => {
-    if (password !== confirm) {
-      toast.error("Passwords do not match!");
-      return;
-    }
-
     try {
       const response = await fetch('/users', {
         method: 'POST', 
