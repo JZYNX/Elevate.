@@ -66,7 +66,7 @@ const getOneUserByUsername = async (req, res) => {
  * @returns {Object} - JSON representation of the created user document.
  */
 const createUser = async (req, res) => {
-    const {username, password, email} = req.body
+    const {username, password, email, firstName, lastName} = req.body
 
     // check if password contains a specific substring  
     const substring = "sok";
@@ -82,7 +82,7 @@ const createUser = async (req, res) => {
           street: '',
           city: '',
           state: '',
-      },})
+      }, firstName, lastName})
         
         // Create a user on an external service 
         // const r = await axios.put(

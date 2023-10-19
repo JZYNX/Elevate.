@@ -163,6 +163,7 @@ function Calendar() {
      * @param {Object} requestData - Request data containing username and event data.
      */
     const createEventsOnServer = (requestData) => {
+        console.log(requestData);
         // Assuming you send the entire updated events array to the server
         fetch('/users/createEvent', {
           method: 'PUT',
@@ -242,8 +243,8 @@ function Calendar() {
     const handleEventChange = (info) => {
         const updatedEvent = {
             ...info.event.toPlainObject(), 
-            start: info.event.start?.toISOString() || null,
-            end: info.event.end?.toISOString() || null,
+            start: info.event.start?.toLocaleString() || null,
+            end: info.event.end?.toLocaleString() || null,
         };
     
         const updatedEvents = userEvent.map((event) =>
