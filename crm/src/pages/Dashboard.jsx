@@ -330,7 +330,6 @@ function Dashboard() {
   const [newNoteID, setNewNoteID] = useState('');
   const [userName, setUserName] = useState('');
   const [eventCount, setEventCount] = useState(0);
-  const [userEvents, setUserEvents] = useState([]);
   const [connectionCount, setConnectionCount] = useState(0);
   const [groupedUserEvents, setGroupedUserEvents] = useState([]);
   const [incomingConnections, setIncomingConnections] = useState([]);  // Sample connection. use []
@@ -344,7 +343,8 @@ function Dashboard() {
 
   useEffect(() => {
     // Make an API request to fetch the event count
-    fetch(`/users/${userName}/event-count`)
+    if (userName){
+      fetch(`/users/${userName}/event-count`)
       .then((response) => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
@@ -358,12 +358,15 @@ function Dashboard() {
         console.error('Error fetching event count:', error);
         // Handle error here
       });
+    }
+
   }, [userName]);
 
   
   useEffect(() => {
-    // Make an API request to fetch the user events
-    fetch(`/users/${userName}/userEvents`)
+    if (userName) {
+       // Make an API request to fetch the user events
+      fetch(`/users/${userName}/userEvents`)
       .then((response) => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
@@ -371,10 +374,9 @@ function Dashboard() {
         return response.json();
       })
       .then((data) => {
-        setUserEvents(data.userEvents);
-        console.log(userEvents);
         // Group events by start date
         const eventsByDate = {};
+        console.log(data.userEvents);
 
         data.userEvents.forEach((event) => {
           const eventStartDate = event.start.split('T')[0];
@@ -403,6 +405,7 @@ function Dashboard() {
         console.error('Error fetching event count:', error);
         // Handle error here
       });
+    }
   }, [userName]);
 
   const fetchUserConnectionCount = async () => {
@@ -424,7 +427,9 @@ function Dashboard() {
 
   useEffect(() => {
     // Make an API request to fetch the connection count
-    fetchUserConnectionCount();
+    if (userName) {
+      fetchUserConnectionCount();
+    }
   }, [userName]);
 
 
