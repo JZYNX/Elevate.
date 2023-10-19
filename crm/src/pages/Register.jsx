@@ -240,7 +240,8 @@ function Register() {
       }
 
       if (password.length < 10 || password.length > 30){
-        toast.error("Password must be min 10 characters.")
+        toast.error("Password must be min 10 characters.");
+        return;
       }
 
       if (!await userExists(username, email)){
@@ -354,12 +355,19 @@ function Register() {
       </WelcomeMessage>
       <RegisterForm>
         <h2 className="login-header">Welcome to<strong> elevate.</strong></h2>
-        <LoginContainer>
-          Already have an account?
-          <button className="register-button" onClick={() => handleNavigation('/')}>
-            Login
-          </button>
-        </LoginContainer>
+        {
+          stepNum === 1 ? 
+          <LoginContainer>
+            Already have an account?
+            <button className="register-button" onClick={() => handleNavigation('/')}>
+              Login
+            </button>
+          </LoginContainer> : 
+          <LoginContainer>
+            Please enter your first and last name.
+            <button className='register-button' onClick={() => setStepNum(1)}> Go back. </button>
+          </LoginContainer>
+        }
         {
           stepNum === 1 ? <div className='register-inputs'>
             <input
@@ -395,14 +403,14 @@ function Register() {
             <input
               className='firstname-input'
               type='text'
-              placeholder="John"
+              placeholder="Linh"
               value={credentials.firstName}
               onChange={(e) => setCredentials({ ...credentials, firstName: e.target.value })}
             />
             <input
               className='lastname-input'
               type='text'
-              placeholder="Doe"
+              placeholder="Tato"
               value={credentials.lastName}
               onChange={(e) => setCredentials({ ...credentials, lastName: e.target.value })}
             />
