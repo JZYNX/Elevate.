@@ -20,9 +20,10 @@ beforeAll(async () => {
   await User.create(validTestUser);
 });
 
+// Delete the test users from the database
 afterAll(async () => {
-  await app.close();
   await User.deleteOne({ username: validTestUser.username });
+  await app.close();
 });
 
 describe('User Authentication', () => {
