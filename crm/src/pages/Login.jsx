@@ -258,10 +258,10 @@ function Login() {
    * Checks if a user with the given username or email already exists.
    * 
    * @param {string} username - The username to check.
-   * @param {string} email - The email to check.
-   * @returns {boolean} True if a matching username or email is found, false otherwise.
+   * @param {string} password - The password to check.
+   * @returns {boolean} True if a matching username and password is found, false otherwise.
    */
-    const userExists = async (username,email) => {
+    const userExists = async (username, password) => {
       try{
         const response = await fetch('/users');
         
@@ -270,7 +270,10 @@ function Login() {
         }
   
         const users = await response.json();
-        const matchingUser = users.find((user) => user.username === username );
+        const matchingUser = users.find((user) => {
+          user.username === username &&
+          user.password === password 
+        });
   
         if (matchingUser) {
           return true;
