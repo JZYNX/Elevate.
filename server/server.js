@@ -49,7 +49,7 @@ mongoose
 //socket stuff
 const io = socket(server, {
   cors: {
-    origin: 'http://localhost:3000',
+    origin: 'https://voltaic-layout-402210.ts.r.appspot.com',
     credentials: true,
   },
 });
