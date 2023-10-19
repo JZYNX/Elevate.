@@ -1,5 +1,8 @@
 # COMP30022 IT Project
 
+# Host URL:
+- https://voltaic-layout-402210.ts.r.appspot.com/ 
+
 # Running server: 
 - cd server
 - npm install
