@@ -1,19 +1,24 @@
 # COMP30022 IT Project
 
-# Host URL:
-- https://voltaic-layout-402210.ts.r.appspot.com/ 
+# About
 
-# Running server: 
+# Host URL:
+- https://voltaic-layout-402210.ts.r.appspot.com/
+
+# Running Locally
+- Please clone the 'Local-demo' branch
+
+## Running server: 
 - cd server
 - npm install
 - npm run devStart
 
-# Running frontend:
+## Running frontend:
 - cd crm
 - npm install 
 - npm run start
 
-# Running development build (frontend & backend):
+## Running development build (frontend & backend):
 - Remain in root directory
 - npm install
 - npm run start-dev
