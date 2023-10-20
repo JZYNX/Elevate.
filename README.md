@@ -61,7 +61,7 @@ This is how you can run our application locally using Node.js
 GitHub CI/CD pipeline through GitHub actions
 Testing through [Jest](https://jestjs.io/) Framework
 
-# Continuous Deployment
+## Continuous Deployment
 This project is continuously deployed to Google Cloud using App Engine. You can access the Google Cloud Platform [here](https://cloud.google.com/?hl=en).
 Deployed using Microservices connecting the Frontend service with the Backend service.
 
