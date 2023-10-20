@@ -1,7 +1,7 @@
 <br />
-<div align="center">
+<div align= "center">
     <a href="https://github.com/JZYNX/comp30022/">
-    <img src="./crm/src/assets/Avatar.png" alt="Logo" width="300" height="300">
+    <img src="./crm/src/assets/Avatar.png" alt="Logo" width="200" height="200">
   </a>
 
   <h3 align="center"> Elevate. </h3>
