@@ -135,10 +135,7 @@ const MiniProfile = styled.div`
   background-color: white;
   border-radius: 1rem;
   margin: 0rem 0.5%;
-  // box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.8);
-  -webkit-box-shadow:0 0 20px rgba(0,0,0,0.2); 
-  -moz-box-shadow: 0 0 20px rgba(0,0,0,0.2); 
-  box-shadow: 0 0 10px 2px rgba(0,0,0,0.2);
+  box-shadow: 0 0 12px 2px rgba(0,0,0,0.25);
 
 `
 
