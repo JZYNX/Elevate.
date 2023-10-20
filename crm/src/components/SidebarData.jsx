@@ -3,7 +3,6 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import PeopleIcon from '@mui/icons-material/People';
 import EventIcon from '@mui/icons-material/Event';
 import MessageIcon from '@mui/icons-material/Message';
-import NotesIcon from '@mui/icons-material/Notes';
 
 export const SidebarData = (userName) => [
     {
