@@ -64,7 +64,7 @@ describe('User Registration', () => {
 
   it('should return 400 for trying to register with a short password', async () => {
     // Send a POST request to the user endpoint with invalid credentials
-    const startTime = Date.now(); // Record the end time
+    const startTime = Date.now(); // Record the start time
     const response = await request(app) 
       .post('/users') 
       .send({
@@ -80,7 +80,7 @@ describe('User Registration', () => {
 
   it('should return 400 for trying to register with an invalid email', async () => {
     // Send a POST request to the user endpoint with invalid credentials
-    const startTime = Date.now(); // Record the end time
+    const startTime = Date.now(); // Record the start time
     const response = await request(app) 
       .post('/users') 
       .send({
@@ -96,7 +96,7 @@ describe('User Registration', () => {
 
   it('should return 200 for trying to register with a nonexisting user with valid credentials', async () => {
     // Send a POST request to the user endpoint with invalid credentials
-    const startTime = Date.now(); // Record the end time
+    const startTime = Date.now(); // Record the start time
     const response = await request(app) 
       .post('/users') 
       .send({
@@ -116,9 +116,11 @@ describe('User Registration', () => {
   
   it ('should get all users in the database', async () => {
     // Send a GET request to the user endpoint
+    const startTime = Date.now(); // Record the start time
     const response = await request(app).get('/users');
-    
+    const endTime = Date.now(); // Record the end time
     expect(response.status).toBe(200);
+    expect(endTime - startTime).toBeLessThan(1000);
   });
 
 });
