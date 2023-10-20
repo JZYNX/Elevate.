@@ -1,6 +1,7 @@
 const request = require('supertest');
 const app = require('../server/server');
 const User = require('../server/models/userModel'); 
+const { INVALID_USERNAME, INVALID_PASSWORD } = require('../server/controllers/userController');
 require('dotenv').config({ path: require('find-config')('.env') })
 
 const validTestUser = {
@@ -49,6 +50,7 @@ describe('User Authentication', () => {
       });
 
     expect(response.status).toBe(401);
+    expect(response.body.message).toBe(INVALID_USERNAME);
   });
 
   it ('should return 401 response for existing user with incorrect password', async () => {
@@ -61,6 +63,7 @@ describe('User Authentication', () => {
       });
     
     expect(response.status).toBe(401);
+    expect(response.body.message).toBe(INVALID_PASSWORD);
   });
 
   it ('should get all users in the database', async () => {

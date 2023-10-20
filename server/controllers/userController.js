@@ -7,6 +7,9 @@ const USERNAME_EXISTS_MESSAGE = 'Username exists. Please choose another username
 const EMAIL_EXISTS_MESSAGE = 'Email exists. Please choose another Email.';
 const PASSWORD_LENGTH_MESSAGE = "please make sure the password is between " + global.PASSWORD_MIN_LENGTH + " and " + global.PASSWORD_MAX_LENGTH + " characters!";
 const INVALID_EMAIL_MESSAGE = "Please enter a valid email.";
+const INVALID_USERNAME = 'Username not found.';
+const INVALID_PASSWORD = "Please check your password and try again.";
+
 
 /**
  * Get all users from the database.
@@ -101,7 +104,7 @@ const createUser = async (req, res) => {
 
     // Check password length is ok
     if (password.length < global.PASSWORD_MIN_LENGTH || password.length > global.PASSWORD_MAX_LENGTH) {
-      return res.status(400).json({ message: "please make sure the password is between " + global.PASSWORD_MIN_LENGTH + " and " + global.PASSWORD_MAX_LENGTH + " characters!"})
+      return res.status(400).json({ message: PASSWORD_LENGTH_MESSAGE})
     }
 
     try {
@@ -140,12 +143,12 @@ const userExists = async (req, res) => {
     const user = await User.findOne({ username });
 
     if (!user) {
-      return res.status(401).json({ message: 'User not found' });
+      return res.status(401).json({ message: INVALID_USERNAME });
     }
 
     // Check whether the given password matches the actual password
     if (user.password !== password) {
-      return res.status(401).json({ message: "Incorrect password"});
+      return res.status(401).json({ message: INVALID_PASSWORD});
     }
 
     // Authentication is successful
@@ -517,5 +520,7 @@ module.exports = {
     USERNAME_EXISTS_MESSAGE,
     EMAIL_EXISTS_MESSAGE,
     PASSWORD_LENGTH_MESSAGE,
-    INVALID_EMAIL_MESSAGE
+    INVALID_EMAIL_MESSAGE,
+    INVALID_USERNAME,
+    INVALID_PASSWORD
 }

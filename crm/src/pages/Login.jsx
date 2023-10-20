@@ -211,10 +211,9 @@ function Login() {
     checkUserLogin(username, password)
     .then((checkUserLogin) => {
       if (checkUserLogin) {
+        toast.success("Login Success!");
         const profileURL = `/dashboard?username=${username}`;
         window.location.href = profileURL;
-      } else {
-        toast.error('Login failed. Please check your credentials.');
       }
     })
     .catch((error) => {
@@ -302,6 +301,8 @@ function Login() {
         
         // if response not 200, user does not exist or password is incorrect
         if (!response.ok) {
+          const errorData = await response.json(); 
+          toast.error(`Failed to authenticate user: ${errorData.message}`);
           return false;
         }
         return true;
