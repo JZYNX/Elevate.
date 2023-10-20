@@ -137,12 +137,13 @@ const LoginForm = styled.div`
     }
   }
   button.forget-button {
+    cursor: pointer;
     color: #0a1172;
     background-color: white;
     border: none;
-    cursor: pointer;
-    transition: color 0.3s;
+    font-size: 16px;
     padding: 10px;
+    transition: color 0.3s;
 
     &:hover {
       color: #151e3d;
