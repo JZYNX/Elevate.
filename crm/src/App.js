@@ -22,8 +22,6 @@ export default function App() {
       <Route path = "/connections" element = {<Connections />} />
       <Route path = "/edit-profile" element = {<EditProfile />} />
       <Route path = "/forget" element = {<Forget />} />
-      <Route path = "/sendOTP" element = {<OTPInput />} />
-      <Route path = "/reset" element = {<Reset />} />
     </Routes>
   </BrowserRouter>
 }
