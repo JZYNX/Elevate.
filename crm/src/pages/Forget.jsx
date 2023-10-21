@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import TextHover from '../utils/TextHover';
 import styled, { keyframes } from 'styled-components';
 import bgImg from '../assets/nikuubg.jpg';
-import avatars from "../assets/Avatar.png";
+import avatars from '../assets/Avatar.png';
 import { primaryColor, secondaryColor } from '../utils/Color';
 import { toast, ToastContainer } from 'react-toastify';
 import emailjs from '@emailjs/browser';
+import axios from 'axios';
 
 const ForgetContainer = styled.div`
   display: flex;
@@ -55,8 +56,8 @@ const Avatars = styled.img`
   position: relative;
   right: 0rem;
   top: 12rem;
-`
-const ForgetForm = styled.div`
+`;
+const ForgetForm = styled.form`
   width: 60vh;
   height: 80vh;
   display: flex;
@@ -148,12 +149,84 @@ const ReturnContainer = styled.div`
 `;
 
 function Forget() {
-  const [credentials, setCredentials] = useState({ username: '', password: '', email: '' });
+  const [credentials, setCredentials] = useState({ username: '', password: '', email: '', otp: '' });
+  const [newPassword, setNewPassword] = useState('');
+  const [confirm, setConfirm] = useState('');
+  const form = useRef();
   const [stepNum, setStepNum] = useState(1);
-  const [otp, setOtp] = useState(null);
   const [userOtp, setUserOtp] = useState("");
   const navigate = useNavigate();
   const titleMessage = " elevate.";
+
+  const handleNavigation = (path) => {
+    navigate(path);
+  };
+
+  const handleResetPassword = async (e) => {
+    e.preventDefault();
+
+    if (stepNum === 1) {
+      try {
+        const matchingUser = await userExists(credentials.email);
+
+        if (matchingUser) {
+          const updatedCredentials = {
+            ...credentials,
+            username: matchingUser.username,
+            password: matchingUser.password,
+            otp: generateOTP(),
+          };
+          sendEmail(updatedCredentials);
+          setCredentials(updatedCredentials);
+          setStepNum(2);
+        } else {
+          toast.error('User with this email could not be found.');
+        }
+      } catch (err) {
+        console.error('An error occurred:', err);
+        toast.error('Password reset failed due to an error. Please try again later.');
+      }
+    } else if (stepNum === 2) {
+      // Update user password in the database or perform the desired action.
+      /* Verified OTP */
+      if (credentials.otp === userOtp){
+        if (newPassword.length < 10 || newPassword.length > 30){
+          toast.error("Password must be min 10 characters.");
+          return;
+        }
+
+        if (newPassword !== confirm) {
+          toast.error("Passwords do not match!");
+          return;
+        }
+
+        const payload = { username: credentials.username, password: newPassword };
+
+        try {
+          // Send a PATCH request with the common data
+          const response = await axios.patch(`/users/updatePassword`, payload);
+      
+          if (response.status === 200) {
+            // Changes were successfully saved in the backend
+            setTimeout(() => {
+              navigate('/');
+            }, 2000)
+            toast.success("Password changed successfully.");
+          } else {
+            // Handle error if the request was not successful
+            toast.error('Failed to save changes to the backend.');
+          }
+        } catch (error) {
+          console.error('Error in axios request:', error);
+          // Handle the error as needed
+          const errorMessage = error.response?.data?.message || 'An error occurred';
+          toast.error(errorMessage);
+        }
+      } else {
+        toast.error("Invalid OTP. Please try again.")
+      }
+    }
+  };
 
   const userExists = async (email) => {
     try {
@@ -167,61 +240,34 @@ function Forget() {
       const matchingUser = users.find((user) => user.email === email);
 
       if (matchingUser) {
-        setCredentials({ ...credentials, username: matchingUser.username, password: matchingUser.password });
-        return true;
+        return matchingUser;
       }
-      return false;
-
+      return null;
     } catch (err) {
       console.error("Error checking if user exists", err);
       return false;
     }
   };
 
-  const handleNavigation = (path) => {
-    navigate(path);
-  };
-
-  const handleResetPassword = async (e) => {
-    if (stepNum === 1) {
-      userExists(credentials.email)
-      .then((foundUser) => {
-        if (foundUser) {
-          generateOTP();
-          sendEmail(e);
-          console.log(credentials);
-          console.log(otp);
-          setStepNum(2);
-        } else {
-          toast.error('User with this email could not be found.');
-        }
-      }).catch((err) => {
-        console.error('An error occurred:', err);
-        toast.error('Password reset failed due to an error. Please try again later.');
+  const sendEmail = (info) => {
+    emailjs
+      .send("service_ngmfx3r", "template_crydzix", {
+        to_name: info.username || "",
+        to_email: info.email || "",
+        otp_num: info.otp || "OTP not available right now.",
+      }, "m0UYha0uoe8x8bWWK")
+      .then((result) => {
+        console.log(result.text);
+        toast.success("Email sent successfully.");
       })
-    } else if (stepNum === 2) {
-      // Update user password in the database or perform the desired action.
-      // You can implement this part based on your specific requirements.
-    }
+      .catch((err) => {
+        console.error(err);
+        toast.error("Email sending failed.");
+      });
   };
 
-  const sendEmail = (e) => {
-    e.preventDefault();
-
-    try {
-      const result = emailjs.send("service_ngmfx3r", "template_crydzix", {
-        to_name: credentials.username || "",
-        to_email: credentials.email || "",
-        otp_num: otp || "OTP not available right now.",
-      }, "m0UYha0uoe8x8bWWK");
-      console.log(result.text);
-      toast.success("Email sent successfully.");
-    } catch (error) {
-      console.error(error.text);
-      toast.error("Email sending failed.");
-    }
-  };
-
+  /* Security measures not in place here
+     Sample OTP only */
   const generateOTP = () => {
     const charset = '0123456789';
     let otp = '';
@@ -231,13 +277,14 @@ function Forget() {
       otp += charset[randomIndex];
     }
 
-    setOtp(otp);
-  }
+    return otp;
+  };
 
-  const resendOtp = (e) => {
-    generateOTP();
-    sendEmail(e);
-  }
+  const resendOtp = () => {
+    const updatedCredentials = { ...credentials, otp: generateOTP() };
+    sendEmail(updatedCredentials);
+    setCredentials(updatedCredentials);
+  };
 
   return (
     <ForgetContainer>
@@ -255,33 +302,31 @@ function Forget() {
           })}
         </div>
       </WelcomeMessage>
-      {
-        stepNum === 1 ? (
-          <ForgetForm>
-            <h2 className="forget-header"> <strong>Reset account password</strong></h2>
-            <ForgetMessageContainer>
-              Enter the email address associated with your account and we'll send you an OTP to reset your password
-            </ForgetMessageContainer>
-            <input
-              className="user-input"
-              type="email"
-              placeholder="Email"
-              value={credentials.email}
-              onChange={(e) => setCredentials({ ...credentials, email: e.target.value })}
-            />
 
-            <button className="reset-button" onClick={(e) => handleResetPassword(e)} >
-              Send password reset email
+      {stepNum === 1 ? (
+        <ForgetForm ref={form} onSubmit={handleResetPassword}>
+          <h2 className="forget-header"> <strong>Reset account password</strong></h2>
+          <ForgetMessageContainer>
+            Enter the email address associated with your account, and we'll send you an OTP to reset your password
+          </ForgetMessageContainer>
+          <input
+            className="user-input"
+            type="email"
+            placeholder="Email"
+            value={credentials.email}
+            onChange={(e) => setCredentials({ ...credentials, email: e.target.value })}
+          />
+          <button type='submit' className="reset-button">
+            Send password reset email
+          </button>
+          <ReturnContainer>
+            <button className="return-button" onClick={() => handleNavigation('/')}>
+              Back to sign-in
             </button>
-
-            <ReturnContainer>
-              <button className="return-button" onClick={() => handleNavigation('/')}>
-                Back to sign-in
-              </button>
-            </ReturnContainer>
-          </ForgetForm>
+          </ReturnContainer>
+        </ForgetForm>
         ) : (
-          <ForgetForm>
+          <ForgetForm ref={form} onSubmit={handleResetPassword}>
             <h2 className="forget-header"> <strong>Reset account password</strong></h2>
             <ForgetMessageContainer>
               Enter the OTP and a new password.
@@ -291,15 +336,27 @@ function Forget() {
               type="text"
               placeholder="OTP"
               value={userOtp}
-              onChange={(e) => setUserOtp(e.target.value) }
+              onChange={(e) => setUserOtp(e.target.value)}
             />
-
-            <button className="reset-button" onClick={(e) => handleResetPassword(e)}>
+            <input
+              className="user-input"
+              type="password"
+              placeholder="New Password (min 10 characters)"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+            />
+            <input
+              className="user-input"
+              type="password"
+              placeholder="Confirm New Password"
+              value={confirm}
+              onChange={(e) => setConfirm(e.target.value)}
+            />
+            <button type="submit" className="reset-button">
               Reset Password
             </button>
-
             <ReturnContainer>
-              <button className='resend-otp' onClick={(e) => resendOtp(e)}>
+              <button className='resend-otp' onClick={resendOtp}>
                 Resend OTP
               </button>
               <button className="return-button" onClick={() => handleNavigation('/')}>
@@ -307,8 +364,7 @@ function Forget() {
               </button>
             </ReturnContainer>
           </ForgetForm>
-        )
-      }
+      )}
     </ForgetContainer>
   );
 }

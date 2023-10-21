@@ -435,6 +435,25 @@ const deleteNote = async (req, res) => {
   }
 };
 
+/* Update password for user */
+const updatePassword = async (req,res) => {
+  try{
+    const { username, password } = req.body;
+    const user = await User.findOne({username});
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    user.password = password;
+
+    await user.save();
+
+    return res.status(200).json({ message: 'User updated successfully' });
+  } catch (error){
+    console.error(error);
+    return res.status(500).json({ message: 'Internal server error' })
+  }
+}
 
 const addConnection = async (req, res) => {
   try {
@@ -497,6 +516,7 @@ module.exports = {
     getAllNotes,
     updateNote,
     deleteNote,
+    updatePassword,
     addConnection,
     getConnectionCount
 }

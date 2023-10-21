@@ -52,6 +52,7 @@ const {
     getAllNotes,
     updateNote,
     deleteNote,
+    updatePassword,
     addConnection,
     getConnectionCount,
 } = require('../controllers/userController')
@@ -73,6 +74,9 @@ router.post('/getUser', getOneUserByUsername);
 
 // Update a user
 router.patch('/',updateUser)
+
+// Update password
+router.patch('/updatePassword', updatePassword);
 
 // Upload an image
 router.put('/uploadImage', upload.single('userImage'), postImage)
