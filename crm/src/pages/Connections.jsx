@@ -32,7 +32,7 @@ const ConnectionsContainer = styled.div`
   width: 100vw;
   overflow: hidden;
   // background-color: rgba(0, 0, 0, 0.1);
-  background-color: white;
+  // background-color: white;
 `;
 
 const SidebarColumn = styled.div`
@@ -500,7 +500,7 @@ function Connections() {
     return (
       <ConnectionsContainer>
           <ToastContainer position="bottom-right" autoClose={3000} hideProgressBar />
-          {/* <BackgroundImage src={bgImg} alt="bgImg" /> */}
+          <BackgroundImage src={bgImg} alt="bgImg" />
           <SearchBar 
             onEnterKeyPress={handleEnterKeyPress} 
           />
