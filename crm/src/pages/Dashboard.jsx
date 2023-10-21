@@ -58,8 +58,8 @@ const StatsContainer = styled.div`
 `;
 const StatBox = styled.div`
   text-align: left;
-  // background-color: rgba(255, 255, 255, 0.2);
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(255, 255, 255, 0.2);
+  // background-color: rgba(0, 0, 0, 0.1);
   border-radius: 1rem;
   padding: 0.5rem;
   padding-left: 2rem;
@@ -88,8 +88,8 @@ const SocialsBox = styled.div`
 `;
 const EventConnectionDisplay = styled.div`
   flex: 1;
-  // background-color: rgba(255, 255, 255, 0.2);
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(255, 255, 255, 0.2);
+  // background-color: rgba(0, 0, 0, 0.1);
   border-radius: 1rem;
   padding: 0.5rem 0.5rem 0.5rem 2rem;
   margin: 0rem 0.25rem;
@@ -131,8 +131,8 @@ const DateBox = styled.div`
 // incoming connections second row display
 const IncomingConnection = styled.div`
   display: flex;
-  // background-color: rgba(255, 255, 255, 0.5);
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(255, 255, 255, 0.5);
+  // background-color: rgba(0, 0, 0, 0.1);
   border-radius: 1rem;
   width: 95%;
   padding-left: 3rem;
@@ -167,8 +167,8 @@ const NotesBox = styled.div`
   padding: 0.5rem;
   width: 95%;
   margin: 1rem auto;
-  // background-color: rgba(255, 255, 255, 0.2);
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(255, 255, 255, 0.2);
+  // background-color: rgba(0, 0, 0, 0.1);
   border-radius: 1rem;
 `;
 const NotesHeader = styled.div`
@@ -657,7 +657,7 @@ function Dashboard() {
       <SearchBar 
         onEnterKeyPress={handleEnterKeyPress} 
       />
-      {/* <BackgroundImage src={bgImg} alt="bgImg" /> */}
+      <BackgroundImage src={bgImg} alt="bgImg" />
       <ToastContainer position="bottom-right" autoClose={3000} hideProgressBar />
       <SidebarColumn>
         <Sidebar userName = {userName} />
