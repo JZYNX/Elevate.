@@ -11,7 +11,7 @@ import { primaryColor, secondaryColor }from '../utils/Color';
 import { toast, ToastContainer } from 'react-toastify';
 import { gapi } from "gapi-script";
 import { useLinkedIn } from 'react-linkedin-login-oauth2';
-import { GoogleLogin } from 'react-google-login';
+// import { GoogleLogin } from 'react-google-login';
 
 const LoginContainer = styled.div`
   display: flex; 
