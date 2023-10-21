@@ -141,7 +141,7 @@ const LoginForm = styled.div`
     color: #0a1172;
     background-color: white;
     border: none;
-    font-size: 16px;
+    font-size: 14px;
     padding: 10px;
     transition: color 0.3s;
 
