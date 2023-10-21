@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
 import Sidebar from '../components/Sidebar';
-import { primaryColor, secondaryColor } from '../utils/Color';
+import { buttonColor, primaryColor, secondaryColor } from '../utils/Color';
 import { toast, ToastContainer } from 'react-toastify';
 import bgImg from '../assets/nikuubg.jpg';
 import 'react-toastify/dist/ReactToastify.css';
@@ -46,7 +46,7 @@ const DashboardInfo = styled.div`
   display: flex;
   flex: 1;
   flex-direction: column;
-  background-color: rgba(0, 0, 0, 0.1);
+  // background-color: rgba(0, 0, 0, 0.1);
 `;
 // stats row on dashboard
 const StatsContainer = styled.div`
@@ -59,6 +59,7 @@ const StatsContainer = styled.div`
 const StatBox = styled.div`
   text-align: left;
   background-color: rgba(255, 255, 255, 0.2);
+  // background-color: rgba(0, 0, 0, 0.1);
   border-radius: 1rem;
   padding: 0.5rem;
   padding-left: 2rem;
@@ -88,6 +89,7 @@ const SocialsBox = styled.div`
 const EventConnectionDisplay = styled.div`
   flex: 1;
   background-color: rgba(255, 255, 255, 0.2);
+  // background-color: rgba(0, 0, 0, 0.1);
   border-radius: 1rem;
   padding: 0.5rem 0.5rem 0.5rem 2rem;
   margin: 0rem 0.25rem;
@@ -130,6 +132,7 @@ const DateBox = styled.div`
 const IncomingConnection = styled.div`
   display: flex;
   background-color: rgba(255, 255, 255, 0.5);
+  // background-color: rgba(0, 0, 0, 0.1);
   border-radius: 1rem;
   width: 95%;
   padding-left: 3rem;
@@ -162,9 +165,10 @@ const NotesBox = styled.div`
   flex: 1;
   max-height: 16rem;
   padding: 0.5rem;
-  width: 95%;
+  width: 94.5%;
   margin: 1rem auto;
   background-color: rgba(255, 255, 255, 0.2);
+  // background-color: rgba(0, 0, 0, 0.1);
   border-radius: 1rem;
 `;
 const NotesHeader = styled.div`
@@ -330,7 +334,6 @@ function Dashboard() {
   const [newNoteID, setNewNoteID] = useState('');
   const [userName, setUserName] = useState('');
   const [eventCount, setEventCount] = useState(0);
-  const [userEvents, setUserEvents] = useState([]);
   const [connectionCount, setConnectionCount] = useState(0);
   const [groupedUserEvents, setGroupedUserEvents] = useState([]);
   const [incomingConnections, setIncomingConnections] = useState([]);  // Sample connection. use []
@@ -344,7 +347,8 @@ function Dashboard() {
 
   useEffect(() => {
     // Make an API request to fetch the event count
-    fetch(`/users/${userName}/event-count`)
+    if (userName){
+      fetch(`/users/${userName}/event-count`)
       .then((response) => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
@@ -358,12 +362,15 @@ function Dashboard() {
         console.error('Error fetching event count:', error);
         // Handle error here
       });
+    }
+
   }, [userName]);
 
   
   useEffect(() => {
-    // Make an API request to fetch the user events
-    fetch(`/users/${userName}/userEvents`)
+    if (userName) {
+       // Make an API request to fetch the user events
+      fetch(`/users/${userName}/userEvents`)
       .then((response) => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
@@ -371,10 +378,9 @@ function Dashboard() {
         return response.json();
       })
       .then((data) => {
-        setUserEvents(data.userEvents);
-        console.log(userEvents);
         // Group events by start date
         const eventsByDate = {};
+        console.log(data.userEvents);
 
         data.userEvents.forEach((event) => {
           const eventStartDate = event.start.split('T')[0];
@@ -403,6 +409,7 @@ function Dashboard() {
         console.error('Error fetching event count:', error);
         // Handle error here
       });
+    }
   }, [userName]);
 
   const fetchUserConnectionCount = async () => {
@@ -424,7 +431,9 @@ function Dashboard() {
 
   useEffect(() => {
     // Make an API request to fetch the connection count
-    fetchUserConnectionCount();
+    if (userName) {
+      fetchUserConnectionCount();
+    }
   }, [userName]);
 
 

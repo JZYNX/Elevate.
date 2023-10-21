@@ -18,6 +18,10 @@ const RegisterContainer = styled.div`
   justify-content: center;
   align-items: center;
   overflow: hidden;
+
+  @media (max-width: 1000px) {
+    flex-direction: column;
+  }
 `;
 
 const changeColors = keyframes`
@@ -53,6 +57,12 @@ const WelcomeMessage = styled.div`
     position: absolute;
     top: 5rem;
     left: 9rem;
+
+    @media (max-width: 1000px) {
+      position: fixed;
+      top: 1rem;
+      left: 0rem;
+    }
   }
 `;
 
@@ -62,6 +72,10 @@ const Avatars = styled.img`
   position: relative;
   right: 0rem;
   top: 12rem;
+
+  @media (max-width: 1000px) {
+    display: none
+  }
 `
 
 const RegisterForm = styled.div`
@@ -77,6 +91,12 @@ const RegisterForm = styled.div`
   border-radius: 40px;
   margin-right: 3rem;
 
+  @media (max-width: 1000px) {
+    margin: 10rem 10rem 5rem 10rem;
+    width: 30rem;
+    height: 60rem;
+  }
+
   h2.login-header {
     font-size: 22px;
     font-family: 'Poppins', sans-serif
@@ -88,15 +108,24 @@ const RegisterForm = styled.div`
   }
 
   // INPUT BOX
-  input {
-    width: 70%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 2px solid #ddd;
-    border-radius: 20px;
-    font-size: 13px;
-    outline: none;
+  .register-inputs {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    input {
+      width: 70%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 2px solid #ddd;
+      border-radius: 20px;
+      font-size: 13px;
+      outline: none;
+    }
   }
+
 
   // LOGIN AND FORGET LOGIN BUTTONS
   button.login-button {
@@ -198,15 +227,85 @@ const OtherOptions = styled.div`
  * @returns {JSX.Element} The JSX markup for the registration page.
  */
 function Register() {
-  const [credentials, setCredentials] = useState({ username: '', password: '', email: '' , confirm: ''});
+  const [credentials, setCredentials] = useState({ username: '', password: '', email: '' , confirm: '', firstName: '', lastName: ''});
+  /* Step 1 = Username, email, password, confirm
+     Step 2 = First name, Last name */
+  const [stepNum, setStepNum] = useState(1);
   const navigate = useNavigate();
   const titleMessage = " elevate.";
 
+  // Function to validate email format
+  const validateEmail = (email) => {
+    return String(email)
+      .toLowerCase()
+      .match(
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      );
+  };
+
+
   // Handles the registration process when the registration button is clicked.
   const handleRegister = async () => {
-    const { username, password, email, confirm } = credentials;
+    const { username, password, email, confirm, firstName, lastName} = credentials;
 
-    postUser(username, password, email, confirm);
+    if (stepNum === 1){
+      /* Handle register step 1 */
+      if (!validateEmail(email)){
+        toast.error("Please enter a valid email.");
+        return;
+      }
+
+      if (password !== confirm) {
+        toast.error("Passwords do not match!");
+        return;
+      }
+
+      if (password.length < 10 || password.length > 30){
+        toast.error("Password must be min 10 characters.");
+        return;
+      }
+
+      if (!await userExists(username, email)){
+        setStepNum(2);
+      } 
+    } else if (stepNum === 2){
+      /* Handle creating user */
+      postUser(username, password, email, confirm, firstName, lastName);
+    }
+  };
+
+  /**
+   * Checks if a user with the given username or email already exists.
+   * 
+   * @param {string} username - The username to check.
+   * @param {string} email - The email to check.
+   * @returns {boolean} True if a matching username or email is found, false otherwise.
+   */
+  const userExists = async (username,email) => {
+    try{
+      const response = await fetch('/users');
+      
+      if (!response.ok) {
+        throw new Error("failed to fetch users");
+      }
+
+      const users = await response.json();
+      const matchingUser = users.find((user) => user.username === username );
+      const matchingEmail = users.find((user) => user.email === email);
+
+      if (matchingUser) {
+        toast.error("Username exists, please use another username.")
+        return true;
+      } else if (matchingEmail) {
+        toast.error("Email exists, please use another Email.")
+        return true;
+      } 
+      return false;
+
+    } catch (err) {
+      console.error("Error checking if user exists", err);
+      return false;
+    }
   };
   
   /**
@@ -216,20 +315,17 @@ function Register() {
    * @param {string} password - The password for the new account.
    * @param {string} email - The email for the new account.
    * @param {string} confirm - The password confirmation.
+   * @param {string} fistName - First name of user. 
+   * @param {string} lastName - Last name of user.
    */
-  const postUser = async (username, password,email, confirm) => {
-    if (password !== confirm) {
-      toast.error("Passwords do not match!");
-      return;
-    }
-
+  const postUser = async (username, password,email, confirm, firstName, lastName) => {
     try {
       const response = await fetch('/users', {
         method: 'POST', 
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, password, email }),
+        body: JSON.stringify({ username, password, email, firstName, lastName }),
       });
 
       if (response.ok) {
@@ -280,43 +376,69 @@ function Register() {
       </WelcomeMessage>
       <RegisterForm>
         <h2 className="login-header">Welcome to<strong> elevate.</strong></h2>
-        <LoginContainer>
-          Already have an account?
-          <button className="register-button" onClick={() => handleNavigation('/')}>
-            Login
-          </button>
-        </LoginContainer>
-        <input
-          className="user-input"
-          type="text"
-          placeholder="Username"
-          value={credentials.username}
-          onChange={(e) => setCredentials({ ...credentials, username: e.target.value })}
-        />
-        <input
-          className="user-email"
-          type="email"
-          placeholder="Email"
-          value={credentials.email}
-          onChange={(e) => setCredentials({ ...credentials, email: e.target.value })}
-        />
-        <input
-          className='password-input'
-          type='password'
-          placeholder="Password (min 10 characters)"
-          value={credentials.password}
-          onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
-          onKeyPress={handleKeyPress}
-        />
-        <input
-          className='password-confirm'
-          type='password'
-          placeholder="Confirm Password"
-          value={credentials.confirm}
-          onChange={(e) => setCredentials({ ...credentials, confirm: e.target.value })}
-        />
+        {
+          stepNum === 1 ? 
+          <LoginContainer>
+            Already have an account?
+            <button className="register-button" onClick={() => handleNavigation('/')}>
+              Login
+            </button>
+          </LoginContainer> : 
+          <LoginContainer>
+            Please enter your first and last name.
+            <button className='register-button' onClick={() => setStepNum(1)}> Go back. </button>
+          </LoginContainer>
+        }
+        {
+          stepNum === 1 ? <div className='register-inputs'>
+            <input
+              className="user-input"
+              type="text"
+              placeholder="Username"
+              value={credentials.username}
+              onChange={(e) => setCredentials({ ...credentials, username: e.target.value })}
+            />
+            <input
+              className="user-email"
+              type="email"
+              placeholder="Email"
+              value={credentials.email}
+              onChange={(e) => setCredentials({ ...credentials, email: e.target.value })}
+            />
+            <input
+              className='password-input'
+              type='password'
+              placeholder="Password (min 10 characters)"
+              value={credentials.password}
+              onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
+              onKeyPress={handleKeyPress}
+            />
+            <input
+              className='password-confirm'
+              type='password'
+              placeholder="Confirm Password"
+              value={credentials.confirm}
+              onChange={(e) => setCredentials({ ...credentials, confirm: e.target.value })}
+            />
+          </div> : <div className='register-inputs'>
+            <input
+              className='firstname-input'
+              type='text'
+              placeholder="Linh"
+              value={credentials.firstName}
+              onChange={(e) => setCredentials({ ...credentials, firstName: e.target.value })}
+            />
+            <input
+              className='lastname-input'
+              type='text'
+              placeholder="Tato"
+              value={credentials.lastName}
+              onChange={(e) => setCredentials({ ...credentials, lastName: e.target.value })}
+            />
+          </div>
+        }
         <button className="login-button" onClick={handleRegister}>
-          Sign up
+          {stepNum === 1 ? "Next" : "Sign Up"}
         </button>
         <div className="separator-container">
           <hr className="separator-line" />

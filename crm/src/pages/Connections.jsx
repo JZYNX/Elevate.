@@ -31,7 +31,8 @@ const ConnectionsContainer = styled.div`
   height: 100vh;
   width: 100vw;
   overflow: hidden;
-  background-color: rgba(0, 0, 0, 0.1);
+  // background-color: rgba(0, 0, 0, 0.1);
+  // background-color: white;
 `;
 
 const SidebarColumn = styled.div`
@@ -134,7 +135,10 @@ const MiniProfile = styled.div`
   background-color: white;
   border-radius: 1rem;
   margin: 0rem 0.5%;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  // box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.8);
+  -webkit-box-shadow:0 0 20px rgba(0,0,0,0.2); 
+  -moz-box-shadow: 0 0 20px rgba(0,0,0,0.2); 
+  box-shadow: 0 0 10px 2px rgba(0,0,0,0.2);
 
 `
 
@@ -229,12 +233,15 @@ function Connections() {
     const storedUsername = urlParams.get('username');  
     const [currentSelected, setCurrentSelected] = useState(null);
     const [showEmailPopup, setShowEmailPopup] = useState(false);
+    const [userEmail, setUserEmail] = useState(null);
     const [showAddPopup, setShowAddPopup] = useState(false);
     const [connections, setConnections] = useState([]);
     const [searchedConnections, setSearchConnections] = useState([]);
     const [sortOption, setSortOption] = useState(null);
     const [arrowUp, setArrowUp] = useState(true);
     const [userDates, setUserDates] = useState([]);
+    const [recipientEmail, setRecipientEmail] = useState(null);
+    const [recipientName, setRecipientName] = useState(null);
 
     const sortOptions = [
       { value: 'last-name', label: 'Last-name' },
@@ -259,7 +266,21 @@ function Connections() {
       }
     };
 
+    const fetchUserEmail = async () => {
+      try {
+        const response = await fetch(`/users/${storedUsername}/getEmail`);
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        setUserEmail(data.userEmail);
+      } catch (error) {
+        console.error('Error fetching user email:', error);
+      }
+    }
+
     useEffect(() => {
+      fetchUserEmail();
       fetchUserConnections();
     }, [storedUsername]);
 
@@ -439,8 +460,6 @@ function Connections() {
       }
     };
     
-    
-    
     const fetchUserDates = async (username) => {
       try {
         const response = await fetch(`/users/connections/${username}/getAllDates`);
@@ -530,16 +549,16 @@ function Connections() {
                 <ArrowUpwardIcon
                   className='arrow-icon'
                   onClick={changeArrow}
-                  style={{ color: arrowUp ? secondaryColor : 'lightgray', cursor: 'pointer' }}
+                  style={{ color: arrowUp ? secondaryColor : 'white', cursor: 'pointer' }}
                 />
                 <ArrowDownwardIcon
                   className='arrow-icon'
                   onClick={changeArrow}
-                  style={{ color: arrowUp ? 'lightgray' : secondaryColor, cursor: 'pointer' }}
+                  style={{ color: arrowUp ? 'white' : secondaryColor, cursor: 'pointer' }}
                 />
               </SortOrderContainer>
               <AddButtonContainer>
-                <StyledButton onClick={resetConnections}>Show All Connections</StyledButton>
+                <StyledButton onClick={resetConnections} style={{marginRight: "1rem"}}>Show All Connections</StyledButton>
                 <StyledButton onClick={() => {
                   toggleAddModal()
                 }}
@@ -585,7 +604,9 @@ function Connections() {
                           </InfoContainer>
                           <InfoContainer>
                             <IconContainer onClick={() => {
-                                toggleModal();
+                                toggleModal(); 
+                                setRecipientEmail(connection.email);
+                                setRecipientName(connection.firstName);
                               }}><EmailIcon /></IconContainer>
                             <InfoTextContainer>{connection.email}</InfoTextContainer>
                           </InfoContainer>
@@ -612,7 +633,7 @@ function Connections() {
               </StyledArrowButton>
             </Footer>
           {
-            showEmailPopup ? <Email onToggle={toggleModal} showEmailPopup={showEmailPopup}/> : null
+            showEmailPopup ? <Email onToggle={toggleModal} showEmailPopup={showEmailPopup} userEmail={userEmail} recipientEmail={recipientEmail} recipientName={recipientName} currUser={storedUsername}/> : null
           }
           {
             showAddPopup ? <AddConnection onToggle={toggleAddModal} showAddPopup = {showAddPopup} /> : null

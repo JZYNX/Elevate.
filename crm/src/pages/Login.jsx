@@ -11,7 +11,7 @@ import { primaryColor, secondaryColor }from '../utils/Color';
 import { toast, ToastContainer } from 'react-toastify';
 import { gapi } from "gapi-script";
 import { useLinkedIn } from 'react-linkedin-login-oauth2';
-import linkedin from 'react-linkedin-login-oauth2/assets/linkedin.png';
+import { GoogleLogin } from 'react-google-login';
 
 const LoginContainer = styled.div`
   display: flex; 
@@ -20,6 +20,11 @@ const LoginContainer = styled.div`
   justify-content: center;
   align-items: center;
   overflow: hidden;
+
+  
+  @media (max-width: 1000px) {
+    flex-direction: column;
+  }
 `;
 
 const changeColors = keyframes`
@@ -55,6 +60,12 @@ const WelcomeMessage = styled.div`
     position: absolute;
     top: 5rem;
     left: 9rem;
+
+    @media (max-width: 1000px) {
+      position: fixed;
+      top: 1rem;
+      left: 0rem;
+    }
   }
 `;
 
@@ -64,6 +75,10 @@ const Avatars = styled.img`
   position: relative;
   right: 0rem;
   top: 12rem;
+
+  @media (max-width: 1000px) {
+    display: none
+  }
 `
 
 const LoginForm = styled.div`
@@ -78,6 +93,12 @@ const LoginForm = styled.div`
   color: #333;
   border-radius: 40px;
   margin-right: 3rem;
+
+  @media (max-width: 1000px) {
+    margin: 10rem 10rem 5rem 10rem;
+    width: 30rem;
+    height: 60rem;
+  }
 
   h2.login-header {
     font-size: 26px;
@@ -116,12 +137,13 @@ const LoginForm = styled.div`
     }
   }
   button.forget-button {
+    cursor: pointer;
     color: #0a1172;
     background-color: white;
     border: none;
-    cursor: pointer;
-    transition: color 0.3s;
+    font-size: 14px;
     padding: 10px;
+    transition: color 0.3s;
 
     &:hover {
       color: #151e3d;
@@ -408,7 +430,7 @@ function Login() {
           <hr className="separator-line" />
         </div>
         <OtherLoginOptions>
-          {/* <GoogleLogin
+          <GoogleLogin
             clientId="718066585548-9c25n26k4ci4do8f3mh45stub0s4de0u.apps.googleusercontent.com"
             buttonText="Login with Google"
             onSuccess={handleGoogleLoginSuccess}
@@ -418,10 +440,7 @@ function Login() {
                 <Icon src={googleIcon} alt="Google" onClick={renderProps.onClick}/>
               </IconOnlyButton>
             )}
-          /> */}
-          <IconOnlyButton>
-              <Icon src={googleIcon} alt="Google"/>
-            </IconOnlyButton>
+          />
           <IconOnlyButton>
             <Icon src={fbIcon} alt="Facebook" />
           </IconOnlyButton>

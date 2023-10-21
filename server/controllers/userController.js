@@ -73,7 +73,7 @@ const getOneUserByUsername = async (req, res) => {
  * @returns {Object} - JSON representation of the created user document.
  */
 const createUser = async (req, res) => {
-    const {username, password, email} = req.body
+    const {username, password, email, firstName, lastName} = req.body
 
     // Check that the email is valid
     const validateEmail = (email) => {
@@ -112,7 +112,7 @@ const createUser = async (req, res) => {
           street: '',
           city: '',
           state: '',
-      },})
+      }, firstName, lastName})
         
         // Create a user on an external service 
         // const r = await axios.put(
@@ -364,6 +364,23 @@ const getUserEvents = async (req, res) => {
   }
 };
 
+// function for getting user-email
+const getUserEmail = async (req, res) => {
+  try {
+    const { username } = req.params;
+    const user = await User.findOne({username});
+
+    if (!user){
+      return res.status(404).json({ error: 'User not found '  }); 
+    }
+    const userEmail = user.email;
+    res.status(200).json({ userEmail })
+  } catch (error) {
+    console.error('Error getting user email: ', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+}
+
 const makeNote = async (req,res)=>{
   try{
     const {username} = req.params;
@@ -454,6 +471,25 @@ const deleteNote = async (req, res) => {
   }
 };
 
+/* Update password for user */
+const updatePassword = async (req,res) => {
+  try{
+    const { username, password } = req.body;
+    const user = await User.findOne({username});
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    user.password = password;
+
+    await user.save();
+
+    return res.status(200).json({ message: 'User updated successfully' });
+  } catch (error){
+    console.error(error);
+    return res.status(500).json({ message: 'Internal server error' })
+  }
+}
 
 const addConnection = async (req, res) => {
   try {
@@ -511,10 +547,12 @@ module.exports = {
     getOneUserByUsername,
     getEventCount,
     getUserEvents,
+    getUserEmail,
     makeNote,
     getAllNotes,
     updateNote,
     deleteNote,
+    updatePassword,
     addConnection,
     getConnectionCount,
     USERNAME_EXISTS_MESSAGE,
