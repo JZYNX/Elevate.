@@ -26,6 +26,7 @@
 
 ## Hosted on
 https://voltaic-layout-402210.ts.r.appspot.com/
+- Expires 15/12/2023
 
 ## About this project
 Master of Computer Science students would like to have a convenient CRM system for sending emails, viewing their personal calendars, and building or maintaining relationships with other people in one place. This is where our development team comes in :)
@@ -58,8 +59,8 @@ This is how you can run our application locally using Node.js
 6. Please use the [Login Details](#sample-login-details) provided in this ReadMe for Demo of application
 
 ## Testing Pipeline & Framework (Continuous Integration)
-GitHub CI/CD pipeline through GitHub actions
-Testing through [Jest](https://jestjs.io/) Framework
+- GitHub CI/CD pipeline through GitHub actions
+- Testing through [Jest](https://jestjs.io/) Framework
 
 ## Continuous Deployment
 This project is continuously deployed to Google Cloud using App Engine. You can access the Google Cloud Platform [here](https://cloud.google.com/?hl=en).
