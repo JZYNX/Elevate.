@@ -165,7 +165,7 @@ const NotesBox = styled.div`
   flex: 1;
   max-height: 16rem;
   padding: 0.5rem;
-  width: 95%;
+  width: 94.5%;
   margin: 1rem auto;
   background-color: rgba(255, 255, 255, 0.2);
   // background-color: rgba(0, 0, 0, 0.1);
