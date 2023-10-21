@@ -230,13 +230,12 @@ function Login() {
   const handleLogin = async () => {
     const { username, password } = credentials;
     console.log(process.env.PORT);
-    userExists(username, password)
-    .then((userExists) => {
-      if (userExists) {
+    checkUserLogin(username, password)
+    .then((checkUserLogin) => {
+      if (checkUserLogin) {
+        toast.success("Login Success!");
         const profileURL = `/dashboard?username=${username}`;
         window.location.href = profileURL;
-      } else {
-        toast.error('Login failed. Please check your credentials.');
       }
     })
     .catch((error) => {
@@ -276,7 +275,7 @@ function Login() {
     }
   };
 
-    /**
+  /**
    * Checks if a user with the given username or email already exists.
    * 
    * @param {string} username - The username to check.
@@ -298,6 +297,37 @@ function Login() {
           return true;
         } 
         return false;
+  
+      } catch (err) {
+        console.error("Error checking if user exists", err);
+        return false;
+      }
+    };
+
+  /**
+   * Checks if a user with the given username and password can be found
+   * 
+   * @param {string} username - The username to check.
+   * @param {string} password - The password to check.
+   * @returns {boolean} True if a matching username AND password is found, false otherwise.
+   */
+     const checkUserLogin = async (username,password) => {
+      try{
+        const response = await fetch('/users/userExists', {
+          method: 'POST', 
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ username, password }),
+        });
+        
+        // if response not 200, user does not exist or password is incorrect
+        if (!response.ok) {
+          const errorData = await response.json(); 
+          toast.error(`Failed to authenticate user: ${errorData.message}`);
+          return false;
+        }
+        return true;
   
       } catch (err) {
         console.error("Error checking if user exists", err);

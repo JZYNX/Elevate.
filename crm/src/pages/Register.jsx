@@ -234,15 +234,6 @@ function Register() {
   const navigate = useNavigate();
   const titleMessage = " elevate.";
 
-  // Function to validate email format
-  const validateEmail = (email) => {
-      return String(email)
-        .toLowerCase()
-        .match(
-          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-        );
-    };
-
   // Handles the registration process when the registration button is clicked.
   const handleRegister = async () => {
     const { username, password, email, confirm, firstName, lastName} = credentials;
@@ -305,8 +296,9 @@ function Register() {
       console.error("Error checking if user exists", err);
       return false;
     }
+    postUser(username, password, email, confirm);
   };
-
+  
   /**
    * Sends a POST request to create a new user account.
    * 
