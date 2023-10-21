@@ -8,8 +8,6 @@ import Calendar from "./pages/Calendar"
 import Connections from "./pages/Connections"
 import EditProfile from "./pages/EditProfile"
 import Forget from "./pages/Forget"
-import OTPInput from "./pages/OTPInput"
-import Reset from "./pages/Reset"
 
 export default function App() {
   return <BrowserRouter>
