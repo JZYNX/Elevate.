@@ -339,7 +339,7 @@ const fetchUserEvents = async (username) => {
   
       // Extract the "Events" field and return it
       const events = userData.events || []; // Default to an empty array if "Events" is not present
-      return events;
+      return events; 
     } catch (error) {
       console.error('Error fetching user data:', error);
       throw error; // Handle the error as needed
