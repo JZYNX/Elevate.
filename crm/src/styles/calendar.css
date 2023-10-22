@@ -1,31 +1,33 @@
 :root {
-    --fc-border-color: rgba(0, 0, 0, 0.25);
-    --fc-neutral-bg-color: white;
+    --fc-border-color: rgba(0, 0, 0, 0.2);
 }
 
 .fc .fc-button-primary:not(:disabled).fc-button-active, .fc .fc-button-primary:not(:disabled):active {
     background-color: #2835A2;
+    border: 1px solid rgba(0, 0, 0, 0.2);
     color: var(--fc-button-text-color);
 }
 
 /* Remove box shadow on active button press */
 .fc .fc-button-primary:not(:disabled).fc-button-active:focus, .fc .fc-button-primary:not(:disabled):active:focus {
     box-shadow: none;
+    border: 1px solid rgba(0, 0, 0, 0.2);
 }
 
 .fc .fc-button-primary {
     background-color: white;
     color: black;
-    border: none;
+    border: 1px solid rgba(0, 0, 0, 0.2);
 }
 .fc .fc-button-primary:hover {
     background-color: rgb(40,53,162, 0.5);
     border-color: #e0e0e0;
     color: black;
+    border: 1px solid rgba(0, 0, 0, 0.2);
 }
 .fc .fc-button-primary:disabled {
     background-color: #2835A2;
-    border-color: #e0e0e0;
+    border: 1px solid rgba(0, 0, 0, 0.2);
     color: #ffffff;
     opacity: 1;
 }
@@ -42,7 +44,8 @@
 }   
 
 .fc .fc-prev-button, .fc .fc-next-button {
-    background-color: rgba(255, 255, 255, 1);
+    background-color: #ededed;
+    border: 1px solid rgba(0, 0, 0, 0.2);
     color: #000000;
     border-radius: 0.5rem;
     width: 25%;
@@ -52,6 +55,7 @@
 
 .fc .fc-prev-button:focus, .fc .fc-next-button:focus {
     box-shadow: none;
+    border: 1px solid rgba(0, 0, 0, 0.2);
 }
 
 /* grey out saturday and sunday for daygridmonth view */
