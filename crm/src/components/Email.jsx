@@ -76,6 +76,7 @@ const Textarea = styled.textarea`
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
+  font-family: 'Poppins', sans-serif;
   font-size: 16px;
   &:focus {
     border: 1px solid black;

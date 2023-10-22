@@ -100,7 +100,7 @@ const EventConnectionDisplay = styled.div`
 `;
 
 const ContentContainer = styled.div`
-  height: 90%;
+  height: 80%;
   overflow-y: auto; /* Add vertical scrollbar when content overflows */
   &::-webkit-scrollbar {
     width: 0.2rem;
@@ -159,10 +159,15 @@ const NotesBox = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
-  max-height: 16rem;
-  padding: 0.5rem;
+  max-height: 19rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  padding-top: 0;
   width: 94.5%;
-  margin: 1rem auto;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 1rem;
+  margin-bottom: 2.5rem;
   background-color: rgba(59, 23, 167, 0.12);
   border-radius: 1rem;
 `;
