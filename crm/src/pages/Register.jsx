@@ -270,7 +270,11 @@ function Register() {
       } 
     } else if (stepNum === 2){
       /* Handle creating user */
-      postUser(username, password, email, confirm, firstName, lastName);
+      if (firstName && lastName){
+        postUser(username, password, email, confirm, firstName, lastName);
+      }else {
+        toast.error("Please fill in your name.");
+      }
     }
   };
 
