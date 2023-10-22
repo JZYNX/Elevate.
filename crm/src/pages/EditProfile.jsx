@@ -194,6 +194,11 @@ function EditProfile() {
   // Get the 'username' parameter value from the URL
   const storedUsername = urlParams.get('username');
 
+  useEffect(() => {
+   
+    verifyLogin(storedUsername);
+  }, []);
+
   // Fetch user data and set it in the component state.
   useEffect(() => {
     async function fetchUserDataAndSetState() {
@@ -208,6 +213,53 @@ function EditProfile() {
     fetchUserDataAndSetState();
   }, [storedUsername]);
 
+
+
+
+
+  const verifyLogin = async(storedUsername) =>{
+    // const navigate = useNavigate();
+    // console.log(localStorage);
+    console.log(storedUsername);
+    const existingUsers = JSON.parse(localStorage.getItem('users'));
+    console.log(existingUsers);
+    if (existingUsers) {
+      // Find the user instance that matches the provided username
+      const foundUser = existingUsers.find((user) => user.username === storedUsername);
+      
+
+      if (foundUser) {
+        const userToCheck = foundUser.username;
+        const tokenToCheck = foundUser.token;
+        // alert(foundUser)
+        const response = await fetch(`/users/verifyLogin`, {
+          method:'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ userToCheck, tokenToCheck }),
+        })
+        const responseData = await response.json();
+        if(responseData.isLoggedIn === true){
+          console.log(foundUser.username, foundUser.token, /* other user data */);
+        }
+        else{
+          alert("not logged in or session expired, please log in and try again!");
+          // navigate('/');
+        }
+        
+      } else {
+        // No user with the provided username was found
+        alert("not logged in or session expired, please log in and try again!");
+        //fix here to allow navigate
+        // console.log('User not found.');
+      }
+    } else {
+      // No users in localStorage
+      alert("not logged in or session expired, please log in and try again!");
+    }
+    
+  }
   /**
    * Handle the logic for uploading an image.
    * @param {Event} event - The file input change event.
@@ -276,6 +328,7 @@ function EditProfile() {
     }
   };
   
+
   
   return (
     <ProfileContainer>
@@ -418,7 +471,7 @@ const fetchUserData = async (username) => {
     if (!userData) {
       throw new Error(`User with username "${username}" not found`);
     }
-
+    
     return userData;
   } catch (error) {
     console.error('Error fetching user data:', error);

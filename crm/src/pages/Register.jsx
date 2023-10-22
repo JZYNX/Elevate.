@@ -333,10 +333,31 @@ function Register() {
       });
 
       if (response.ok) {
+        const responseData = await response.json();
+        console.log(responseData.token);
+        const existingUsers = JSON.parse(localStorage.getItem('users')) || [];
+        const existingUserIndex = existingUsers.findIndex(user => user.username === responseData.username);
+        if (existingUserIndex !== -1) {
+          // If the user exists, update their token
+          existingUsers[existingUserIndex].token = responseData.token;
+        } else {
+          const user = {
+            username: responseData.username,
+            token: responseData.token,
+            isLoggedIn: true
+          };
+          existingUsers.push(user);
+        }
+        console.log(localStorage);
+        console.log(responseData.token);
+        console.log(responseData.username);
+        console.log(existingUsers);
+
+        await localStorage.setItem('users', JSON.stringify(existingUsers));
         console.log("User created successfully");
         toast.success("User created successfully.");
         setTimeout(() => {
-          navigate(`/dashboard?username=${username}`);
+           navigate(`/dashboard?username=${username}`);
         }, 2000)
       } else {
         const errorData = await response.json(); 

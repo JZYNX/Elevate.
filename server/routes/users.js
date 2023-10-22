@@ -55,6 +55,7 @@ const {
     updatePassword,
     addConnection,
     getConnectionCount,
+    verifyJWT,
 } = require('../controllers/userController')
 
 // GET all users
@@ -113,6 +114,8 @@ router.delete('/:username/deleteNote', deleteNote);
 router.put('/:username/addConnection', addConnection);
 
 router.get('/:username/connection-count', getConnectionCount);
+
+router.post('/verifyLogin', verifyJWT);
 
 const {
     getAllConnections,

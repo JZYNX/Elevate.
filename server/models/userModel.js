@@ -92,6 +92,7 @@ const userSchema = new mongoose.Schema({
     },
     events: [eventSchema],
     notes: [Note.schema],
+    token: String,
 }, {timestamps: true}) // Enable timestamps for created and updated dates
 
 module.exports = mongoose.model('User', userSchema)

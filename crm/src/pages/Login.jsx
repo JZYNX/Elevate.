@@ -327,6 +327,30 @@ function Login() {
           toast.error(`Failed to authenticate user: ${errorData.message}`);
           return false;
         }
+
+        const responseData = await response.json();
+
+        // localStorage.clear(); //clear if u want only 1 login per chrome 
+
+        // console.log(responseData.username);
+        // console.log(responseData.token);
+        
+        const existingUsers = JSON.parse(localStorage.getItem('users')) || [];
+        const existingUserIndex = existingUsers.findIndex(user => user.username === responseData.username);
+        if (existingUserIndex !== -1) {
+          // If the user exists, update their token
+          existingUsers[existingUserIndex].token = responseData.token;
+        } else {
+          const user = {
+            username: responseData.username,
+            token: responseData.token,
+            isLoggedIn: true
+          };
+          existingUsers.push(user);
+        }
+        
+        await localStorage.setItem('users', JSON.stringify(existingUsers));
+
         return true;
   
       } catch (err) {

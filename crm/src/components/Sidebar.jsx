@@ -141,6 +141,20 @@ function Sidebar({userName}) {
     const handleNavigation = (path) => {
         navigate(path);
     };
+
+    const handleLogout = async () => {
+      const existingUsers = JSON.parse(localStorage.getItem('users')) || [];
+      
+      for (let i = 0; i < existingUsers.length; i++) {
+        if (existingUsers[i].username === userName) {
+          existingUsers.splice(i, 1); // Remove the user at index i
+          break; // Exit the loop after removing the user
+        }
+      }
+    
+      localStorage.setItem('users', JSON.stringify(existingUsers));
+      navigate('/');
+    }
       
     return (
         <SidebarContainer>
@@ -183,7 +197,7 @@ function Sidebar({userName}) {
                   </SubProfileItem>
                   <SubProfileItem 
                     className='logout'
-                    onClick={() => handleNavigation('/')} 
+                    onClick={() => handleLogout()} 
                     >Logout
                   </SubProfileItem>
                 </SubProfileContainer>

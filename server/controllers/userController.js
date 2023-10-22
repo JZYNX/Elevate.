@@ -3,6 +3,7 @@ const User = require('../models/userModel')
 const Post = require('../models/postModel')
 const { default: axios } = require('axios')
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 const USERNAME_EXISTS_MESSAGE = 'Username exists. Please choose another username.';
 const EMAIL_EXISTS_MESSAGE = 'Email exists. Please choose another Email.';
@@ -74,6 +75,7 @@ const getOneUserByUsername = async (req, res) => {
  * @returns {Object} - JSON representation of the created user document.
  */
 const createUser = async (req, res) => {
+    // console.log("YES ITS DEF HERE");
     const {username, password, email, firstName, lastName} = req.body
     const storingUser = req.body;
     // Check that the email is valid
@@ -129,8 +131,31 @@ const createUser = async (req, res) => {
           lastName:lastName  
         })  
 
-        dbUser.save();
+        
 
+        const payload = {
+          id: dbUser._id,
+          username: dbUser.username,
+        }
+        jwt.sign(
+          payload,
+          process.env.SECRET_KEY,
+          {expiresIn: 86400}, //one day
+          (err,token) =>{
+            if(err) return res.json({message:err})
+            else{
+              dbUser.token = token;
+              dbUser.save();
+              // console.log(dbUser.token)
+              // console.log("TOKEN " + token);
+              return res.status(200).json({
+                  message:"Success",
+                  token: token,
+                  username: dbUser.username,
+                })
+            }
+          }
+        )
 
 
         // Create a user on an external service 
@@ -140,7 +165,7 @@ const createUser = async (req, res) => {
         //   {headers: {"private-key" : "03afede7-020b-4a77-8c46-6558ae0b88c6"}}
         // )
         // res.status(200).json(r.data)    
-        return res.status(200).json(dbUser);
+        // return res.status(200).json(dbUser);
     } catch (err) {
         return res.status(400).json({error: err.message});
     }
@@ -172,7 +197,28 @@ const userExists = async (req, res) => {
     bcrypt.compare(password, user.password)
     .then(isCorrect => {
       if(isCorrect){
-        return res.status(200).json({ message: 'Login successful' });
+        const payload = {
+          id: user._id,
+          username: user.username,
+        }
+        jwt.sign(
+          payload,
+          process.env.SECRET_KEY,
+          {expiresIn: 86400}, //one day
+          (err,token) =>{
+            if(err) return res.json({message:err})
+            else{
+              user.token = token;
+              user.save();
+              return res.status(200).json({
+                  message:"Success",
+                  token: token,
+                  username: user.username,
+                })
+            }
+          }
+        )
+        // return res.status(200).json({ message: 'Login successful' });
       }
       else{
         return res.status(401).json({ message: INVALID_PASSWORD});
@@ -239,6 +285,9 @@ const updateUser = async (req, res) => {
         // check if profile pic was uploaded.
         if (req.file) {
             updatedUserData.userImage = req.file.path;
+        }
+        if(updatedUserData.password !== password){
+          updatedUserData.password = await bcrypt.hash(password,10);
         }
         // Find the user based on the username
         const updatedUser = await User.findOneAndUpdate(
@@ -559,6 +608,53 @@ const getConnectionCount = async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 };
+
+const verifyJWT = async (req, res) => {
+  const { userToCheck, tokenToCheck } = req.body;
+  const user = await User.findOne({ username: userToCheck });
+
+  if (user && tokenToCheck) {
+    // console.log(user.token);
+    // console.log(tokenToCheck);
+    // console.log(user.token === tokenToCheck);
+
+    if (user.token === tokenToCheck) {
+      // console.log("PROGRESS");
+      try {
+        const verifiedData = jwt.verify(tokenToCheck, process.env.SECRET_KEY);
+        if (verifiedData.username !== userToCheck) {
+          res.status(401).json({
+            isLoggedIn: false,
+          });
+        } else {
+          // console.log("YES?");
+          res.status(200).json({
+            isLoggedIn: true,
+          });
+        }
+      } catch (error) {
+        if (error.name === 'TokenExpiredError') {
+          res.status(401).json({
+            isLoggedIn: false,
+            message: 'Token has expired.',
+          });
+        } else {
+          res.status(400).json({
+            isLoggedIn: false,
+            message: 'Token verification failed: ' + error.message,
+          });
+        }
+      }
+    }
+  } else {
+    res.status(401).json({
+      isLoggedIn: false,
+      message: 'User not found or token missing.',
+    });
+  }
+};
+
+
   
 module.exports = {
     createUser,
@@ -582,6 +678,7 @@ module.exports = {
     updatePassword,
     addConnection,
     getConnectionCount,
+    verifyJWT,
     USERNAME_EXISTS_MESSAGE,
     EMAIL_EXISTS_MESSAGE,
     PASSWORD_LENGTH_MESSAGE,
