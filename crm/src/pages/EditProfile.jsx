@@ -12,38 +12,23 @@ const ProfileContainer = styled.div`
   width: 100vw;
 `;
 
-const changeColors = keyframes`
-  0%, 100% {
-    filter: hue-rotate(0deg); /* Start and end with pink (320 degrees) */
-  }
-  50% {
-    filter: hue-rotate(30deg); /* Transition to purple (240 degrees) */
-  }
+const SidebarColumn = styled.div`
+  flex: 0 0 15%;
+  min-width: 250px;
+  background-color: #f0f0f0;
 `;
 
-const BackgroundImage = styled.img`
-  /* Add styles for the background image */
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  object-fit: cover; 
-  object-position: right;
-  z-index: -1; /* Put the image behind other content */
-  animation: ${changeColors} 5s infinite linear; /* Apply the animation */
-`;
-
-const ProfileInfoContainer = styled.div`
+const ProfileDisplayContainer = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  width: 100vw;
-  background-color: rgba(0, 0, 0, 0.05);
+  height: 100%;
+  width: 100%;
 `;
-
 const ProfileTitle = styled.div`
   padding-top: 4rem;
   font-weight: bold;
-  padding-left: 10rem;
+  padding-left: 7%;
+  padding-bottom: 1rem;
 
   h2.profile-header {
     font-size: 30px;
@@ -53,78 +38,81 @@ const ProfileTitle = styled.div`
     font-weight: bold;
   }
 `;
-
-const SidebarColumn = styled.div`
-  flex: 0 0 15%;
-  min-width: 250px;
-  background-color: #f0f0f0;
-`;
-
-const ProfileColumns = styled.div`
-  overflow: hidden;
-  flex: 1;
+const ProfileInfoContainer = styled.div`
   display: flex;
-  padding-top: 3rem;
-  padding-left: 10rem;
-  padding-right: 20rem;
-
-  h2.info-header {
-    font-size: 18px;
-    font-family: 'Poppins', sans-serif;
-    margin-bottom: 10px;
-    margin-top: 20px;
-    font-weight: bold;
-  }
-
-  input {
-    width: 70%;
-    padding: 5px;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    font-family: 'Poppins', sans-serif;
-    border-radius: 5px;
-    font-size: 13px;
-    outline: none;
-  }
-
-  p.info-text {
-    font-size: 16px;
-    font-family: 'Poppins', sans-serif;
-    font-weight: normal;
-  }
-
-  .profile-info {
-    flex: 1;
-    h2 {
-      font-weight: bold;
-    }
-    p {
-      margin: 0;
-    }
-  }
-`;
-
+  flex-direction: row;
+  height: 100%;
+  width: 86%;
+  padding-left: 6%;
+  padding-right: 6%;
+`
+const LeftColumn = styled.div`
+  display: flex;
+  flex: 0.6;
+  flex-direction: column; 
+  height: 80%;
+  background-color: hsla(278, 69%, 38%, 0.1);
+  margin: 0 1rem 0 1rem;
+  border-radius: 1rem;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+`
+const RightColumn = styled.div`
+  display: flex;
+  flex: 0.4;
+  flex-direction: column; 
+  height: 80%;
+  background-color: hsla(278, 69%, 38%, 0.1);
+  margin: 0 1rem 0 1rem;
+  border-radius: 1rem;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+`
+const InfoBox = styled.div`
+  background-color: white;
+  text-align: center;
+  height: 90%;
+  width: 95%;
+  border-radius: 1rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+`
 const ProfilePicContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  max-width: 90%;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 1rem 1rem 0rem;
+
+  .info-header {
+    width: 16rem;
+  }
+`
+const ProfilePic = styled.div`
   width: 150px; 
   height: 150px; 
   border-radius: 50%; 
   border: 1px solid #ddd;
   overflow: hidden;
-  margin-bottom: 2rem;
+  margin-right: 2rem;
 `;
-
 const ProfilePicImage = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
 `;
-
 const ButtonGroup = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 10px;
 
   .profile-button {
-      width: 100%;
+    width: 100%;
     margin-top: 8px;
     margin-bottom: 8px;
     background-color: ${secondaryColor};
@@ -144,7 +132,6 @@ const ButtonGroup = styled.div`
     }
   }
 `;
-
 const ProfileButton = styled.button`
   width: 100%;
   margin-top: 1rem;
@@ -282,12 +269,56 @@ function EditProfile() {
       <SidebarColumn>
         <Sidebar userName = {storedUsername}/>
       </SidebarColumn>
-        <BackgroundImage src={bgImg} alt="bgImg" />
-      <ProfileInfoContainer>
+      <ProfileDisplayContainer>
         <ProfileTitle>
           <h2 className="profile-header">Profile</h2>
         </ProfileTitle>
-        <ProfileColumns>
+        <ProfileInfoContainer>
+          <LeftColumn>
+            <InfoBox>
+              VOTE NO            
+            </InfoBox>
+            <InfoBox>
+              VOTE NO            
+            </InfoBox>
+          </LeftColumn>
+          <RightColumn>
+            <ProfilePicContainer>
+              <ProfilePic>
+                <ProfilePicImage src={userData.userImage ? '/' + userData.userImage : ''} alt="" />
+              </ProfilePic>
+              <h2 className="info-header">YO EVANO BICHAHH</h2>
+            </ProfilePicContainer>
+            <InfoBox>
+              VOTE NO   
+              <ButtonGroup>
+                {isEditMode ? (
+                  <label className="profile-button">
+                    Upload Photo
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageUpload}
+                      style={{ display: 'none' }}
+                    />
+                  </label>
+                ) : null}
+                {isEditMode ? (
+                  <>
+                    <ProfileButton onClick={handleSaveChanges}>
+                      Save Changes
+                    </ProfileButton>
+                  </>
+                ) : (
+                  <ProfileButton onClick={toggleEditMode}>Edit Profile</ProfileButton>
+                )}
+              </ButtonGroup>         
+            </InfoBox>
+          </RightColumn>
+        </ProfileInfoContainer>
+      </ProfileDisplayContainer>
+
+        {/* <ProfileColumns>
           <div className="profile-info">
             <h2 className="info-header">First Name</h2>
             <input
@@ -392,8 +423,7 @@ function EditProfile() {
               )}
             </ButtonGroup>
           </div>
-        </ProfileColumns>
-      </ProfileInfoContainer>
+        </ProfileColumns> */}
     </ProfileContainer>
   );
 }
