@@ -7,6 +7,7 @@ const messageRoute = require('./routes/messageRoute');
 const OnlineUser = require('./models/onlineUsersModel');
 const socket = require('socket.io');
 
+
 dotenv.config({ path: require('find-config')('.env') });
 
 // Express app

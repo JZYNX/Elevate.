@@ -3,7 +3,7 @@ const Note = require('./noteModel'); // Import the Note schema
 
 // global variables for password length
 global.PASSWORD_MIN_LENGTH = 10;
-global.PASSWORD_MAX_LENGTH = 30;
+global.PASSWORD_MAX_LENGTH = 100;
 
 // Sub-document schema for the address
 const addressSchema = new mongoose.Schema({

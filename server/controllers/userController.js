@@ -2,6 +2,7 @@ const { default: mongoose } = require('mongoose')
 const User = require('../models/userModel')
 const Post = require('../models/postModel')
 const { default: axios } = require('axios')
+const bcrypt = require('bcrypt');
 
 const USERNAME_EXISTS_MESSAGE = 'Username exists. Please choose another username.';
 const EMAIL_EXISTS_MESSAGE = 'Email exists. Please choose another Email.';
@@ -60,7 +61,7 @@ const getOneUserByUsername = async (req, res) => {
   if (!user) {
       return res.status(404).json({error: "No such user", user})
   }
-  console.log("THE USER RETURN" + user.username);
+  // console.log("THE USER RETURN" + user.username);
   return res.status(200).json(user)
 }
 
@@ -74,7 +75,7 @@ const getOneUserByUsername = async (req, res) => {
  */
 const createUser = async (req, res) => {
     const {username, password, email, firstName, lastName} = req.body
-
+    const storingUser = req.body;
     // Check that the email is valid
     const validateEmail = (email) => {
       return String(email)
@@ -108,12 +109,30 @@ const createUser = async (req, res) => {
     }
 
     try {
-        const user = await User.create({username, password, email, address: {
-          street: '',
-          city: '',
-          state: '',
-      }, firstName, lastName})
-        
+        storingUser.password = await bcrypt.hash(password,10)
+      //   const user = await User.create({
+      //     username, password, email, address: {
+      //     street: '',
+      //     city: '',
+      //     state: '',
+      // }, firstName, lastName})
+        const dbUser = new User({
+          username:storingUser.username,
+          password:storingUser.password,
+          email:storingUser.email,
+          address: {
+                street: '',
+                city: '',
+                state: '',
+            },
+          firstName:firstName,
+          lastName:lastName  
+        })  
+
+        dbUser.save();
+
+
+
         // Create a user on an external service 
         // const r = await axios.put(
         //   'https://api.chatengine.io/users/',
@@ -121,7 +140,7 @@ const createUser = async (req, res) => {
         //   {headers: {"private-key" : "03afede7-020b-4a77-8c46-6558ae0b88c6"}}
         // )
         // res.status(200).json(r.data)    
-        return res.status(200).json(user);
+        return res.status(200).json(dbUser);
     } catch (err) {
         return res.status(400).json({error: err.message});
     }
@@ -136,7 +155,7 @@ const createUser = async (req, res) => {
  */
 const userExists = async (req, res) => {
   const { username, password } = req.body;
-  console.log("user: "+ username + "password: " + password);
+  // console.log("user: "+ username + "password: " + password);
 
   try {
     // Check if the user exists in the database
@@ -147,12 +166,20 @@ const userExists = async (req, res) => {
     }
 
     // Check whether the given password matches the actual password
-    if (user.password !== password) {
-      return res.status(401).json({ message: INVALID_PASSWORD});
-    }
-
+    // if (bcrypt.compare(password,user.password) ){
+    //   return res.status(401).json({ message: INVALID_PASSWORD});
+    // }
+    bcrypt.compare(password, user.password)
+    .then(isCorrect => {
+      if(isCorrect){
+        return res.status(200).json({ message: 'Login successful' });
+      }
+      else{
+        return res.status(401).json({ message: INVALID_PASSWORD});
+      }
+    })
     // Authentication is successful
-    return res.status(200).json({ message: 'Login successful' });
+    
   } catch (error) {
     console.error('Error during login:', error);
     return res.status(500).json({ message: 'Internal server error' });
