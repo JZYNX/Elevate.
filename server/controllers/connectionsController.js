@@ -74,6 +74,8 @@ const addConnectionForUser = async (req, res) => {
         const currentDate = new Date();
         currUser.connectionDates.push({ storingConnectionId: newConnUser._id, date: currentDate });
         newConnUser.connectionDates.push({ storingConnectionId: currUser._id, date: currentDate });
+        currUser.connectionTags.push({ storingConnectionId: newConnUser._id, tag: null });
+        newConnUser.connectionTags.push({ storingConnectionId: currUser._id, tag: null });
         if (!currUser || !newConnUser) {
             return res.status(400).json({ error: 'a user is not found' });
         }
@@ -253,6 +255,59 @@ const getDatesForUser = async (req, res) => {
     }
 };
 
+const getTagsForUser = async (req, res) => {
+    try {
+        // Extract the username from the request parameters
+        const { username } = req.params;
+        
+        // Find the user based on their username
+        const user = await User.findOne({ username });
+
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        // Extract tags from the user's connectionTags array
+        const tags = user.connectionTags;
+
+        // Send the dates as a JSON response
+        return res.status(200).json( tags );
+    } catch (error) {
+        console.error('Error fetching tags for user:', error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+}
+
+const updateConnectionTag = async (req, res) => {
+    try {
+        const { username, connectionToUpdate, tag } = req.body;
+        // Find the user based on their username
+        const currUser = await User.findOne({ username });
+        const newConnUser = await User.findOne({ username: connectionToUpdate });
+
+        if (!currUser || !newConnUser) {
+            return res.status(400).json({ error: 'a user is not found' });
+        }
+
+        // Find the connection tag you want to modify
+        const tagToUpdate = currUser.connectionTags.find(tag => newConnUser._id);
+        if (tagToUpdate) {
+            // Modify the tag
+            tagToUpdate.tag = tag;
+        } else {
+            // If the tag doesn't exist, you can choose to add it, or return an error
+            currUser.connectionTags.push({ storingConnectionId: newConnUser._id, tag: tag })
+        }
+        // Save the user document with the updated connections
+        await currUser.save();
+
+        // Return a success response with the updated user data
+        return res.status(200).json(currUser);
+    } catch (error) {
+        console.error('Error adding connection:', error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+}
 
 const dropAllConnections = async (req,res) => {
     try {
@@ -289,5 +344,7 @@ module.exports = {
     getAllPendingConnections,
     deletePendingConnectionForUser,
     getDatesForUser,
+    getTagsForUser,
+    updateConnectionTag,
     dropAllConnections,
 }

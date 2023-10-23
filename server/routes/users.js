@@ -122,6 +122,8 @@ const {
     getAllPendingConnections,
     deletePendingConnectionForUser,
     getDatesForUser,
+    getTagsForUser,
+    updateConnectionTag,
     dropAllConnections,
 } = require('../controllers/connectionsController');
 
@@ -134,6 +136,7 @@ router.get('/connections/:username/getAllPendingConnections', getAllPendingConne
 // PATCH - add a connection for a user
 router.patch('/connections', addConnectionForUser)
 
+
 // PATCH - add pending connection for user
 router.patch('/connections/friendRequest', addPendingConnection);
 
@@ -143,7 +146,11 @@ router.delete('/connections/deleteConnection', deleteConnectionForUser)
 // DELETE a pending connection for a user
 router.delete('/connections/deleteFriendReq', deletePendingConnectionForUser)
 
+router.patch('/connections/updateConnectionTag', updateConnectionTag)
+
 router.get('/connections/:username/getAllDates', getDatesForUser)
+
+router.get('/connections/:username/getAllTags', getTagsForUser)
 
 router.delete('/connections/:username/deleteAllConnections', dropAllConnections);
 

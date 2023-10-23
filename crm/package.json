@@ -1,5 +1,5 @@
 {
-  "proxy": "https://backend-dot-voltaic-layout-402210.ts.r.appspot.com",
+  "proxy": "http://localhost:5000",
   "name": "crm",
   "version": "0.1.0",
   "private": true,

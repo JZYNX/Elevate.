@@ -64,6 +64,12 @@ const userSchema = new mongoose.Schema({
             ref: "User", // Reference to other users
         },
     ],
+    connectionTags : [
+        {
+            storingConnectionId:String,
+            tag:String,
+        }
+    ],
     connectionDates:[
         {
             storingConnectionId:String,

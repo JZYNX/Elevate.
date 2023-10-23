@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Sidebar from '../components/Sidebar';
 import SearchBar from '../components/SearchBar';
 import bgImg from '../assets/nikuubg.jpg'
+import axios from 'axios';
 import { primaryColor, secondaryColor, secondaryLightColor, secondaryMediumColor } from '../utils/Color'; 
 import Select from 'react-select'
 import PhoneIcon from '@mui/icons-material/Phone';
@@ -16,6 +17,8 @@ import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import CloseIcon from '@mui/icons-material/Close';
 
 const BackgroundImage = styled.img`
   position: absolute;
@@ -134,8 +137,8 @@ const MiniProfile = styled.div`
   width: 19% ;
   background-color: white;
   border-radius: 1rem;
+  position: relative;
   margin: 0rem 0.5%;
-  // box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.8);
   -webkit-box-shadow:0 0 20px rgba(0,0,0,0.2); 
   -moz-box-shadow: 0 0 20px rgba(0,0,0,0.2); 
   box-shadow: 0 0 10px 2px rgba(0,0,0,0.2);
@@ -217,13 +220,37 @@ const InfoTextContainer = styled.div`
   padding-left: 0.5rem;
 `;
 
-const RemoveContainer = styled.div`
-  position: relative; 
-  left: 50%;
-  transform: translateX(-80%);
+const TopProfileContainer = styled.div`
+  height: 2rem;
+  width: 100%;
+  display: flex;
+`
+
+const MoreContainer = styled.div`
+  margin-left: auto;
   color: black;
   &:hover {
     cursor: pointer;
+  }
+`
+
+const DropDownContainer = styled.div`
+  position: relative;
+  margin-left: auto;
+  display: flex;
+  height: 2rem;
+
+  .remove-container {
+    margin: 0 .4rem;
+    &:hover{
+      cursor: pointer;
+    }
+  }
+
+  .close-dropdown {
+    &:hover{
+      cursor: pointer;
+    }
   }
 `
 
@@ -240,13 +267,20 @@ function Connections() {
     const [sortOption, setSortOption] = useState(null);
     const [arrowUp, setArrowUp] = useState(true);
     const [userDates, setUserDates] = useState([]);
+    const [userTags, setUserTags] = useState([]);
     const [recipientEmail, setRecipientEmail] = useState(null);
     const [recipientName, setRecipientName] = useState(null);
+    const [dropdownOpen, setDropdownOpen] = useState(Array(connections.length).fill(false));
 
     const sortOptions = [
       { value: 'last-name', label: 'Last-name' },
       { value: 'first-name', label: 'First-name' },
       { value: 'recent', label: 'Most-recent' }
+    ]
+
+    const tagOptions = [
+      { value: 'work', label: 'Work' },
+      { value: 'personal', label: 'Personal' },
     ]
 
     const fetchUserConnections = async () => {
@@ -258,8 +292,13 @@ function Connections() {
         const data = await response.json();
         await setConnections(data);
         setSearchConnections(data);
-        const dates = await fetchUserDates(storedUsername);
-        setUserDates(dates);
+        if (data.length > 0) {
+          // Only fetch tags and dates if there are connections
+          const dates = await fetchUserDates(storedUsername);
+          const tags = await fetchUserTags(storedUsername);
+          setUserDates(dates);
+          setUserTags(tags);
+        }
         // console.log("THe dates is " + userDates);
       } catch (error) {
         console.error('Error fetching user notes:', error);
@@ -308,6 +347,12 @@ function Connections() {
       }
     };
 
+    const toggleDropdown = (index) => {
+      const updatedDropdownOpen = [...dropdownOpen];
+      updatedDropdownOpen[index] = !updatedDropdownOpen[index];
+      setDropdownOpen(updatedDropdownOpen);
+    };
+
     const toggleModal = () => {
       setShowEmailPopup(!showEmailPopup);
     }
@@ -317,14 +362,11 @@ function Connections() {
     }
 
     const handleDeleteFriend = (connection) => {
-    
       deleteConnection(connection.username);
     }
 
     const deleteConnection = async (userToDelete) => {
       try{
-        
-  
         const payload = {
           username: storedUsername,
           connectionToDelete: userToDelete,
@@ -343,6 +385,37 @@ function Connections() {
         fetchUserConnections();
       } catch (error){
         console.error('Error deleting friend request:', error);
+      }
+    }
+
+    const handleConnectionTag = (connection, selectedTag) => {
+      updateConnectionTag(connection.username, selectedTag);
+    }
+
+    const updateConnectionTag = async (userToUpdate, selectedTag) => {
+      try {
+        const payload = {
+          username: storedUsername,
+          connectionToUpdate: userToUpdate,
+          tag: selectedTag
+        };
+
+        console.log(payload);
+        const response = await fetch('/users/connections/updateConnectionTag', {
+          method: 'PATCH', 
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload),
+          });
+
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+
+        fetchUserConnections();
+      } catch (err){
+        console.error('Error updating connections tag:', err);
       }
     }
 
@@ -474,6 +547,20 @@ function Connections() {
       }
     };
 
+    const fetchUserTags = async (username) => {
+      try {
+        const response = await fetch(`/users/connections/${username}/getAllTags`);
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        return data;
+      } catch (error) {
+        console.error('Error fetching user tags:', error);
+        return [];
+      }
+    }
+
     useEffect(() => {
       handleArrowSort();
     }, [arrowUp]);
@@ -577,10 +664,77 @@ function Connections() {
                           }`}
                         > 
                           <PersonContainer>
-                            <RemoveContainer onClick={() => {
-                              //DELETE CONNECTION FROM USER
-                              handleDeleteFriend(connection)
-                            }}><PersonRemoveIcon /></RemoveContainer>
+                            {dropdownOpen[index] && userTags ? (
+                              <DropDownContainer>
+                                <div className='tag-select'>
+                                {console.log((userTags.find(tag => tag.storingConnectionId.toString() === connection._id)?.tag) || null)}
+                                <Select
+                                  onChange={(selectedTag) => {
+                                    if (selectedTag) {
+                                      handleConnectionTag(connection, selectedTag.value);
+                                    }
+                                  }}
+                                  value={
+                                    (userTags.find(tag => tag.storingConnectionId.toString() === connection._id)?.tag) || null
+                                  }
+                                  isClearable={true}
+                                  options={tagOptions}
+                                  menuPosition='fixed'
+                                  menuPlacement='auto'
+                                  placeholder="Tag"
+                                  styles={{
+                                      control: (baseStyles) => ({
+                                          ...baseStyles,
+                                          minHeight: '1.5rem',
+                                          maxHeight: '1.5rem',
+                                          fontSize: '15px',
+                                          borderRadius: '1.25rem'
+                                      }),
+                                      valueContainer: (base) => ({
+                                        ...base,
+                                        minHeight: '1.5rem',
+                                        maxHeight: '1.5rem',
+                                        padding: '0 0.5rem',
+                                      }),
+                                      placeholder: (base) => ({
+                                        ...base,
+                                        margin: 0,
+                                        padding: 0,
+                                      }),
+                                      input: (base) => ({
+                                        ...base,
+                                        margin: 0,
+                                        padding: 0,
+                                      }),
+                                      clearIndicator: (base) => ({
+                                        ...base,
+                                        margin: 0,
+                                        padding: 0
+                                      }),
+                                      dropdownIndicator: (base) => ({
+                                          ...base,
+                                          padding: 0,
+                                      }),
+                                      menuList: (base) => ({
+                                          ...base,
+                                          fontSize: '12px',
+                                      }),
+                                  }}
+                              />
+                                </div>
+                                <div className='remove-container' onClick={() => handleDeleteFriend(connection)}>
+                                  <PersonRemoveIcon/>
+                                </div>
+                                <div className='close-dropdown' onClick={() => {toggleDropdown(index)}}>
+                                  <CloseIcon />
+                                </div>
+                              </DropDownContainer>
+                            ) : (
+                              <TopProfileContainer>
+                                <MoreContainer onClick={() => {
+                                  toggleDropdown(index);
+                                }}><MoreVertIcon /></MoreContainer>
+                              </TopProfileContainer>)}
                             {connection.userImage? (
                               <ProfilePic src={connection.userImage} alt='profile-img'/>
                             ):(
