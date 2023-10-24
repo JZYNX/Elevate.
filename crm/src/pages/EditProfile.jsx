@@ -70,9 +70,9 @@ const RightColumn = styled.div`
   align-items: center;
   padding: 1rem;
 `
-const InfoBox = styled.div`
+const PersonalDetailsBox = styled.div`
   background-color: white;
-  text-align: center;
+  // text-align: left;
   height: 90%;
   width: 95%;
   border-radius: 1rem;
@@ -80,7 +80,210 @@ const InfoBox = styled.div`
   margin-bottom: 1rem;
   padding-top: 1rem;
   padding-bottom: 1rem;
+
+  .box-header {
+    display: flex;
+    font-weight: bold;
+    font-size: 1.5rem;
+    //background: #f0f0f0;
+    width: 20rem;
+    margin-left: 7%;
+    margin-bottom: 2%;
+    //padding-left: 2rem;
+    text-align: centre;
+  }
+  
+  .box-details {
+    display: flex;
+    align-items: center;
+  }
+
+  .box-subtitle {
+    display: flex;
+    color: black;
+    font-size: 0.85rem;
+    font-weight: bold;
+    //background: black;
+    margin-left: 7%;
+    margin-bottom: 0.2rem;
+    width: 8rem;
+    text-align: centre;
+  }
+
+  .input-edit-mode{
+    font-size: 0.85rem;
+    color: black;
+    border: none;
+    border-bottom: 1px solid #C4C4C4;
+    margin-top: 0.5rem;
+    margin-bottom: 0.1rem;
+    margin-right: 2%;
+    width: 70%;
+  }
+
+  .input-nonedit-mode{
+    font-size: 0.85rem;
+    color: black;
+    border: none;
+    background: white;
+    width: 70%;
+    margin-top: 0.7rem;
+    margin-bottom: 0.1rem;
+    margin-right: 2%;
+  }
 `
+
+const AccountDetailsBox = styled.div`
+  background-color: white;
+  // text-align: left;
+  height: 70%;
+  width: 95%;
+  border-radius: 1rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+
+  .account-box-header {
+    display: flex;
+    font-weight: bold;
+    font-size: 1.5rem;
+    //background: #f0f0f0;
+    width: 20rem;
+    margin-left: 7%;
+    margin-bottom: 2%;
+    //padding-left: 2rem;
+    text-align: centre;
+  }
+  
+  .account-box-details {
+    display: flex;
+    align-items: center;
+  }
+
+  .account-box-subtitle {
+    display: flex;
+    color: black;
+    font-size: 0.85rem;
+    font-weight: bold;
+    //background: black;
+    margin-left: 7%;
+    margin-bottom: 0.2rem;
+    width: 25%;
+    text-align: centre;
+  }
+
+  .account-box-text {
+    display: flex;
+    color: black;
+    font-size: 0.85rem;
+    // background: black;
+    margin-left: 4.2%;
+    margin-bottom: 0.2rem;
+    width: 8rem;
+  }
+
+  .account-input-edit-mode{
+    font-size: 0.85rem;
+    color: black;
+    border: none;
+    border-bottom: 1px solid #C4C4C4;
+    margin-left: 7%;
+    margin-top: 0.5rem;
+    margin-bottom: 0.1rem;
+    margin-right: 2%;
+    width: 70%;
+  }
+
+  .account-input-nonedit-mode{
+    font-size: 0.85rem;
+    color: black;
+    border: none;
+    background: white;
+    width: 70%;
+    margin-left: 7%;
+    margin-top: 0.7rem;
+    margin-bottom: 0.1rem;
+    margin-right: 2%;
+  }
+}
+`
+
+const SettingsBox = styled.div`
+  background-color: white;
+  // text-align: left;
+  height: 30%;
+  width: 95%;
+  border-radius: 1rem;
+  margin-top: 80%;
+  margin-bottom: 1rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+
+  .settings-box-header {
+    display: flex;
+    font-weight: bold;
+    font-size: 1.5rem;
+    //background: #f0f0f0;
+    width: 20rem;
+    margin-left: 7%;
+    margin-bottom: 2%;
+    //padding-left: 2rem;
+    text-align: centre;
+  }
+  
+  .settings-box-details {
+    display: flex;
+    align-items: center;
+  }
+
+  .settings-box-subtitle {
+    display: flex;
+    color: white;
+    font-size: 0.85rem;
+    font-weight: bold;
+    //background: black;
+    margin-left: 7%;
+    margin-bottom: 0.2rem;
+    width: 30rem;
+    text-align: centre;
+  }
+
+  .settings-box-text {
+    display: flex;
+    color: black;
+    font-size: 0.85rem;
+    //background: black;
+    margin-left: 7%;
+    margin-bottom: 0.2rem;
+    width: 8rem;
+    text-align: centre;
+  }
+
+  .settings-input-edit-mode{
+    font-size: 0.85rem;
+    color: black;
+    border: none;
+    border-bottom: 1px solid #C4C4C4;
+    margin-top: 0.5rem;
+    margin-bottom: 0.1rem;
+    margin-right: 2%;
+    width: 70%;
+  }
+
+  .settings-input-nonedit-mode{
+    font-size: 0.85rem;
+    color: black;
+    border: none;
+    background: white;
+    width: 70%;
+    margin-top: 0.7rem;
+    margin-bottom: 0.1rem;
+    margin-right: 2%;
+  }
+}
+`
+
 const ProfilePicContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -110,9 +313,11 @@ const ButtonGroup = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 10px;
+  margin-left: 7%;
+  text-align: center;
 
   .profile-button {
-    width: 100%;
+    width: 90%;
     margin-top: 8px;
     margin-bottom: 8px;
     background-color: ${secondaryColor};
@@ -133,7 +338,7 @@ const ButtonGroup = styled.div`
   }
 `;
 const ProfileButton = styled.button`
-  width: 100%;
+  width: 90%;
   margin-top: 1rem;
   margin-bottom: 8px;
   background-color: ${secondaryColor};
@@ -169,6 +374,7 @@ function EditProfile() {
     lastName: '',
     email: '',
     password: '',
+    confirm: '',
     contactNumber: '',
     address: '',
     city: '',
@@ -275,22 +481,136 @@ function EditProfile() {
         </ProfileTitle>
         <ProfileInfoContainer>
           <LeftColumn>
-            <InfoBox>
-              VOTE NO            
-            </InfoBox>
-            <InfoBox>
-              VOTE NO            
-            </InfoBox>
+            <PersonalDetailsBox>
+              <p class="box-header">Personal details </p> 
+              <div class="box-details">
+              <p class="box-subtitle">First Name: </p>
+              <input
+                type="text"
+                placeholder="eg. John"
+                value={userData.firstName}
+                onChange={(e) => setUserData({ ...userData, firstName: e.target.value })}
+                disabled={!isEditMode}
+                className={isEditMode ? 'input-edit-mode' : 'input-nonedit-mode'}
+                /> 
+              </div>
+
+              <div class="box-details">
+              <p class="box-subtitle">Last Name: </p>
+              <input
+              type="text"
+              placeholder="eg. Smith"
+              value={userData.lastName}
+              onChange={(e) => setUserData({ ...userData, lastName: e.target.value })}
+              disabled={!isEditMode}
+              className={isEditMode ? 'input-edit-mode' : 'input-nonedit-mode'}
+                />
+              </div>
+
+              <div class="box-details">
+              <p class="box-subtitle">Email: </p>
+              <input
+              type="text"
+              placeholder="eg. example@gmail.com"
+              value={userData.email}
+              onChange={(e) => setUserData({ ...userData, email: e.target.value })}
+              disabled={!isEditMode}
+              className={isEditMode ? 'input-edit-mode' : 'input-nonedit-mode'}
+                />
+              </div>
+
+              <div class="box-details">
+              <p class="box-subtitle">Phone: </p>
+              <input
+              type="text"
+              placeholder="eg. 0452382938"
+              value={userData.contactNumber}
+              onChange={(e) => setUserData({ ...userData, contactNumber: e.target.value })}
+              disabled={!isEditMode}
+              className={isEditMode ? 'input-edit-mode' : 'input-nonedit-mode'}
+                />
+              </div>
+
+              <div class="box-details">
+              <p class="box-subtitle">Street: </p>
+              <input
+              type="text"
+              placeholder="e.g. 197 Joy Street"
+              value={userData.address ? userData.address.street : ''}
+              onChange={(e) => setUserData({ ...userData, address: { ...userData.address, street: e.target.value } })}
+              disabled={!isEditMode}
+              className={isEditMode ? 'input-edit-mode' : 'input-nonedit-mode'}
+                />
+              </div>
+
+              <div class="box-details">
+              <p class="box-subtitle">City: </p>
+              <input
+              type="text"
+              placeholder="eg. Melbourne"
+              value={userData.address ? userData.address.city : ''}
+              onChange={(e) => setUserData({ ...userData, address: { ...userData.address, city: e.target.value } })}
+              disabled={!isEditMode}
+              className={isEditMode ? 'input-edit-mode' : 'input-nonedit-mode'}
+                />
+              </div>
+
+              <div class="box-details">
+              <p class="box-subtitle">State: </p>
+              <input
+              type="text"
+              placeholder="eg. Victoria"
+              value={userData.address ? userData.address.state : ''}
+              onChange={(e) => setUserData({ ...userData, address: { ...userData.address, state: e.target.value } })}
+              disabled={!isEditMode}
+              className={isEditMode ? 'input-edit-mode' : 'input-nonedit-mode'}
+                />
+              </div>              
+
+            </PersonalDetailsBox>  
+            <AccountDetailsBox>
+            <p class="account-box-header">Account details </p> 
+              <div class="account-box-details">
+              <p class="account-box-subtitle">Username: </p>
+              <p class="account-box-text">{storedUsername}</p>
+              </div> 
+
+              <div class="account-box-details">              
+              <p class="account-box-subtitle">Password: </p>
+              <input
+              type={isEditMode ? "text" : "password"}
+              placeholder = "Enter new password"
+              value={isEditMode ? '' : userData.password} // placeholder if user is setting new password
+              onChange={(e) => setUserData({ ...userData, password: e.target.value })}
+              disabled={!isEditMode}
+              className={isEditMode ? 'account-input-edit-mode' : 'account-input-nonedit-mode'}
+              />               
+              </div>       
+
+              {isEditMode && ( // only display if it is in edit mode
+                  <div class="account-box-details">              
+                      <p class="account-box-subtitle">Change password: </p>
+                      <input
+                          type='password'
+                          placeholder="Confirm password"
+                          value={userData.confirm}
+                          onChange={(e) => setUserData({ ...userData, confirm: e.target.value })}
+                          disabled={!isEditMode}
+                          className="account-input-edit-mode"
+                      /> 
+                  </div>
+              )}
+            </AccountDetailsBox>
           </LeftColumn>
           <RightColumn>
             <ProfilePicContainer>
               <ProfilePic>
                 <ProfilePicImage src={userData.userImage ? '/' + userData.userImage : ''} alt="" />
               </ProfilePic>
-              <h2 className="info-header">YO EVANO BICHAHH</h2>
+              <h2 className="info-header">Hey {storedUsername}!</h2>
             </ProfilePicContainer>
-            <InfoBox>
-              VOTE NO   
+            <SettingsBox>
+            <p class="settings-box-header">Settings </p>  
               <ButtonGroup>
                 {isEditMode ? (
                   <label className="profile-button">
@@ -304,16 +624,14 @@ function EditProfile() {
                   </label>
                 ) : null}
                 {isEditMode ? (
-                  <>
                     <ProfileButton onClick={handleSaveChanges}>
                       Save Changes
                     </ProfileButton>
-                  </>
                 ) : (
                   <ProfileButton onClick={toggleEditMode}>Edit Profile</ProfileButton>
                 )}
               </ButtonGroup>         
-            </InfoBox>
+            </SettingsBox>
           </RightColumn>
         </ProfileInfoContainer>
       </ProfileDisplayContainer>
@@ -427,6 +745,14 @@ function EditProfile() {
     </ProfileContainer>
   );
 }
+
+/**
+ * FUNCTION TO CHECK IF PASSWORD AND CONFIRM MATCH
+if (password !== confirm) {
+  toast.error("Passwords do not match!");
+  return;
+}
+*/
 
 /**
  * Fetch user data based on the provided username.
