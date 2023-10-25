@@ -667,15 +667,31 @@ function Connections() {
                             {dropdownOpen[index] && userTags ? (
                               <DropDownContainer>
                                 <div className='tag-select'>
-                                {console.log((userTags.find(tag => tag.storingConnectionId.toString() === connection._id)?.tag) || null)}
                                 <Select
                                   onChange={(selectedTag) => {
                                     if (selectedTag) {
                                       handleConnectionTag(connection, selectedTag.value);
+                                    } else {
+                                      handleConnectionTag(connection, "");
                                     }
                                   }}
                                   value={
-                                    (userTags.find(tag => tag.storingConnectionId.toString() === connection._id)?.tag) || null
+                                    (() => {
+                                      const foundTag = userTags.find(tag => tag.storingConnectionId.toString() === connection._id);
+                                      if (foundTag) {
+                                        switch (foundTag.tag) {
+                                          case 'work':
+                                            return { value: 'work', label: 'Work' };
+                                          case 'personal':
+                                            return { value: 'personal', label: 'Personal' };
+                                          // Add more cases for other tags if needed
+                                          default:
+                                            return null;
+                                        }
+                                      } else {
+                                        return null; // Default value when no matching tag is found
+                                      }
+                                    })()
                                   }
                                   isClearable={true}
                                   options={tagOptions}

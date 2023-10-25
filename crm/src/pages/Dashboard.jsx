@@ -691,7 +691,13 @@ function Dashboard() {
                           <span style={{fontWeight: 'bold', paddingLeft: '0.25rem', paddingRight: '0.5rem'}}>
                             {new Date(event.start).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}: {' '}
                           </span>
-                          <span style={{ width: '40%', display: 'inline-block' }}>{event.title}</span>
+                          <span style={{
+                            width: '78%',
+                            whiteSpace: 'nowrap',      
+                            overflowX: 'hidden',      
+                            textOverflow: 'ellipsis',
+                            verticalAlign: 'middle'
+                          }}>{event.title}</span>
                         </li>
                       ))}
                     </EventListContainer>
