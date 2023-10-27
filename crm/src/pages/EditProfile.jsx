@@ -12,38 +12,23 @@ const ProfileContainer = styled.div`
   width: 100vw;
 `;
 
-const changeColors = keyframes`
-  0%, 100% {
-    filter: hue-rotate(0deg); /* Start and end with pink (320 degrees) */
-  }
-  50% {
-    filter: hue-rotate(30deg); /* Transition to purple (240 degrees) */
-  }
+const SidebarColumn = styled.div`
+  flex: 0 0 15%;
+  min-width: 250px;
+  background-color: #f0f0f0;
 `;
 
-const BackgroundImage = styled.img`
-  /* Add styles for the background image */
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  object-fit: cover; 
-  object-position: right;
-  z-index: -1; /* Put the image behind other content */
-  animation: ${changeColors} 5s infinite linear; /* Apply the animation */
-`;
-
-const ProfileInfoContainer = styled.div`
+const ProfileDisplayContainer = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  width: 100vw;
-  background-color: rgba(0, 0, 0, 0.05);
+  height: 100%;
+  width: 100%;
 `;
-
 const ProfileTitle = styled.div`
   padding-top: 4rem;
   font-weight: bold;
-  padding-left: 10rem;
+  padding-left: 7%;
+  padding-bottom: 1rem;
 
   h2.profile-header {
     font-size: 30px;
@@ -53,78 +38,286 @@ const ProfileTitle = styled.div`
     font-weight: bold;
   }
 `;
-
-const SidebarColumn = styled.div`
-  flex: 0 0 15%;
-  min-width: 250px;
-  background-color: #f0f0f0;
-`;
-
-const ProfileColumns = styled.div`
-  overflow: hidden;
-  flex: 1;
+const ProfileInfoContainer = styled.div`
   display: flex;
-  padding-top: 3rem;
-  padding-left: 10rem;
-  padding-right: 20rem;
+  flex-direction: row;
+  height: 100%;
+  width: 86%;
+  padding-left: 6%;
+  padding-right: 6%;
+`
+const LeftColumn = styled.div`
+  display: flex;
+  flex: 0.6;
+  flex-direction: column; 
+  height: 80%;
+  background-color: hsla(278, 69%, 38%, 0.1);
+  margin: 0 1rem 0 1rem;
+  border-radius: 1rem;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+`
+const RightColumn = styled.div`
+  display: flex;
+  flex: 0.4;
+  flex-direction: column; 
+  height: 80%;
+  background-color: hsla(278, 69%, 38%, 0.1);
+  margin: 0 1rem 0 1rem;
+  border-radius: 1rem;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+`
+const PersonalDetailsBox = styled.div`
+  background-color: white;
+  // text-align: left;
+  height: 90%;
+  width: 95%;
+  border-radius: 1rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
 
-  h2.info-header {
-    font-size: 18px;
-    font-family: 'Poppins', sans-serif;
-    margin-bottom: 10px;
-    margin-top: 20px;
+  .box-header {
+    display: flex;
     font-weight: bold;
+    font-size: 1.5rem;
+    //background: #f0f0f0;
+    width: 20rem;
+    margin-left: 7%;
+    margin-bottom: 2%;
+    //padding-left: 2rem;
+    text-align: centre;
+  }
+  
+  .box-details {
+    display: flex;
+    align-items: center;
   }
 
-  input {
+  .box-subtitle {
+    display: flex;
+    color: black;
+    font-size: 0.85rem;
+    font-weight: bold;
+    //background: black;
+    margin-left: 7%;
+    margin-bottom: 0.2rem;
+    width: 8rem;
+    text-align: centre;
+  }
+
+  .input-edit-mode{
+    font-size: 0.85rem;
+    color: black;
+    border: none;
+    border-bottom: 1px solid #C4C4C4;
+    margin-top: 0.5rem;
+    margin-bottom: 0.1rem;
+    margin-right: 2%;
     width: 70%;
-    padding: 5px;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    font-family: 'Poppins', sans-serif;
-    border-radius: 5px;
-    font-size: 13px;
-    outline: none;
   }
 
-  p.info-text {
-    font-size: 16px;
-    font-family: 'Poppins', sans-serif;
-    font-weight: normal;
+  .input-nonedit-mode{
+    font-size: 0.85rem;
+    color: black;
+    border: none;
+    background: white;
+    width: 70%;
+    margin-top: 0.7rem;
+    margin-bottom: 0.1rem;
+    margin-right: 2%;
+  }
+`
+
+const AccountDetailsBox = styled.div`
+  background-color: white;
+  // text-align: left;
+  height: 70%;
+  width: 95%;
+  border-radius: 1rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+
+  .account-box-header {
+    display: flex;
+    font-weight: bold;
+    font-size: 1.5rem;
+    //background: #f0f0f0;
+    width: 20rem;
+    margin-left: 7%;
+    margin-bottom: 2%;
+    //padding-left: 2rem;
+    text-align: centre;
+  }
+  
+  .account-box-details {
+    display: flex;
+    align-items: center;
   }
 
-  .profile-info {
-    flex: 1;
-    h2 {
-      font-weight: bold;
-    }
-    p {
-      margin: 0;
-    }
+  .account-box-subtitle {
+    display: flex;
+    color: black;
+    font-size: 0.85rem;
+    font-weight: bold;
+    //background: black;
+    margin-left: 7%;
+    margin-bottom: 0.2rem;
+    width: 25%;
+    text-align: centre;
   }
-`;
+
+  .account-box-text {
+    display: flex;
+    color: black;
+    font-size: 0.85rem;
+    // background: black;
+    margin-left: 4.2%;
+    margin-bottom: 0.2rem;
+    width: 8rem;
+  }
+
+  .account-input-edit-mode{
+    font-size: 0.85rem;
+    color: black;
+    border: none;
+    border-bottom: 1px solid #C4C4C4;
+    margin-left: 7%;
+    margin-top: 0.5rem;
+    margin-bottom: 0.1rem;
+    margin-right: 2%;
+    width: 70%;
+  }
+
+  .account-input-nonedit-mode{
+    font-size: 0.85rem;
+    color: black;
+    border: none;
+    background: white;
+    width: 70%;
+    margin-left: 7%;
+    margin-top: 0.7rem;
+    margin-bottom: 0.1rem;
+    margin-right: 2%;
+  }
+}
+`
+
+const SettingsBox = styled.div`
+  background-color: white;
+  // text-align: left;
+  height: 25%;
+  width: 90%;
+  border-radius: 1rem;
+  margin-top: 5%;
+  margin-bottom: 1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0rem;
+
+  .settings-box-header {
+    display: flex;
+    font-weight: bold;
+    font-size: 1.5rem;
+    //background: #f0f0f0;
+    width: 20rem;
+    margin-left: 7%;
+    margin-bottom: 2%;
+    //padding-left: 2rem;
+    text-align: centre;
+  }
+  
+  .settings-box-details {
+    display: flex;
+    align-items: center;
+  }
+
+  .settings-box-subtitle {
+    display: flex;
+    color: white;
+    font-size: 0.85rem;
+    font-weight: bold;
+    //background: black;
+    margin-left: 7%;
+    margin-bottom: 0.2rem;
+    width: 30rem;
+    text-align: centre;
+  }
+
+  .settings-box-text {
+    display: flex;
+    color: black;
+    font-size: 0.85rem;
+    //background: black;
+    margin-left: 7%;
+    margin-bottom: 0.2rem;
+    width: 8rem;
+    text-align: centre;
+  }
+
+  .settings-input-edit-mode{
+    font-size: 0.85rem;
+    color: black;
+    border: none;
+    border-bottom: 1px solid #C4C4C4;
+    margin-top: 0.5rem;
+    margin-bottom: 0.1rem;
+    margin-right: 2%;
+    width: 70%;
+  }
+
+  .settings-input-nonedit-mode{
+    font-size: 0.85rem;
+    color: black;
+    border: none;
+    background: white;
+    width: 70%;
+    margin-top: 0.7rem;
+    margin-bottom: 0.1rem;
+    margin-right: 2%;
+  }
+}
+`
 
 const ProfilePicContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  max-width: 90%;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 1rem 1rem 0rem;
+
+  .info-header {
+    width: 16rem;
+  }
+`
+const ProfilePic = styled.div`
   width: 150px; 
   height: 150px; 
   border-radius: 50%; 
   border: 1px solid #ddd;
   overflow: hidden;
-  margin-bottom: 2rem;
+  margin-right: 2rem;
 `;
-
 const ProfilePicImage = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
 `;
-
 const ButtonGroup = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 10px;
+  margin-left: 7%;
+  text-align: center;
 
   .profile-button {
-      width: 100%;
+    width: 90%;
     margin-top: 8px;
     margin-bottom: 8px;
     background-color: ${secondaryColor};
@@ -144,9 +337,8 @@ const ButtonGroup = styled.div`
     }
   }
 `;
-
 const ProfileButton = styled.button`
-  width: 100%;
+  width: 90%;
   margin-top: 1rem;
   margin-bottom: 8px;
   background-color: ${secondaryColor};
@@ -182,6 +374,7 @@ function EditProfile() {
     lastName: '',
     email: '',
     password: '',
+    confirm: '',
     contactNumber: '',
     address: '',
     city: '',
@@ -282,121 +475,177 @@ function EditProfile() {
       <SidebarColumn>
         <Sidebar userName = {storedUsername}/>
       </SidebarColumn>
-        <BackgroundImage src={bgImg} alt="bgImg" />
-      <ProfileInfoContainer>
+      <ProfileDisplayContainer>
         <ProfileTitle>
           <h2 className="profile-header">Profile</h2>
         </ProfileTitle>
-        <ProfileColumns>
-          <div className="profile-info">
-            <h2 className="info-header">First Name</h2>
-            <input
+        <ProfileInfoContainer>
+          <LeftColumn>
+            <PersonalDetailsBox>
+              <p class="box-header">Personal details </p> 
+              <div class="box-details">
+              <p class="box-subtitle">First Name: </p>
+              <input
+                type="text"
+                placeholder="eg. John"
+                value={userData.firstName}
+                onChange={(e) => setUserData({ ...userData, firstName: e.target.value })}
+                disabled={!isEditMode}
+                className={isEditMode ? 'input-edit-mode' : 'input-nonedit-mode'}
+                /> 
+              </div>
+
+              <div class="box-details">
+              <p class="box-subtitle">Last Name: </p>
+              <input
               type="text"
-              placeholder="etc. John"
-              value={userData.firstName}
-              onChange={(e) => setUserData({ ...userData, firstName: e.target.value })}
-              disabled={!isEditMode}
-              className={isEditMode ? 'input-edit-mode' : 'input-nonedit-mode'}
-            />
-            <h2 className="info-header">Last Name</h2>
-            <input
-              type="text"
-              placeholder="etc. Smith"
+              placeholder="eg. Smith"
               value={userData.lastName}
               onChange={(e) => setUserData({ ...userData, lastName: e.target.value })}
               disabled={!isEditMode}
-              className={isEditMode ? 'input-edit-mode' : ''}
-            />
-            <h2 className="info-header">Email</h2>
-            <input
+              className={isEditMode ? 'input-edit-mode' : 'input-nonedit-mode'}
+                />
+              </div>
+
+              <div class="box-details">
+              <p class="box-subtitle">Email: </p>
+              <input
               type="text"
-              placeholder="etc. example@gmail.com"
+              placeholder="eg. example@gmail.com"
               value={userData.email}
               onChange={(e) => setUserData({ ...userData, email: e.target.value })}
               disabled={!isEditMode}
-              className={isEditMode ? 'input-edit-mode' : ''}
-            />
-            <h2 className="info-header">Password</h2>
-            <input
-              type="password"
-              placeholder="etc. Jsmith1923"
-              value={userData.password}
-              onChange={(e) => setUserData({ ...userData, password: e.target.value })}
-              disabled={!isEditMode}
-              className={isEditMode ? 'input-edit-mode' : ''}
-            />         
-          </div>
-          <div className="profile-info">
-            <h2 className="info-header">Contact Number</h2>
-            <input
+              className={isEditMode ? 'input-edit-mode' : 'input-nonedit-mode'}
+                />
+              </div>
+
+              <div class="box-details">
+              <p class="box-subtitle">Phone: </p>
+              <input
               type="text"
-              placeholder="etc. 0452382938"
+              placeholder="eg. 0452382938"
               value={userData.contactNumber}
               onChange={(e) => setUserData({ ...userData, contactNumber: e.target.value })}
               disabled={!isEditMode}
-              className={isEditMode ? 'input-edit-mode' : ''}
-            />
-            <h2 className="info-header">Address</h2>
-            <input
+              className={isEditMode ? 'input-edit-mode' : 'input-nonedit-mode'}
+                />
+              </div>
+
+              <div class="box-details">
+              <p class="box-subtitle">Street: </p>
+              <input
               type="text"
-              placeholder="197 Joy Street"
+              placeholder="e.g. 197 Joy Street"
               value={userData.address ? userData.address.street : ''}
               onChange={(e) => setUserData({ ...userData, address: { ...userData.address, street: e.target.value } })}
               disabled={!isEditMode}
-              className={isEditMode ? 'input-edit-mode' : ''}
-            />
-            <h2 className="info-header">City</h2>
-            <input
+              className={isEditMode ? 'input-edit-mode' : 'input-nonedit-mode'}
+                />
+              </div>
+
+              <div class="box-details">
+              <p class="box-subtitle">City: </p>
+              <input
               type="text"
-              placeholder="etc. Melbourne"
+              placeholder="eg. Melbourne"
               value={userData.address ? userData.address.city : ''}
               onChange={(e) => setUserData({ ...userData, address: { ...userData.address, city: e.target.value } })}
               disabled={!isEditMode}
-              className={isEditMode ? 'input-edit-mode' : ''}
-            />
-            <h2 className="info-header">State</h2>
-            <input
+              className={isEditMode ? 'input-edit-mode' : 'input-nonedit-mode'}
+                />
+              </div>
+
+              <div class="box-details">
+              <p class="box-subtitle">State: </p>
+              <input
               type="text"
-              placeholder="etc. Victoria"
+              placeholder="eg. Victoria"
               value={userData.address ? userData.address.state : ''}
               onChange={(e) => setUserData({ ...userData, address: { ...userData.address, state: e.target.value } })}
               disabled={!isEditMode}
-              className={isEditMode ? 'input-edit-mode' : ''}
-            />
-          </div>
-          <div className="profile-pic">
-            <h2 className="info-header">Profile Pic</h2>
-            <ProfilePicContainer>
-              <ProfilePicImage src={userData.userImage ? '/' + userData.userImage : ''} alt="" />
-            </ProfilePicContainer>
-            <ButtonGroup>
-              {isEditMode ? (
-                <label className="profile-button">
-                  Upload Photo
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageUpload}
-                    style={{ display: 'none' }}
-                  />
-                </label>
-              ) : null}
-              {isEditMode ? (
-                <>
-                  <ProfileButton onClick={handleSaveChanges}>
-                    Save Changes
-                  </ProfileButton>
-                </>
-              ) : (
-                <ProfileButton onClick={toggleEditMode}>Edit Profile</ProfileButton>
+              className={isEditMode ? 'input-edit-mode' : 'input-nonedit-mode'}
+                />
+              </div>              
+
+            </PersonalDetailsBox>  
+            <AccountDetailsBox>
+            <p class="account-box-header">Account details </p> 
+              <div class="account-box-details">
+              <p class="account-box-subtitle">Username: </p>
+              <p class="account-box-text">{storedUsername}</p>
+              </div> 
+
+              <div class="account-box-details">              
+              <p class="account-box-subtitle">Password: </p>
+              <input
+              type={isEditMode ? "text" : "password"}
+              placeholder = "Enter new password"
+              value={isEditMode ? '' : userData.password} // placeholder if user is setting new password
+              onChange={(e) => setUserData({ ...userData, password: e.target.value })}
+              disabled={!isEditMode}
+              className={isEditMode ? 'account-input-edit-mode' : 'account-input-nonedit-mode'}
+              />               
+              </div>       
+
+              {isEditMode && ( // only display if it is in edit mode
+                  <div class="account-box-details">              
+                      <p class="account-box-subtitle">Change password: </p>
+                      <input
+                          type='password'
+                          placeholder="Confirm password"
+                          value={userData.confirm}
+                          onChange={(e) => setUserData({ ...userData, confirm: e.target.value })}
+                          disabled={!isEditMode}
+                          className="account-input-edit-mode"
+                      /> 
+                  </div>
               )}
-            </ButtonGroup>
-          </div>
-        </ProfileColumns>
-      </ProfileInfoContainer>
+            </AccountDetailsBox>
+          </LeftColumn>
+          <RightColumn>
+            <ProfilePicContainer>
+              <ProfilePic>
+                <ProfilePicImage src={userData.userImage ? '/' + userData.userImage : ''} alt="" />
+              </ProfilePic>
+              <h2 className="info-header">Hey {storedUsername}!</h2>
+            </ProfilePicContainer>
+            <SettingsBox>
+            <p class="settings-box-header">Settings </p>  
+              <ButtonGroup>
+                {isEditMode ? (
+                  <label className="profile-button">
+                    Upload Photo
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageUpload}
+                      style={{ display: 'none' }}
+                    />
+                  </label>
+                ) : null}
+                {isEditMode ? (
+                    <ProfileButton onClick={handleSaveChanges}>
+                      Save Changes
+                    </ProfileButton>
+                ) : (
+                  <ProfileButton onClick={toggleEditMode}>Edit Profile</ProfileButton>
+                )}
+              </ButtonGroup>         
+            </SettingsBox>
+          </RightColumn>
+        </ProfileInfoContainer>
+      </ProfileDisplayContainer>
     </ProfileContainer>
   );
 }
+
+/**
+ * FUNCTION TO CHECK IF PASSWORD AND CONFIRM MATCH
+if (password !== confirm) {
+  toast.error("Passwords do not match!");
+  return;
+}
+*/
 
 /**
  * Fetch user data based on the provided username.

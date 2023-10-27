@@ -46,7 +46,6 @@ const DashboardInfo = styled.div`
   display: flex;
   flex: 1;
   flex-direction: column;
-  // background-color: rgba(0, 0, 0, 0.1);
 `;
 // stats row on dashboard
 const StatsContainer = styled.div`
@@ -58,8 +57,7 @@ const StatsContainer = styled.div`
 `;
 const StatBox = styled.div`
   text-align: left;
-  background-color: rgba(255, 255, 255, 0.2);
-  // background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(59, 23, 167, 0.12);
   border-radius: 1rem;
   padding: 0.5rem;
   padding-left: 2rem;
@@ -88,11 +86,10 @@ const SocialsBox = styled.div`
 `;
 const EventConnectionDisplay = styled.div`
   flex: 1;
-  background-color: rgba(255, 255, 255, 0.2);
-  // background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(59, 23, 167, 0.12);
   border-radius: 1rem;
   padding: 0.5rem 0.5rem 0.5rem 2rem;
-  margin: 0rem 0.25rem;
+  margin: 0rem 0.4rem;
   height: 100%;
   width: 100%;
   p.descriptor {
@@ -103,7 +100,7 @@ const EventConnectionDisplay = styled.div`
 `;
 
 const ContentContainer = styled.div`
-  height: 90%;
+  height: 80%;
   overflow-y: auto; /* Add vertical scrollbar when content overflows */
   &::-webkit-scrollbar {
     width: 0.2rem;
@@ -131,8 +128,7 @@ const DateBox = styled.div`
 // incoming connections second row display
 const IncomingConnection = styled.div`
   display: flex;
-  background-color: rgba(255, 255, 255, 0.5);
-  // background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(59, 23, 167, 0.12);
   border-radius: 1rem;
   width: 95%;
   padding-left: 3rem;
@@ -163,12 +159,16 @@ const NotesBox = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
-  max-height: 16rem;
-  padding: 0.5rem;
+  max-height: 19rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  padding-top: 0;
   width: 94.5%;
-  margin: 1rem auto;
-  background-color: rgba(255, 255, 255, 0.2);
-  // background-color: rgba(0, 0, 0, 0.1);
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 1rem;
+  margin-bottom: 2.5rem;
+  background-color: rgba(59, 23, 167, 0.12);
   border-radius: 1rem;
 `;
 const NotesHeader = styled.div`
@@ -657,7 +657,6 @@ function Dashboard() {
       <SearchBar 
         onEnterKeyPress={handleEnterKeyPress} 
       />
-      <BackgroundImage src={bgImg} alt="bgImg" />
       <ToastContainer position="bottom-right" autoClose={3000} hideProgressBar />
       <SidebarColumn>
         <Sidebar userName = {userName} />
