@@ -212,13 +212,13 @@ const AccountDetailsBox = styled.div`
 const SettingsBox = styled.div`
   background-color: white;
   // text-align: left;
-  height: 30%;
-  width: 95%;
+  height: 25%;
+  width: 90%;
   border-radius: 1rem;
-  margin-top: 80%;
+  margin-top: 5%;
   margin-bottom: 1rem;
-  padding-top: 1rem;
-  padding-bottom: 1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0rem;
 
   .settings-box-header {
     display: flex;
