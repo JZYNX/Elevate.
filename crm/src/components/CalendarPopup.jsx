@@ -73,12 +73,10 @@ function CalendarPopup({ isOpen, onClose, onSave, onDelete, mode, event, start, 
         // Create or update the event object
         const updatedEvent = {
             title: eventName,
-            start: startDatetime.toLocaleString(),
-            end: endDatetime.toLocaleString(),
+            start: startDatetime.toISOString(),
+            end: endDatetime.toISOString(),
             allDay: isAllDay
         };
-
-        // console.log(updatedEvent);
 
         // Invoke the provided onSave function with the updated event
         onSave(updatedEvent);
@@ -116,10 +114,7 @@ function CalendarPopup({ isOpen, onClose, onSave, onDelete, mode, event, start, 
                 <div className="datetime-picker">
                     <label>Start Date and Time: </label>
                     <DateTimePicker
-                        onChange={(date) => {
-                            setStartDatetime(date);
-                            console.log(date);
-                        }}
+                        onChange={(date) => setStartDatetime(date)}
                         value={startDatetime}
                     />
                 </div>

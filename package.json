@@ -4,7 +4,7 @@
     "jest": "^29.7.0"
   },
   "scripts": {
-    "test": "jest --detectOpenHandles",
+    "test": "jest",
     "start-dev": "npm install && concurrently \"npm run install:server\" \"npm run install:client --force\" \"npm run server\" \"npm run client\"",
     "install:server": "cd server && npm install",
     "install:client": "cd crm && npm install",

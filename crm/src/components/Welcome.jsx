@@ -19,8 +19,7 @@ export default function Welcome() {
 
     useEffect(() => {
       // Make an API request to fetch the connection count
-      if (userName) {
-        fetch(`/users/${userName}/connection-count`)
+      fetch(`/users/${userName}/connection-count`)
         .then((response) => {
           if (!response.ok) {
             throw new Error('Network response was not ok');
@@ -34,7 +33,6 @@ export default function Welcome() {
           console.error('Error fetching event count:', error);
           // Handle error here
         });
-      }
     }, [userName]);
 
   return (

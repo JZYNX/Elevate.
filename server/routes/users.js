@@ -47,12 +47,10 @@ const {
     getOneUserByUsername,
     getEventCount,
     getUserEvents,
-    getUserEmail,
     makeNote,
     getAllNotes,
     updateNote,
     deleteNote,
-    updatePassword,
     addConnection,
     getConnectionCount,
 } = require('../controllers/userController')
@@ -75,9 +73,6 @@ router.post('/getUser', getOneUserByUsername);
 // Update a user
 router.patch('/',updateUser)
 
-// Update password
-router.patch('/updatePassword', updatePassword);
-
 // Upload an image
 router.put('/uploadImage', upload.single('userImage'), postImage)
 
@@ -95,9 +90,6 @@ router.get('/:username/event-count',getEventCount);
 
 //find user and get user events
 router.get('/:username/userEvents',getUserEvents);
-
-//find user and get user email
-router.get('/:username/getEmail', getUserEmail);
 
 //create note for user
 router.post('/:username/notes', makeNote);

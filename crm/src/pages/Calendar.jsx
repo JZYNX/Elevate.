@@ -27,7 +27,7 @@ const CalendarContainer = styled.div`
     height: 100vh;
     width: 100vw;
     // background-color:rgba(0, 0, 0, 0.15);
-    // background-color:rgba(255, 255, 255, 0.05);
+    background-color:rgba(255, 255, 255, 1);
 `;
 
 const SidebarColumn = styled.div`
@@ -164,7 +164,6 @@ function Calendar() {
      * @param {Object} requestData - Request data containing username and event data.
      */
     const createEventsOnServer = (requestData) => {
-        console.log(requestData);
         // Assuming you send the entire updated events array to the server
         fetch('/users/createEvent', {
           method: 'PUT',
@@ -244,8 +243,8 @@ function Calendar() {
     const handleEventChange = (info) => {
         const updatedEvent = {
             ...info.event.toPlainObject(), 
-            start: info.event.start?.toLocaleString() || null,
-            end: info.event.end?.toLocaleString() || null,
+            start: info.event.start?.toISOString() || null,
+            end: info.event.end?.toISOString() || null,
         };
     
         const updatedEvents = userEvent.map((event) =>
@@ -262,7 +261,7 @@ function Calendar() {
 
     return (
         <CalendarContainer>
-            <BackgroundImage src={bgImg} alt="bgImg" />
+            {/* <BackgroundImage src={bgImg} alt="bgImg" /> */}
             <ToastContainer position="bottom-right" autoClose={3000} hideProgressBar />
             <SidebarColumn>
                 <Sidebar userName={storedUsername}/>
