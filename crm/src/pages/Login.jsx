@@ -442,8 +442,8 @@ function Login() {
             )}
           /> */}
           <IconOnlyButton>
-                <Icon src={googleIcon} alt="Google" />
-              </IconOnlyButton>
+            <Icon src={googleIcon} alt="Google" onClick={null}/>
+            </IconOnlyButton>
           <IconOnlyButton>
             <Icon src={fbIcon} alt="Facebook" />
           </IconOnlyButton>

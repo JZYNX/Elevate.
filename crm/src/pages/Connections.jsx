@@ -17,22 +17,13 @@ import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 
-const BackgroundImage = styled.img`
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: right;
-  z-index: -1;
-`;
-
 const ConnectionsContainer = styled.div`
   display: flex;
   height: 100vh;
   width: 100vw;
   overflow: hidden;
   // background-color: rgba(0, 0, 0, 0.1);
-  // background-color: white;
+  background-color: white;
 `;
 
 const SidebarColumn = styled.div`
@@ -135,10 +126,7 @@ const MiniProfile = styled.div`
   background-color: white;
   border-radius: 1rem;
   margin: 0rem 0.5%;
-  // box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.8);
-  -webkit-box-shadow:0 0 20px rgba(0,0,0,0.2); 
-  -moz-box-shadow: 0 0 20px rgba(0,0,0,0.2); 
-  box-shadow: 0 0 10px 2px rgba(0,0,0,0.2);
+  box-shadow: 0 0 12px 2px rgba(0,0,0,0.25);
 
 `
 
@@ -500,7 +488,6 @@ function Connections() {
     return (
       <ConnectionsContainer>
           <ToastContainer position="bottom-right" autoClose={3000} hideProgressBar />
-          <BackgroundImage src={bgImg} alt="bgImg" />
           <SearchBar 
             onEnterKeyPress={handleEnterKeyPress} 
           />

@@ -27,7 +27,7 @@ const CalendarContainer = styled.div`
     height: 100vh;
     width: 100vw;
     // background-color:rgba(0, 0, 0, 0.15);
-    // background-color:rgba(255, 255, 255, 0.05);
+    background-color:rgba(255, 255, 255, 1);
 `;
 
 const SidebarColumn = styled.div`
@@ -261,7 +261,7 @@ function Calendar() {
 
     return (
         <CalendarContainer>
-            <BackgroundImage src={bgImg} alt="bgImg" />
+            {/* <BackgroundImage src={bgImg} alt="bgImg" /> */}
             <ToastContainer position="bottom-right" autoClose={3000} hideProgressBar />
             <SidebarColumn>
                 <Sidebar userName={storedUsername}/>
