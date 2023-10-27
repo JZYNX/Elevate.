@@ -8,8 +8,6 @@ import Calendar from "./pages/Calendar"
 import Connections from "./pages/Connections"
 import EditProfile from "./pages/EditProfile"
 import Forget from "./pages/Forget"
-import OTPInput from "./pages/OTPInput"
-import Reset from "./pages/Reset"
 
 export default function App() {
   return <BrowserRouter>
@@ -22,8 +20,6 @@ export default function App() {
       <Route path = "/connections" element = {<Connections />} />
       <Route path = "/edit-profile" element = {<EditProfile />} />
       <Route path = "/forget" element = {<Forget />} />
-      <Route path = "/sendOTP" element = {<OTPInput />} />
-      <Route path = "/reset" element = {<Reset />} />
     </Routes>
   </BrowserRouter>
 }

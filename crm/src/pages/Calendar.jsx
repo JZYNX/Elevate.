@@ -243,8 +243,8 @@ function Calendar() {
     const handleEventChange = (info) => {
         const updatedEvent = {
             ...info.event.toPlainObject(), 
-            start: info.event.start?.toISOString() || null,
-            end: info.event.end?.toISOString() || null,
+            start: info.event.start || null,
+            end: info.event.end || null,
         };
     
         const updatedEvents = userEvent.map((event) =>
@@ -338,7 +338,13 @@ const fetchUserEvents = async (username) => {
   
       // Extract the "Events" field and return it
       const events = userData.events || []; // Default to an empty array if "Events" is not present
-      return events;
+      const eventsWithDateObjects = events.map(event => ({
+          ...event,
+          start: new Date(event.start), 
+          end: new Date(event.end),  
+      }));
+      console.log(eventsWithDateObjects);
+      return events; 
     } catch (error) {
       console.error('Error fetching user data:', error);
       throw error; // Handle the error as needed
