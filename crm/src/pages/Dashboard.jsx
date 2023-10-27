@@ -128,12 +128,16 @@ const DateBox = styled.div`
 // incoming connections second row display
 const IncomingConnection = styled.div`
   display: flex;
-  background-color: rgba(59, 23, 167, 0.12);
+  background-color: rgba(255, 255, 255, 0.5);
   border-radius: 1rem;
   width: 95%;
   padding-left: 3rem;
   padding-right: 2rem;
   margin-bottom: 0.75rem;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.7);
+  }
 
   p.connection-username {
     width: 90%;
