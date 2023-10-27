@@ -3,6 +3,13 @@ const User = require('../models/userModel')
 const Post = require('../models/postModel')
 const { default: axios } = require('axios')
 
+const USERNAME_EXISTS_MESSAGE = 'Username exists. Please choose another username.';
+const EMAIL_EXISTS_MESSAGE = 'Email exists. Please choose another Email.';
+const PASSWORD_LENGTH_MESSAGE = "please make sure the password is between " + global.PASSWORD_MIN_LENGTH + " and " + global.PASSWORD_MAX_LENGTH + " characters!";
+const INVALID_EMAIL_MESSAGE = "Please enter a valid email.";
+const INVALID_USERNAME = 'Username not found.';
+const INVALID_PASSWORD = "Please check your password and try again.";
+
 
 /**
  * Get all users from the database.
@@ -66,15 +73,38 @@ const getOneUserByUsername = async (req, res) => {
  * @returns {Object} - JSON representation of the created user document.
  */
 const createUser = async (req, res) => {
-    const {username, password, email} = req.body
+    const {username, password, email, firstName, lastName} = req.body
 
-    // check if password contains a specific substring  
-    const substring = "sok";
-    const lowercasePassword = password.toLowerCase();
-    const lowercaseSubstring = substring.toLowerCase();
+    // Check that the email is valid
+    const validateEmail = (email) => {
+      return String(email)
+        .toLowerCase()
+        .match(
+          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        );
+    };
+    if (!validateEmail(email)) {
+      return res.status(400).json({ message: INVALID_EMAIL_MESSAGE})
+    }
 
-    if (lowercasePassword.includes(lowercaseSubstring)) {
-        return res.status(400).json({ message: "Password contains " + substring})
+    // Check if the user already exists
+    try {
+      const users = await User.find({})
+      const matchingUser = users.find((user) => user.username === username );
+      const matchingEmail = users.find((user) => user.email === email);
+
+      if (matchingUser) {
+        return res.status(400).json({ message: USERNAME_EXISTS_MESSAGE})
+      } else if (matchingEmail) {
+        return res.status(400).json({ message: EMAIL_EXISTS_MESSAGE})
+      }
+    } catch (err) {
+      return res.status(400).json({error: err.message})
+    }
+
+    // Check password length is ok
+    if (password.length < global.PASSWORD_MIN_LENGTH || password.length > global.PASSWORD_MAX_LENGTH) {
+      return res.status(400).json({ message: PASSWORD_LENGTH_MESSAGE})
     }
 
     try {
@@ -82,7 +112,7 @@ const createUser = async (req, res) => {
           street: '',
           city: '',
           state: '',
-      },})
+      }, firstName, lastName})
         
         // Create a user on an external service 
         // const r = await axios.put(
@@ -91,9 +121,9 @@ const createUser = async (req, res) => {
         //   {headers: {"private-key" : "03afede7-020b-4a77-8c46-6558ae0b88c6"}}
         // )
         // res.status(200).json(r.data)    
-        res.status(200).json(user);
+        return res.status(200).json(user);
     } catch (err) {
-        res.status(400).json({error: err.message})
+        return res.status(400).json({error: err.message});
     }
 }
 
@@ -106,13 +136,19 @@ const createUser = async (req, res) => {
  */
 const userExists = async (req, res) => {
   const { username, password } = req.body;
+  console.log("user: "+ username + "password: " + password);
 
   try {
     // Check if the user exists in the database
     const user = await User.findOne({ username });
 
     if (!user) {
-      return res.status(401).json({ message: 'User not found' });
+      return res.status(401).json({ message: INVALID_USERNAME });
+    }
+
+    // Check whether the given password matches the actual password
+    if (user.password !== password) {
+      return res.status(401).json({ message: INVALID_PASSWORD});
     }
 
     // Authentication is successful
@@ -328,6 +364,23 @@ const getUserEvents = async (req, res) => {
   }
 };
 
+// function for getting user-email
+const getUserEmail = async (req, res) => {
+  try {
+    const { username } = req.params;
+    const user = await User.findOne({username});
+
+    if (!user){
+      return res.status(404).json({ error: 'User not found '  }); 
+    }
+    const userEmail = user.email;
+    res.status(200).json({ userEmail })
+  } catch (error) {
+    console.error('Error getting user email: ', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+}
+
 const makeNote = async (req,res)=>{
   try{
     const {username} = req.params;
@@ -418,6 +471,25 @@ const deleteNote = async (req, res) => {
   }
 };
 
+/* Update password for user */
+const updatePassword = async (req,res) => {
+  try{
+    const { username, password } = req.body;
+    const user = await User.findOne({username});
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    user.password = password;
+
+    await user.save();
+
+    return res.status(200).json({ message: 'User updated successfully' });
+  } catch (error){
+    console.error(error);
+    return res.status(500).json({ message: 'Internal server error' })
+  }
+}
 
 const addConnection = async (req, res) => {
   try {
@@ -475,10 +547,18 @@ module.exports = {
     getOneUserByUsername,
     getEventCount,
     getUserEvents,
+    getUserEmail,
     makeNote,
     getAllNotes,
     updateNote,
     deleteNote,
+    updatePassword,
     addConnection,
-    getConnectionCount
+    getConnectionCount,
+    USERNAME_EXISTS_MESSAGE,
+    EMAIL_EXISTS_MESSAGE,
+    PASSWORD_LENGTH_MESSAGE,
+    INVALID_EMAIL_MESSAGE,
+    INVALID_USERNAME,
+    INVALID_PASSWORD
 }

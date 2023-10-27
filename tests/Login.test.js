@@ -1,50 +1,87 @@
 const request = require('supertest');
-const app = require('../server/Server');
+const app = require('../server/server');
 const User = require('../server/models/userModel'); 
+const { INVALID_USERNAME, INVALID_PASSWORD } = require('../server/controllers/userController');
 require('dotenv').config({ path: require('find-config')('.env') })
 
-// Create a test user
-const testUser = {
+const validTestUser = {
   username: 'testuser',
   password: 'testpassword123',
   email: 'test@testing.com'
 };
 
+const nonexistentUser = {
+  username: 'nonexistentuser',
+  password: 'randompassword123',
+  email: 'nontest@testing.com'
+}
+
+// Create a validTestUser in the database
 beforeAll(async () => {
-  await User.create(testUser);
+  await User.create(validTestUser);
 });
 
+// Delete the test users from the database
 afterAll(async () => {
+  await User.deleteOne({ username: validTestUser.username });
   await app.close();
-  await User.deleteOne({ username: testUser.username });
 });
 
 describe('User Authentication', () => {
-  it('should allow a registered user to log in', async () => {
-    // Create a test user in the database (if needed)
-
-    // Send a POST request to the login endpoint with the test user's credentials
+  it('should return 200 response for existing user with response time < 1s', async () => {
+    const startTime = new Date().getTime();
     const response = await request(app) 
       .post('/users/userExists') 
       .send({
-        username: testUser.username,
-        password: testUser.password,
+        username: validTestUser.username,
+        password: validTestUser.password,
       });
+    const endTime = new Date().getTime();
+    const responseTime = endTime - startTime;
 
-    // Expect a 200 OK response indicating successful login
     expect(response.status).toBe(200);
+    expect(responseTime).toBeLessThan(1000); // Assert that the response time is less than 1 second
   });
 
-  it('should reject login for an invalid user', async () => {
-    // Send a POST request to the login endpoint with invalid credentials
+  it('should return 401 response for nonexisting user with response time < 1s', async () => {
+    const startTime = new Date().getTime();
     const response = await request(app) 
       .post('/users/userExists') 
       .send({
-        username: 'nonexistentuser',
-        password: 'invalidpassword',
+        username: nonexistentUser.username,
+        password: nonexistentUser.password,
       });
+    const endTime = new Date().getTime();
+    const responseTime = endTime - startTime;
 
-    // Expect a 401 Unauthorized or other relevant status code
     expect(response.status).toBe(401);
+    expect(response.body.message).toBe(INVALID_USERNAME);
+    expect(responseTime).toBeLessThan(1000); // Assert that the response time is less than 1 second
+  });
+
+  it('should return 401 response for existing user with incorrect password with response time < 1s', async () => {
+    const startTime = new Date().getTime();
+    const response = await request(app)
+      .post('/users/userExists')
+      .send({
+        username: validTestUser.username,
+        password: nonexistentUser.password,
+      });
+    const endTime = new Date().getTime();
+    const responseTime = endTime - startTime;
+
+    expect(response.status).toBe(401);
+    expect(response.body.message).toBe(INVALID_PASSWORD);
+    expect(responseTime).toBeLessThan(1000); // Assert that the response time is less than 1 second
+  });
+
+  it('should get all users in the database with response time < 1s', async () => {
+    const startTime = new Date().getTime();
+    const response = await request(app).get('/users');
+    const endTime = new Date().getTime();
+    const responseTime = endTime - startTime;
+
+    expect(response.status).toBe(200);
+    expect(responseTime).toBeLessThan(1000); // Assert that the response time is less than 1 second
   });
 });

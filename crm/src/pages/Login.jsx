@@ -20,6 +20,11 @@ const LoginContainer = styled.div`
   justify-content: center;
   align-items: center;
   overflow: hidden;
+
+  
+  @media (max-width: 1000px) {
+    flex-direction: column;
+  }
 `;
 
 const changeColors = keyframes`
@@ -55,6 +60,12 @@ const WelcomeMessage = styled.div`
     position: absolute;
     top: 5rem;
     left: 9rem;
+
+    @media (max-width: 1000px) {
+      position: fixed;
+      top: 1rem;
+      left: 0rem;
+    }
   }
 `;
 
@@ -64,6 +75,10 @@ const Avatars = styled.img`
   position: relative;
   right: 0rem;
   top: 12rem;
+
+  @media (max-width: 1000px) {
+    display: none
+  }
 `
 
 const LoginForm = styled.div`
@@ -78,6 +93,12 @@ const LoginForm = styled.div`
   color: #333;
   border-radius: 40px;
   margin-right: 3rem;
+
+  @media (max-width: 1000px) {
+    margin: 10rem 10rem 5rem 10rem;
+    width: 30rem;
+    height: 60rem;
+  }
 
   h2.login-header {
     font-size: 26px;
@@ -116,12 +137,13 @@ const LoginForm = styled.div`
     }
   }
   button.forget-button {
+    cursor: pointer;
     color: #0a1172;
     background-color: white;
     border: none;
-    cursor: pointer;
-    transition: color 0.3s;
+    font-size: 14px;
     padding: 10px;
+    transition: color 0.3s;
 
     &:hover {
       color: #151e3d;
@@ -208,13 +230,12 @@ function Login() {
   const handleLogin = async () => {
     const { username, password } = credentials;
     console.log(process.env.PORT);
-    userExists(username, password)
-    .then((userExists) => {
-      if (userExists) {
+    checkUserLogin(username, password)
+    .then((checkUserLogin) => {
+      if (checkUserLogin) {
+        toast.success("Login Success!");
         const profileURL = `/dashboard?username=${username}`;
         window.location.href = profileURL;
-      } else {
-        toast.error('Login failed. Please check your credentials.');
       }
     })
     .catch((error) => {
@@ -254,14 +275,14 @@ function Login() {
     }
   };
 
-    /**
+  /**
    * Checks if a user with the given username or email already exists.
    * 
    * @param {string} username - The username to check.
-   * @param {string} email - The email to check.
-   * @returns {boolean} True if a matching username or email is found, false otherwise.
+   * @param {string} password - The password to check.
+   * @returns {boolean} True if a matching username and password is found, false otherwise.
    */
-    const userExists = async (username,email) => {
+    const userExists = async (username, password) => {
       try{
         const response = await fetch('/users');
         
@@ -270,12 +291,43 @@ function Login() {
         }
   
         const users = await response.json();
-        const matchingUser = users.find((user) => user.username === username );
+        const matchingUser = users.find((user) => user.username === username && user.password === password);
   
         if (matchingUser) {
           return true;
         } 
         return false;
+  
+      } catch (err) {
+        console.error("Error checking if user exists", err);
+        return false;
+      }
+    };
+
+  /**
+   * Checks if a user with the given username and password can be found
+   * 
+   * @param {string} username - The username to check.
+   * @param {string} password - The password to check.
+   * @returns {boolean} True if a matching username AND password is found, false otherwise.
+   */
+     const checkUserLogin = async (username,password) => {
+      try{
+        const response = await fetch('/users/userExists', {
+          method: 'POST', 
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ username, password }),
+        });
+        
+        // if response not 200, user does not exist or password is incorrect
+        if (!response.ok) {
+          const errorData = await response.json(); 
+          toast.error(`Failed to authenticate user: ${errorData.message}`);
+          return false;
+        }
+        return true;
   
       } catch (err) {
         console.error("Error checking if user exists", err);
