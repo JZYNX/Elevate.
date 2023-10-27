@@ -37,7 +37,7 @@ const CloseButton = styled.button`
 
 const StyledForm = styled.form`
   width: 100%;
-  max-width: 600px;
+  max-width: 500px;
   display: flex;
   flex-direction: column;
   background-color: white;
@@ -47,7 +47,10 @@ const StyledForm = styled.form`
 `;
 
 const FormField = styled.div`
-  margin: 20px;
+  margin-left: 1.3rem;
+  margin-right: 1.3rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
 `;
 
 const Label = styled.label`
@@ -60,18 +63,26 @@ const Input = styled.input`
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  font-size: 14px;
+  font-size: 16px;
+  &:focus {
+    border: 1px solid black;
+  }
 `;
 
 const Textarea = styled.textarea`
   width: 100%;
-  height: 150px;
-  min-width: 560px;
-  max-width: 560px;
+  height: 15rem;
+  min-width: 458px;
+  max-width: 458px;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
+  font-family: 'Poppins', sans-serif;
   font-size: 16px;
+  &:focus {
+    border: 1px solid black;
+    outline: none;
+  }
 `;
 
 const SubmitButton = styled.button`
@@ -84,7 +95,9 @@ const SubmitButton = styled.button`
     font-size: 16px;
     transition: background-color 0.3s;
     width: 40%;
-    margin: auto;
+    margin-bottom: 1rem;
+    margin-left: auto;
+    margin-right: auto;
 
     &:hover {
     background-color: #0056b3;
