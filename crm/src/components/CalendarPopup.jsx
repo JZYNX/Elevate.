@@ -73,8 +73,8 @@ function CalendarPopup({ isOpen, onClose, onSave, onDelete, mode, event, start, 
         // Create or update the event object
         const updatedEvent = {
             title: eventName,
-            start: startDatetime.toLocaleString(),
-            end: endDatetime.toLocaleString(),
+            start: startDatetime,
+            end: endDatetime,
             allDay: isAllDay
         };
 
