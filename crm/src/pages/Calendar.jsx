@@ -12,6 +12,8 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import "../styles/calendar.css";
 import bgImg from '../assets/nikuubg.jpg'
+import { useNavigate } from 'react-router-dom';
+
 
 const BackgroundImage = styled.img`
   position: absolute;
@@ -53,6 +55,7 @@ function Calendar() {
     const urlParams = new URLSearchParams(window.location.search);
     const storedUsername = urlParams.get('username');
     const [userEvent, setUserEvent] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         async function fetchUserDataAndSetState() {
@@ -77,6 +80,7 @@ function Calendar() {
 
 
     const verifyLogin = async(storedUsername) =>{
+      
       // const navigate = useNavigate();
       // console.log(localStorage);
       console.log(storedUsername);
@@ -104,18 +108,20 @@ function Calendar() {
           }
           else{
             alert("not logged in or session expired, please log in and try again!");
-            // navigate('/');
+            navigate('/');
           }
           
         } else {
           // No user with the provided username was found
           alert("not logged in or session expired, please log in and try again!");
+          navigate('/');
           //fix here to allow navigate
           // console.log('User not found.');
         }
       } else {
         // No users in localStorage
         alert("not logged in or session expired, please log in and try again!");
+        navigate('/');
       }
   
     }

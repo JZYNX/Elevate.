@@ -16,6 +16,7 @@ import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+import { useNavigate } from 'react-router-dom';
 
 const BackgroundImage = styled.img`
   position: absolute;
@@ -242,6 +243,7 @@ function Connections() {
     const [userDates, setUserDates] = useState([]);
     const [recipientEmail, setRecipientEmail] = useState(null);
     const [recipientName, setRecipientName] = useState(null);
+    const navigate = useNavigate();
 
     const sortOptions = [
       { value: 'last-name', label: 'Last-name' },
@@ -294,18 +296,20 @@ function Connections() {
           }
           else{
             alert("not logged in or session expired, please log in and try again!");
-            // navigate('/');
+            navigate('/');
           }
           
         } else {
           // No user with the provided username was found
           alert("not logged in or session expired, please log in and try again!");
+          navigate('/');
           //fix here to allow navigate
           // console.log('User not found.');
         }
       } else {
         // No users in localStorage
         alert("not logged in or session expired, please log in and try again!");
+        navigate('/');
       }
   
     }

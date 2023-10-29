@@ -6,6 +6,7 @@ import Welcome from "../components/Welcome";
 import ChatContainer from "../components/ChatContainer";
 import {io} from "socket.io-client";
 import {host} from "../utils/APIRoutes"
+import { useNavigate } from 'react-router-dom';
 
 const Container = styled.div`
   height: 100vh;
@@ -42,6 +43,7 @@ function Message(){
   const [currentUser,setCurrentUser] = useState(null);
   const [currentChat, setCurrentChat] = useState(null);
   const socket = useRef();
+  const navigate = useNavigate();
 
   /**
    * Fetches user data and contacts data when the currentUser changes.
@@ -115,18 +117,20 @@ function Message(){
         }
         else{
           alert("not logged in or session expired, please log in and try again!");
-          // navigate('/');
+          navigate('/');
         }
         
       } else {
         // No user with the provided username was found
         alert("not logged in or session expired, please log in and try again!");
         //fix here to allow navigate
+        navigate('/');
         // console.log('User not found.');
       }
     } else {
       // No users in localStorage
       alert("not logged in or session expired, please log in and try again!");
+      navigate('/');
     }
 
   }

@@ -9,6 +9,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import SearchBar from '../components/SearchBar';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
+import { useNavigate } from 'react-router-dom';
 // import { useNavigate } from 'react-router-dom';
 
 const changeColors = keyframes`
@@ -339,7 +340,7 @@ function Dashboard() {
   const [groupedUserEvents, setGroupedUserEvents] = useState([]);
   const [incomingConnections, setIncomingConnections] = useState([]);  // Sample connection. use []
   const currentDate = new Date(); // Get the current date and time
-
+  const navigate = useNavigate();
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const storedUsername = urlParams.get('username');
@@ -375,18 +376,20 @@ function Dashboard() {
         }
         else{
           alert("not logged in or session expired, please log in and try again!");
-          // navigate('/');
+          navigate('/');
         }
         
       } else {
         // No user with the provided username was found
         alert("not logged in or session expired, please log in and try again!");
         //fix here to allow navigate
+        navigate('/');
         // console.log('User not found.');
       }
     } else {
       // No users in localStorage
       alert("not logged in or session expired, please log in and try again!");
+      navigate('/');
     }
 
 

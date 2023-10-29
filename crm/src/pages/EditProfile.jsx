@@ -4,7 +4,7 @@ import bgImg from '../assets/nikuubg.jpg';
 import styled, { keyframes } from 'styled-components';
 import { primaryColor, secondaryColor } from '../utils/Color';
 import axios from 'axios';
-
+import { useNavigate } from 'react-router-dom';
 // Styled components for styling the profile page
 const ProfileContainer = styled.div`
   display: flex;
@@ -190,6 +190,7 @@ function EditProfile() {
 
   // Create a URLSearchParams object to parse the URL parameters
   const urlParams = new URLSearchParams(window.location.search);
+  const navigate = useNavigate();
 
   // Get the 'username' parameter value from the URL
   const storedUsername = urlParams.get('username');
@@ -245,18 +246,20 @@ function EditProfile() {
         }
         else{
           alert("not logged in or session expired, please log in and try again!");
-          // navigate('/');
+          navigate('/');
         }
         
       } else {
         // No user with the provided username was found
         alert("not logged in or session expired, please log in and try again!");
         //fix here to allow navigate
+        navigate('/');
         // console.log('User not found.');
       }
     } else {
       // No users in localStorage
       alert("not logged in or session expired, please log in and try again!");
+      navigate('/');
     }
     
   }

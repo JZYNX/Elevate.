@@ -282,11 +282,15 @@ const updateUser = async (req, res) => {
         if (password && (password.length < global.PASSWORD_MIN_LENGTH || password.length > global.PASSWORD_MAX_LENGTH)) {
             return res.status(400).json({ message: "Password must be between 10 and 30 characters!"});
         }
+        console.log("password is " + password);
         // check if profile pic was uploaded.
         if (req.file) {
             updatedUserData.userImage = req.file.path;
         }
-        if(updatedUserData.password !== password){
+
+        console.log("the user password " + updatedUserData.password);
+        if(existingUser.password !== password){
+          console.log(password);
           updatedUserData.password = await bcrypt.hash(password,10);
         }
         // Find the user based on the username
@@ -556,7 +560,7 @@ const updatePassword = async (req,res) => {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    user.password = password;
+    user.password = await bcrypt.hash(password,10);
 
     await user.save();
 
