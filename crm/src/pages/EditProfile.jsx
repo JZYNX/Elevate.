@@ -4,6 +4,7 @@ import bgImg from '../assets/nikuubg.jpg';
 import styled, { keyframes } from 'styled-components';
 import { primaryColor, secondaryColor } from '../utils/Color';
 import axios from 'axios';
+import { height } from '@mui/system';
 
 // Styled components for styling the profile page
 const ProfileContainer = styled.div`
@@ -212,7 +213,7 @@ const AccountDetailsBox = styled.div`
 const SettingsBox = styled.div`
   background-color: white;
   // text-align: left;
-  height: 25%;
+  height: 30%;
   width: 90%;
   border-radius: 1rem;
   margin-top: 5%;
@@ -312,7 +313,7 @@ const ProfilePicImage = styled.img`
 const ButtonGroup = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: 10px;
+  margin-top: 5px;
   margin-left: 7%;
   text-align: center;
 
@@ -339,7 +340,7 @@ const ButtonGroup = styled.div`
 `;
 const ProfileButton = styled.button`
   width: 90%;
-  margin-top: 1rem;
+  margin-top: 0.7rem;
   margin-bottom: 8px;
   background-color: ${secondaryColor};
   padding-top: 0.3rem;
@@ -468,8 +469,11 @@ function EditProfile() {
       alert(errorMessage);
     }
   };
-  
-  
+
+  const settingsBoxHeight = {
+    height: isEditMode? "30%" : "23%",
+  };
+
   return (
     <ProfileContainer>
       <SidebarColumn>
@@ -609,7 +613,7 @@ function EditProfile() {
               </ProfilePic>
               <h2 className="info-header">Hey {storedUsername}!</h2>
             </ProfilePicContainer>
-            <SettingsBox>
+            <SettingsBox style={settingsBoxHeight}>
             <p class="settings-box-header">Settings </p>  
               <ButtonGroup>
                 {isEditMode ? (
@@ -635,113 +639,6 @@ function EditProfile() {
           </RightColumn>
         </ProfileInfoContainer>
       </ProfileDisplayContainer>
-
-        {/* <ProfileColumns>
-          <div className="profile-info">
-            <h2 className="info-header">First Name</h2>
-            <input
-              type="text"
-              placeholder="etc. John"
-              value={userData.firstName}
-              onChange={(e) => setUserData({ ...userData, firstName: e.target.value })}
-              disabled={!isEditMode}
-              className={isEditMode ? 'input-edit-mode' : 'input-nonedit-mode'}
-            />
-            <h2 className="info-header">Last Name</h2>
-            <input
-              type="text"
-              placeholder="etc. Smith"
-              value={userData.lastName}
-              onChange={(e) => setUserData({ ...userData, lastName: e.target.value })}
-              disabled={!isEditMode}
-              className={isEditMode ? 'input-edit-mode' : ''}
-            />
-            <h2 className="info-header">Email</h2>
-            <input
-              type="text"
-              placeholder="etc. example@gmail.com"
-              value={userData.email}
-              onChange={(e) => setUserData({ ...userData, email: e.target.value })}
-              disabled={!isEditMode}
-              className={isEditMode ? 'input-edit-mode' : ''}
-            />
-            <h2 className="info-header">Password</h2>
-            <input
-              type="password"
-              placeholder="etc. Jsmith1923"
-              value={userData.password}
-              onChange={(e) => setUserData({ ...userData, password: e.target.value })}
-              disabled={!isEditMode}
-              className={isEditMode ? 'input-edit-mode' : ''}
-            />         
-          </div>
-          <div className="profile-info">
-            <h2 className="info-header">Contact Number</h2>
-            <input
-              type="text"
-              placeholder="etc. 0452382938"
-              value={userData.contactNumber}
-              onChange={(e) => setUserData({ ...userData, contactNumber: e.target.value })}
-              disabled={!isEditMode}
-              className={isEditMode ? 'input-edit-mode' : ''}
-            />
-            <h2 className="info-header">Address</h2>
-            <input
-              type="text"
-              placeholder="197 Joy Street"
-              value={userData.address ? userData.address.street : ''}
-              onChange={(e) => setUserData({ ...userData, address: { ...userData.address, street: e.target.value } })}
-              disabled={!isEditMode}
-              className={isEditMode ? 'input-edit-mode' : ''}
-            />
-            <h2 className="info-header">City</h2>
-            <input
-              type="text"
-              placeholder="etc. Melbourne"
-              value={userData.address ? userData.address.city : ''}
-              onChange={(e) => setUserData({ ...userData, address: { ...userData.address, city: e.target.value } })}
-              disabled={!isEditMode}
-              className={isEditMode ? 'input-edit-mode' : ''}
-            />
-            <h2 className="info-header">State</h2>
-            <input
-              type="text"
-              placeholder="etc. Victoria"
-              value={userData.address ? userData.address.state : ''}
-              onChange={(e) => setUserData({ ...userData, address: { ...userData.address, state: e.target.value } })}
-              disabled={!isEditMode}
-              className={isEditMode ? 'input-edit-mode' : ''}
-            />
-          </div>
-          <div className="profile-pic">
-            <h2 className="info-header">Profile Pic</h2>
-            <ProfilePicContainer>
-              <ProfilePicImage src={userData.userImage ? '/' + userData.userImage : ''} alt="" />
-            </ProfilePicContainer>
-            <ButtonGroup>
-              {isEditMode ? (
-                <label className="profile-button">
-                  Upload Photo
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageUpload}
-                    style={{ display: 'none' }}
-                  />
-                </label>
-              ) : null}
-              {isEditMode ? (
-                <>
-                  <ProfileButton onClick={handleSaveChanges}>
-                    Save Changes
-                  </ProfileButton>
-                </>
-              ) : (
-                <ProfileButton onClick={toggleEditMode}>Edit Profile</ProfileButton>
-              )}
-            </ButtonGroup>
-          </div>
-        </ProfileColumns> */}
     </ProfileContainer>
   );
 }
